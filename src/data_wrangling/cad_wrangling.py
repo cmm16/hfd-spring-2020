@@ -18,7 +18,8 @@ def unzip_folders(target_directory, save_directory):
         if file.endswith("zip"):
             path_to_zip = path.join(target_directory, file)
             with ZipFile(path_to_zip, 'r') as zipObj:
-                # will place all unzipped files in save_directory
+                # will place all unzipped files in save_directory, will write over the old files so creating
+                # duplicates by running function multiple times is not possible
                 zipObj.extractall(save_directory)
 
 
