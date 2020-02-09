@@ -44,7 +44,8 @@ def merge_csvs(directory):
             # take df values and remove two last lines that are sql garbage
             df_values = np.delete(df.values, [len(df.values)-1, len(df.values)-2], axis=0)
             # add column names to values since these are actually the first valid row
-            df_ar = np.append(df_values, np.reshape(df.columns, (1,6)), axis=0)
+            first_valid_row = df.columns.values.reshape((1, 6))
+            df_ar = np.append(df_values, np.reshape(first_valid_row, (1, 6)), axis=0)
             ar = np.append(ar, df_ar, axis=0)
     return ar
 
@@ -55,7 +56,7 @@ def clean_inc_unit(ar):
     split_df1 = merged_df[4].str[1:-1].str.split(" ", expand=True)
     split_df2 = merged_df[5].str[1:-1].str.split(" ", expand=True)
     final_merged_df = pd.concat([merged_df[[0, 1, 2]], split_df1, split_df2], axis=1)
-    return final_merged_df.values()
+    return final_merged_df.values
 
 
 def save_clean_ar(directory, ar):
