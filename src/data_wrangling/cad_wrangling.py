@@ -14,8 +14,9 @@ def unzip_folders(target_directory, save_directory):
         save_directory (str): String path to the directory to place unzipped files
     """
     for file in listdir(target_directory):
+        # currently does not have proper error handling
         if file.endswith("zip"):
-            path_to_zip = path.join(zip_cad_path, file)
+            path_to_zip = path.join(target_directory, file)
             with ZipFile(path_to_zip, 'r') as zipObj:
                 # will place all unzipped files in save_directory
                 zipObj.extractall(save_directory)
