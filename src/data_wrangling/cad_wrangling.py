@@ -17,7 +17,7 @@ def unzip_folders(target_directory, save_directory):
         # currently does not have proper error handling
         if file.endswith("zip"):
             path_to_zip = path.join(target_directory, file)
-            with ZipFile(path_to_zip, 'r') as zipObj:
+            with ZipFile(path_to_zip, "r") as zipObj:
                 # will place all unzipped files in save_directory, will write over the old files so creating
                 # duplicates by running function multiple times is not possible
                 zipObj.extractall(save_directory)
@@ -42,7 +42,9 @@ def merge_csvs(directory):
             # skip first line since this is sql garbage, will make first actual row into column names
             df = pd.read_csv(path_to_csv, skiprows=1)
             # take df values and remove two last lines that are sql garbage
-            df_values = np.delete(df.values, [len(df.values)-1, len(df.values)-2], axis=0)
+            df_values = np.delete(
+                df.values, [len(df.values) - 1, len(df.values) - 2], axis=0
+            )
             # add column names to values since these are actually the first valid row
             first_valid_row = df.columns.values.reshape((1, 6))
             df_ar = np.append(df_values, np.reshape(first_valid_row, (1, 6)), axis=0)
@@ -61,5 +63,3 @@ def clean_inc_unit(ar):
 
 def save_clean_ar(directory, ar, column_names):
     pd.DataFrame(ar, columns=column_names).to_csv(directory)
-
-
