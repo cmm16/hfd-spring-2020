@@ -30,6 +30,7 @@ def merge_csvs(directory):
     """
 
     Arguments:
+        directory (str): String path
 
     Returns:
 
@@ -48,3 +49,7 @@ def merge_csvs(directory):
             df_ar = np.append(df_values, np.reshape(df.columns, (1,6)), axis=0)
             ar = np.append(ar, df_ar, axis=0)
     return ar
+
+def clean_inc_unit(ar):
+
+
