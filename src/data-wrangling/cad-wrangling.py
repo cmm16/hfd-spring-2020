@@ -15,8 +15,8 @@ def unzip_folders(target_directory, save_directory):
     unzips all the zip folders in a specified directory and stores all the unzipped files in a new directory
 
     Arguments:
-        target_directory (str): a string path to the directory with zip files
-        save_directory (str): a string path to the directory to place unzipped files
+        target_directory (str): String path to the directory with zip files
+        save_directory (str): String path to the directory to place unzipped files
     """
     for file in listdir(target_directory):
         if file.endswith("zip"):
