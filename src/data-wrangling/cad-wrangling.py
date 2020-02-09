@@ -28,12 +28,13 @@ def unzip_folders(target_directory, save_directory):
 
 def merge_csvs(directory):
     """
+    Merges all the csvs in a target directory with a certain naming convention return result as a single numpy array
 
     Arguments:
-        directory (str): String path
+        directory (str): String path to directory with csvs to be merged
 
     Returns:
-
+        ar (numpy array): Numpy array that is the values of all the merged csvs
     """
     # place holder array
     ar = np.ndarray((0, 6))
