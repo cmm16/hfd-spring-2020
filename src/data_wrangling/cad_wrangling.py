@@ -67,3 +67,13 @@ def clean_inc_unit(ar):
 
 def save_clean_ar(directory, ar, column_names):
     pd.DataFrame(ar, columns=column_names).to_csv(directory)
+
+
+def wrangle_cad_unit(directory):
+    zip_cad_path = path.join(directory, "UPDATE CAD DATA/")
+    unzip_cad_path = path.join(directory, "unzip_cad")
+    clean_cad_path = path.join(directory, "clean_cad")
+    unzip_folders(zip_cad_path, unzip_cad_path)
+    ar = merge_csvs(unzip_cad_path)
+    clean_ar = clean_inc_unit(ar)
+    save_clean_ar(clean_cad_path, clean_ar, list(range(7)))
