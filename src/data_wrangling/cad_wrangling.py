@@ -2,12 +2,14 @@ import pandas as pd
 import numpy as np
 from os import listdir
 from os import path
+from os import getcwd
 from zipfile import ZipFile
 
 # look at why there are duplicates
 # determine all column names
 # find good way to distinguish cad unit and incident
 # determine what "-" file is
+
 
 def unzip_folders(target_directory, save_directory):
     """
@@ -100,3 +102,12 @@ def wrangle_cad_unit(directory):
     ar = merge_csvs(unzip_cad_path)
     clean_ar = clean_inc_unit(ar)
     save_clean_ar(clean_cad_path, clean_ar, list(range(7)))
+
+
+def main():
+    data_dir = path.join(path.dirname(path.dirname(getcwd())), "data")
+    wrangle_cad_unit(data_dir)
+
+
+if __name__ == '__main__':
+    main()
