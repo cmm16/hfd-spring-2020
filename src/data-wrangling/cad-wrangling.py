@@ -7,20 +7,22 @@ from zipfile import ZipFile
 
 DATA = "/Users/work/PycharmProjects/hfd-spring-2020/data/"
 zip_cad_path = path.join(DATA, "UPDATE CAD DATA/")
+path.join(DATA, "unzip_cad")
 
-
-def unzip_folders(directory):
+def unzip_folders(target_directory, save_directory):
     """
-    unzips all the zip folders in a specified directory and stores all the unziped files in a new directory
+    unzips all the zip folders in a specified directory and stores all the unzipped files in a new directory
 
     Arguments:
-        directory (str): a string path to the desired directory
+        target_directory (str): a string path to the directory with zip files
+        save_directory (str): a string path to the directory to place unzipped files
     """
-    for file in listdir(directory):
+    for file in listdir(target_directory):
         if file.endswith("zip"):
             path_to_zip = path.join(zip_cad_path, file)
             with ZipFile(path_to_zip, 'r') as zipObj:
-                zipObj.extractall(path.join(DATA, "unzip_cad"))
+                # will place all unzipped files in save_directory
+                zipObj.extractall(save_directory)
 
 
 def merge_csvs(directory):
