@@ -59,7 +59,7 @@ def clean_inc_unit(ar):
     return final_merged_df.values
 
 
-def save_clean_ar(directory, ar):
-    np.savetxt(directory, ar, delimiter=',', fmt='%d')
+def save_clean_ar(directory, ar, column_names):
+    pd.DataFrame(ar, columns=column_names).to_csv(directory)
 
 
