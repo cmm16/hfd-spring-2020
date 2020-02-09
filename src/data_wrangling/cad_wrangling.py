@@ -4,6 +4,10 @@ from os import listdir
 from os import path
 from zipfile import ZipFile
 
+# look at why there are duplicates
+# determine all column names
+# find good way to distinguish cad unit and incident
+# determine what "-" file is
 
 def unzip_folders(target_directory, save_directory):
     """
