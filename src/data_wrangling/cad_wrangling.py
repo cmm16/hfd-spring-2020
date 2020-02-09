@@ -5,11 +5,6 @@ from os import path
 from zipfile import ZipFile
 
 
-DATA = "/Users/work/PycharmProjects/hfd-spring-2020/data/"
-zip_cad_path = path.join(DATA, "UPDATE CAD DATA/")
-path.join(DATA, "unzip_cad")
-
-
 def unzip_folders(target_directory, save_directory):
     """
     unzips all the zip folders in a specified directory and stores all the unzipped files in a new directory
