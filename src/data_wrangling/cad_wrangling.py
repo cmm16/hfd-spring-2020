@@ -35,7 +35,7 @@ def merge_csvs(directory):
         directory (str): String path to directory with csvs to be merged
 
     Returns:
-        ar (numpy array): Numpy array that is the values of all the merged csvs
+        (numpy array): Numpy array that is the values of all the merged csvs
     """
     # place holder array
     ar = np.ndarray((0, 6))
@@ -57,6 +57,15 @@ def merge_csvs(directory):
 
 
 def clean_inc_unit(ar):
+    """
+    Cleans and formats incident unit data numpy array
+
+    Arguments:
+        ar (numpy array): Numpy array of incident unit data from merge_csvs
+
+    Returns:
+        (numpy array): Numpy array cleaned of incident unit data
+    """
     merged_df = pd.DataFrame(ar)
     # split the two columns that have space as their delimiter instead of comma
     split_df1 = merged_df[4].str[1:-1].str.split(" ", expand=True)
@@ -66,13 +75,27 @@ def clean_inc_unit(ar):
 
 
 def save_clean_ar(directory, ar, column_names):
+    """
+    Saves clean data to a target directory
+
+    Arguments:
+        directory (str): String path to the desired save location
+        ar (numpy array): Numpy array of cleaned data
+        column_names (list(str)): List of string names representing each columns name of the numpy array
+    """
     pd.DataFrame(ar, columns=column_names).to_csv(directory)
 
 
 def wrangle_cad_unit(directory):
+    """
+    Runs all functions needed to wrangle the cad incident unit data given a target data base directory
+
+    Arguments:
+        directory (str): String path to the data folder
+    """
     zip_cad_path = path.join(directory, "UPDATE CAD DATA/")
     unzip_cad_path = path.join(directory, "unzip_cad")
-    clean_cad_path = path.join(directory, "clean_cad")
+    clean_cad_path = path.join(directory, "clean_cad.csv")
     unzip_folders(zip_cad_path, unzip_cad_path)
     ar = merge_csvs(unzip_cad_path)
     clean_ar = clean_inc_unit(ar)
