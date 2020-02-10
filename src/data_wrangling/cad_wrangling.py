@@ -101,6 +101,7 @@ def wrangle_cad_unit(directory):
     unzip_folders(zip_cad_path, unzip_cad_path)
     ar = merge_csvs(unzip_cad_path)
     clean_ar = clean_inc_unit(ar)
+    # add names as list instead of range
     save_clean_ar(clean_cad_path, clean_ar, list(range(7)))
 
 def fixDateTime():
