@@ -104,8 +104,7 @@ def wrangle_cad_unit(directory):
     # add names as list instead of range
     save_clean_ar(clean_cad_path, clean_ar, list(range(7)))
 
-def fixDateTime():
-    pass
+
 
 
 def main():
