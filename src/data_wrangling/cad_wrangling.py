@@ -103,11 +103,13 @@ def wrangle_cad_unit(directory):
     clean_ar = clean_inc_unit(ar)
     save_clean_ar(clean_cad_path, clean_ar, list(range(7)))
 
+def fixDateTime():
+    pass
+
 
 def main():
     data_dir = path.join(path.dirname(path.dirname(getcwd())), "data")
     wrangle_cad_unit(data_dir)
-
 
 if __name__ == '__main__':
     main()
