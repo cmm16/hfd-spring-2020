@@ -89,7 +89,7 @@ def read_sql_csv(path_to_csv):
     return df_ar
 
 
-def clean_inc_unit(ar):
+def clean_unit(ar):
     """
     Cleans and formats incident unit data numpy array
 
@@ -134,8 +134,8 @@ def wrangle_cad(directory):
     unit_ar = merge_csvs(unzip_cad_path, "unit")
     inc_ar = merge_csvs(unzip_cad_path, "inc")
 
-    unit_clean_ar = clean_inc_unit(unit_ar)
-    inc_clean_ar = clean_inc_unit(inc_ar)
+    unit_clean_ar = clean_unit(unit_ar)
+    inc_clean_ar = clean_inc(inc_ar)
 
     # add names as list instead of range
     save_clean_ar(path.join(directory, "unit_cad_clean.csv"), unit_clean_ar, list(range(7)))
