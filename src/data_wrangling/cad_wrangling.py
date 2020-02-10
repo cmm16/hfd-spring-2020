@@ -127,12 +127,14 @@ def clean_inc(ar):
     # remove all entries without x, y coordinates
     merged_df = merged_df[merged_df[4] != '']
     merged_df = merged_df[merged_df[5] != '']
-    merged_df[4].astype("int")
-    merged_df[5].astype("int")
+    merged_df[4] = merged_df[4].astype("int")
+    merged_df[5] = merged_df[5].astype("int")
 
     # placing decimal place in correct position
     merged_df[4] = merged_df[4]/(10.0**6)
     merged_df[5] = merged_df[5] / (10.0 ** 6)
+
+
 
     return merged_df
 
@@ -158,7 +160,6 @@ def wrangle_cad(directory):
     unit_clean_ar = clean_unit(unit_ar)
     inc_clean_ar = clean_inc(inc_ar)
 
-    # add names as list instead of range
     unit_clean_ar.to_csv(path.join(directory, "unit_cad_clean.csv"))
     inc_clean_ar.to_csv(path.join(directory, "inc_cad_clean.csv"))
 
