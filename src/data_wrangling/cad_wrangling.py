@@ -137,18 +137,6 @@ def clean_inc(ar):
     return merged_df
 
 
-def save_clean_ar(directory, ar, column_names):
-    """
-    Saves clean data to a target directory
-
-    Arguments:
-        directory (str): String path to the desired save location
-        ar (numpy array): Numpy array of cleaned data
-        column_names (list(str)): List of string names representing each columns name of the numpy array
-    """
-    pd.DataFrame(ar, columns=column_names).to_csv(directory)
-
-
 def wrangle_cad(directory):
     """
     Runs all functions needed to wrangle the cad incident unit data given a target data base directory
@@ -171,8 +159,8 @@ def wrangle_cad(directory):
     inc_clean_ar = clean_inc(inc_ar)
 
     # add names as list instead of range
-    save_clean_ar(path.join(directory, "unit_cad_clean.csv"), unit_clean_ar, list(range(7)))
-    save_clean_ar(path.join(directory, "inc_cad_clean.csv"), inc_clean_ar, list(range(6)))
+    unit_clean_ar.to_csv(path.join(directory, "unit_cad_clean.csv"))
+    inc_clean_ar.to_csv(path.join(directory, "inc_cad_clean.csv"))
 
 
 def main():
