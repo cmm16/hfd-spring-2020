@@ -107,6 +107,21 @@ def clean_unit(ar):
     return final_merged_df.values
 
 
+def clean_inc(ar):
+    merged_df = pd.DataFrame(ar)
+    #
+    merged_df[2] = merged_df[2].str[1:]
+    merged_df[3] = merged_df[3].str[:-1]
+    merged_df[4] = merged_df[4].str[1:-1]
+    merged_df[5] = merged_df[5].str[1:-1]
+    # remove all entries without x, y coordinates
+    merged_df = merged_df[merged_df[4] != '']
+    merged_df = merged_df[merged_df[5] != '']
+    merged_df[4].astype("int")
+    merged_df[5].astype("int")
+    return merged_df
+
+
 def save_clean_ar(directory, ar, column_names):
     """
     Saves clean data to a target directory
