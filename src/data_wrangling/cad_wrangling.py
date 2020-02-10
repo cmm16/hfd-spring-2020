@@ -5,7 +5,7 @@ from os import path
 from os import getcwd
 from zipfile import ZipFile
 
-# look at why there are duplicates
+# Refactor so that we are passing along data frames instead of numpy array
 # determine all column names
 # find good way to distinguish cad unit and incident
 # determine what "-" file is
@@ -99,6 +99,9 @@ def clean_unit(ar):
     Returns:
         (numpy array): Numpy array cleaned of incident unit data
     """
+    # change to pass back df
+    # add naming and other cleaning function from ehmres code
+
     merged_df = pd.DataFrame(ar)
     # split the two columns that have space as their delimiter instead of comma
     split_df1 = merged_df[4].str[1:-1].str.split(" ", expand=True)
@@ -110,6 +113,8 @@ def clean_unit(ar):
 def clean_inc(ar):
     """
     """
+    # change to pass back df
+    # add naming and other cleaning function from emhres code
 
     merged_df = pd.DataFrame(ar)
 
