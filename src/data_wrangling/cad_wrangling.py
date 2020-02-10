@@ -119,7 +119,7 @@ def save_clean_ar(directory, ar, column_names):
     pd.DataFrame(ar, columns=column_names).to_csv(directory)
 
 
-def wrangle_cad_unit(directory):
+def wrangle_cad(directory):
     """
     Runs all functions needed to wrangle the cad incident unit data given a target data base directory
 
@@ -128,19 +128,24 @@ def wrangle_cad_unit(directory):
     """
     zip_cad_path = path.join(directory, "UPDATE CAD DATA/")
     unzip_cad_path = path.join(directory, "unzip_cad")
-    clean_cad_path = path.join(directory, "clean_cad.csv")
+
     unzip_folders(zip_cad_path, unzip_cad_path)
-    ar = merge_csvs(unzip_cad_path)
-    clean_ar = clean_inc_unit(ar)
+
+    unit_ar = merge_csvs(unzip_cad_path, "unit")
+    inc_ar = merge_csvs(unzip_cad_path, "inc")
+
+    unit_clean_ar = clean_inc_unit(unit_ar)
+    inc_clean_ar = clean_inc_unit(inc_ar)
+
     # add names as list instead of range
-    save_clean_ar(clean_cad_path, clean_ar, list(range(7)))
-
-
+    save_clean_ar(path.join(directory, "unit_cad_clean.csv"), unit_clean_ar, list(range(7)))
+    save_clean_ar(path.join(directory, "inc_cad_clean.csv"), inc_clean_ar, list(range(6)))
 
 
 def main():
     data_dir = path.join(path.dirname(path.dirname(getcwd())), "data")
-    wrangle_cad_unit(data_dir)
+    wrangle_cad(data_dir)
+
 
 if __name__ == '__main__':
     main()
