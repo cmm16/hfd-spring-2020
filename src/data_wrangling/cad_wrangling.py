@@ -29,33 +29,64 @@ def unzip_folders(target_directory, save_directory):
                 zipObj.extractall(save_directory)
 
 
-def merge_csvs(directory):
+def merge_csvs(directory, inc_type="inc"):
     """
     Merges all the csvs in a target directory with a certain naming convention return result as a single numpy array
 
     Arguments:
         directory (str): String path to directory with csvs to be merged
+        inc_type (str): String that should be "inc" or "unit" depending on the cad data to be merged
 
     Returns:
         (numpy array): Numpy array that is the values of all the merged csvs
     """
     # place holder array
     ar = np.ndarray((0, 6))
+
     for file in listdir(directory):
-        # logic statement to differentiate incident and incident unit
-        if file.startswith("inc_unit"):
-            path_to_csv = path.join(directory, file)
-            # skip first line since this is sql garbage, will make first actual row into column names
-            df = pd.read_csv(path_to_csv, skiprows=1)
-            # take df values and remove two last lines that are sql garbage
-            df_values = np.delete(
-                df.values, [len(df.values) - 1, len(df.values) - 2], axis=0
-            )
-            # add column names to values since these are actually the first valid row
-            first_valid_row = df.columns.values.reshape((1, 6))
-            df_ar = np.append(df_values, np.reshape(first_valid_row, (1, 6)), axis=0)
+        path_to_csv = path.join(directory, file)
+
+        # logic statement to differentiate incident and incident unit based on input
+        if inc_type == "inc" and file.startswith("c:franknHFD"):
+            df_ar = read_sql_csv(path_to_csv)
+            ar = np.append(ar, df_ar, axis=0)
+        elif inc_type == "unit" and not file.startswith("c:franknHFD"):
+            df_ar = read_sql_csv(path_to_csv)
             ar = np.append(ar, df_ar, axis=0)
     return ar
+
+
+def read_sql_csv(path_to_csv):
+    """
+    Given a path to a csv generated using sql will read this csv and return it as a numpy array
+
+    Arguments:
+        path_to_csv (str): String path to csv generated using sql
+
+    Returns:
+        (numpy array): Numpy array not containing extra sql garbage
+    """
+    file = open(path_to_csv, "r")
+    first_line = file.readline()
+
+    # logic to determine how many lines should be skipped based off of extra sql
+    if len(first_line) == 6:
+        # skip first two lines since these are sql garbage, will make first actual row into column names
+        df = pd.read_csv(path_to_csv, skiprows=2)
+    elif len(first_line) == 7:
+        # skip first line since this is sql garbage, will make first actual row into column names
+        df = pd.read_csv(path_to_csv, skiprows=1)
+    else:
+        return np.ndarray((0, 6))
+
+    # take df values and remove two last lines that are sql garbage
+    df_values = np.delete(
+        df.values, [len(df.values) - 1, len(df.values) - 2], axis=0
+    )
+    # add column names to values since these are actually the first valid row
+    first_valid_row = df.columns.values.reshape((1, 6))
+    df_ar = np.append(df_values, np.reshape(first_valid_row, (1, 6)), axis=0)
+    return df_ar
 
 
 def clean_inc_unit(ar):
