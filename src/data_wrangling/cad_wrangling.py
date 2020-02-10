@@ -108,17 +108,27 @@ def clean_unit(ar):
 
 
 def clean_inc(ar):
+    """
+    """
+
     merged_df = pd.DataFrame(ar)
-    #
+
+    # remove extraneous "'" signs
     merged_df[2] = merged_df[2].str[1:]
     merged_df[3] = merged_df[3].str[:-1]
     merged_df[4] = merged_df[4].str[1:-1]
     merged_df[5] = merged_df[5].str[1:-1]
+
     # remove all entries without x, y coordinates
     merged_df = merged_df[merged_df[4] != '']
     merged_df = merged_df[merged_df[5] != '']
     merged_df[4].astype("int")
     merged_df[5].astype("int")
+
+    # placing decimal place in correct position
+    merged_df[4] = merged_df[4]/(10.0**6)
+    merged_df[5] = merged_df[5] / (10.0 ** 6)
+
     return merged_df
 
 
@@ -141,6 +151,9 @@ def wrangle_cad(directory):
     Arguments:
         directory (str): String path to the data folder
     """
+
+    # refactor this so that we call wrangle cad on the two data sets separately
+
     zip_cad_path = path.join(directory, "UPDATE CAD DATA/")
     unzip_cad_path = path.join(directory, "unzip_cad")
 
