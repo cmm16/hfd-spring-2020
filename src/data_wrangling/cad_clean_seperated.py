@@ -31,11 +31,15 @@ def format_date_time(csv_file):
     arr_timeDF = arr_timeDF.rename(columns={0: "Arr_Hour", 1: "Arr_Minute", 2: "Arr_Second"})
     dat = pd.concat([dat, arr_timeDF], axis=1, sort=False)
 
+    # Rename the columns that categorize station_id,  unit_ID, and incident_id
+    dat = dat.rename(columns={'0': "Incident_ID", '1': 'Unit_ID', '2': "Station_ID"})
+
     # Drop the Redundant Columns
     dat = dat.drop('3', 1)
     dat = dat.drop('4', 1)
     dat = dat.drop('5', 1)
     dat = dat.drop('6', 1)
+    dat = dat.drop('Unnamed: 0', 1)  # Some index column
 
     return dat
 
@@ -60,7 +64,7 @@ def main():
     # Format clean_cad.csv
     formatted_data = format_date_time(formatted_csv)
 
-    # directory to cave
+    # directory to save
     save_directory = path.join(data_dir, "formatted_clean_cad.csv")
     save_formatted_cad_data(formatted_data, save_directory)
 
