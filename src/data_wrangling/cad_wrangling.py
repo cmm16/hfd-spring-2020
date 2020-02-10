@@ -35,6 +35,7 @@ def merge_csvs(directory, inc_type="inc"):
 
     Arguments:
         directory (str): String path to directory with csvs to be merged
+        inc_type (str): String that should be "inc" or "unit" depending on the cad data to be merged
 
     Returns:
         (numpy array): Numpy array that is the values of all the merged csvs
@@ -56,6 +57,15 @@ def merge_csvs(directory, inc_type="inc"):
 
 
 def read_sql_csv(path_to_csv):
+    """
+    Given a path to a csv generated using sql will read this csv and return it as a numpy array
+
+    Arguments:
+        path_to_csv (str): String path to csv generated using sql
+
+    Returns:
+        (numpy array): Numpy array not containing extra sql garbage
+    """
     file = open(path_to_csv, "r")
     first_line = file.readline()
 
