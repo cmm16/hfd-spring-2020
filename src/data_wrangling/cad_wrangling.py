@@ -230,12 +230,12 @@ def clean_inc(ar):
 
     merged_df = merged_df.rename(
         columns={
-            "0": "Incident_ID",
-            "1": "Call_Type",
-            "2": "Address",
-            "3": "City_ID",
-            "4": "Longitude",
-            "5": "Latitude",
+            0: "Incident_ID",
+            1: "Call_Type",
+            2: "Address",
+            3: "City_ID",
+            4: "Longitude",
+            5: "Latitude",
         }
     )
 
