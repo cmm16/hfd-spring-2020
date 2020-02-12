@@ -97,7 +97,7 @@ def clean_unit(ar):
         ar (numpy array): Numpy array of incident unit data from merge_csvs
 
     Returns:
-        (numpy array): Numpy array cleaned of incident unit data
+        (numpy aarray): Numpy array cleaned of incident unit data
     """
     # change to pass back df
     # add naming and other cleaning function from ehmres code
@@ -106,15 +106,82 @@ def clean_unit(ar):
     # split the two columns that have space as their delimiter instead of comma
     split_df1 = merged_df[4].str[1:-1].str.split(" ", expand=True)
     split_df2 = merged_df[5].str[1:-1].str.split(" ", expand=True)
-    final_merged_df = pd.concat([merged_df[[0, 1, 2]], split_df1, split_df2], axis=1)
-    return final_merged_df
+
+    # Rename the columns that categorize station_id,  unit_ID, and incident_id
+    merged_df = merged_df.rename(columns={0: "Incident_ID", 1: 'Unit_ID', 2: "Station_ID"})
+    split_df1 = split_df1.rename(columns={0: "dep_date", 1: "dep_time"})
+    split_df2 = split_df2.rename(columns={0: "arrival_date", 1: "arrival_time"})
+    merged_df = pd.concat([merged_df[["Incident_ID", 'Unit_ID', "Station_ID"]], split_df1, split_df2], axis=1)
+
+    # The third column represents Departure Date of the Unit
+    # The format output by clean_inc_unit is "YYYYMMDD"
+    merged_df[["dep_date"]] = merged_df[["dep_date"]].astype(str)
+    ymdDF = merged_df["dep_date"].str.extract('(.{4})(.{2})(.{2})')
+    ymdDF = ymdDF.rename(columns={0: "Dep_Year", 1: "Dep_Month", 2: "Dep_Day"})
+    merged_df = pd.concat([merged_df, ymdDF], axis=1, sort=False)
+
+    # Arrival Dates
+    merged_df[["arrival_date"]] = merged_df[["arrival_date"]].astype(str)
+    ymdDF_arr = merged_df["arrival_date"].str.extract('(.{4})(.{2})(.{2})')
+    ymdDF_arr = ymdDF_arr.rename(columns={0: "Arr_Year", 1: "Arr_Month", 2: "Arr_Day"})
+    merged_df = pd.concat([merged_df, ymdDF_arr], axis=1, sort=False)
+
+    # Departure Times
+    dep_timeDF = merged_df["dep_time"].str.split(':', 2, expand=True)
+    dep_timeDF = dep_timeDF.rename(columns={0: "Dep_Hour", 1: "Dep_Minute", 2: "Dep_Second"})
+    merged_df = pd.concat([merged_df, dep_timeDF], axis=1, sort=False)
+
+    # Arrival Times
+    arr_timeDF = merged_df['arrival_time'].str.split(':', 2, expand=True)
+    arr_timeDF = arr_timeDF.rename(columns={0: "Arr_Hour", 1: "Arr_Minute", 2: "Arr_Second"})
+    merged_df = pd.concat([merged_df, arr_timeDF], axis=1, sort=False)
+
+    # Drop the Redundant Columns
+    merged_df = merged_df.drop('dep_date', 1)
+    merged_df = merged_df.drop('dep_time', 1)
+    merged_df = merged_df.drop('arrival_date', 1)
+    merged_df = merged_df.drop('arrival_time', 1)
+
+    merged_df.is_copy = False  # pd.options.mode.chained_assignment = None is another option
+    merged_df['Transit_Time'] = merged_df.apply(transit_calc, axis=1)
+
+    return merged_df
+
+def transit_calc(row):
+    """
+    Assumptions - Arrival time is always after departure time
+    """
+    # Most case: Departure time is 2:58 and Arrival Time is 4:01
+    if int(row['Dep_Hour']) <= int(row['Arr_Hour']):
+        diff = int(row['Arr_Hour']) - int(row['Dep_Hour'])
+
+        if diff == 0:
+            # For Instance, Departure time was 3:28 and Arrival Time was 3:58
+            val = int(row['Arr_Minute']) - int(row['Dep_Minute'])
+
+        elif diff == 1:
+            # For Instance, Departure time was 3:50 and Arrival Time was 4:01
+            val = 60 - (int(row['Dep_Minute'])) + int(row['Arr_Minute'])
+
+        else:
+            # For instance, Departure time was 3:59 and Arrival Time was 5:03
+            val = 60 - (int(row['Dep_Minute'])) + int(row['Arr_Minute']) + 60 * (diff - 1)
+
+    # Pathological Case : Departure time is at 23:50 and Arrival time is 00:30
+    else:
+
+        time_until_midnight = 60 * (24 - int(row['Dep_Hour']) - 1) + 60 - int(row['Dep_Minute'])
+        time_after_midnight = 60 * int(row['Arr_Hour']) + int(row['Arr_Minute'])
+        val = time_until_midnight + time_after_midnight
+    return val
+
 
 
 def clean_inc(ar):
     """
     """
     # change to pass back df
-    # add naming and other cleaning function from emres code
+    # add naming and other cleaning function from emhres code
 
     merged_df = pd.DataFrame(ar)
 
@@ -133,6 +200,9 @@ def clean_inc(ar):
     # placing decimal place in correct position
     merged_df[4] = merged_df[4]/(10.0**6)
     merged_df[5] = merged_df[5] / (10.0 ** 6)
+
+
+    ## Emhre code here!!! : )
 
     return merged_df
 
@@ -158,8 +228,8 @@ def wrangle_cad(directory):
     unit_clean_ar = clean_unit(unit_ar)
     inc_clean_ar = clean_inc(inc_ar)
 
-    unit_clean_ar.to_csv(path.join(directory, "unit_cad_clean.csv"))
-    inc_clean_ar.to_csv(path.join(directory, "inc_cad_clean.csv"))
+    unit_clean_ar.to_csv(path.join(directory, "unit_cad_clean.csv"), index=False)
+    inc_clean_ar.to_csv(path.join(directory, "inc_cad_clean.csv"), index=False)
 
 
 def main():
