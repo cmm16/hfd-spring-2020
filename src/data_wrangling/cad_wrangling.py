@@ -80,9 +80,7 @@ def read_sql_csv(path_to_csv):
         return np.ndarray((0, 6))
 
     # take df values and remove two last lines that are sql garbage
-    df_values = np.delete(
-        df.values, [len(df.values) - 1, len(df.values) - 2], axis=0
-    )
+    df_values = np.delete(df.values, [len(df.values) - 1, len(df.values) - 2], axis=0)
     # add column names to values since these are actually the first valid row
     first_valid_row = df.columns.values.reshape((1, 6))
     df_ar = np.append(df_values, np.reshape(first_valid_row, (1, 6)), axis=0)
@@ -108,77 +106,106 @@ def clean_unit(ar):
     split_df2 = merged_df[5].str[1:-1].str.split(" ", expand=True)
 
     # Rename the columns that categorize station_id,  unit_ID, and incident_id
-    merged_df = merged_df.rename(columns={0: "Incident_ID", 1: 'Unit_ID', 2: "Station_ID"})
+    merged_df = merged_df.rename(
+        columns={0: "Incident_ID", 1: "Unit_ID", 2: "Station_ID"}
+    )
     split_df1 = split_df1.rename(columns={0: "dep_date", 1: "dep_time"})
     split_df2 = split_df2.rename(columns={0: "arrival_date", 1: "arrival_time"})
-    merged_df = pd.concat([merged_df[["Incident_ID", 'Unit_ID', "Station_ID"]], split_df1, split_df2], axis=1)
+    merged_df = pd.concat(
+        [merged_df[["Incident_ID", "Unit_ID", "Station_ID"]], split_df1, split_df2],
+        axis=1,
+    )
 
     # The third column represents Departure Date of the Unit
     # The format output by clean_inc_unit is "YYYYMMDD"
     merged_df[["dep_date"]] = merged_df[["dep_date"]].astype(str)
-    ymdDF = merged_df["dep_date"].str.extract('(.{4})(.{2})(.{2})')
+    ymdDF = merged_df["dep_date"].str.extract("(.{4})(.{2})(.{2})")
     ymdDF = ymdDF.rename(columns={0: "Dep_Year", 1: "Dep_Month", 2: "Dep_Day"})
     merged_df = pd.concat([merged_df, ymdDF], axis=1, sort=False)
 
     # Arrival Dates
     merged_df[["arrival_date"]] = merged_df[["arrival_date"]].astype(str)
-    ymdDF_arr = merged_df["arrival_date"].str.extract('(.{4})(.{2})(.{2})')
+    ymdDF_arr = merged_df["arrival_date"].str.extract("(.{4})(.{2})(.{2})")
     ymdDF_arr = ymdDF_arr.rename(columns={0: "Arr_Year", 1: "Arr_Month", 2: "Arr_Day"})
     merged_df = pd.concat([merged_df, ymdDF_arr], axis=1, sort=False)
 
     # Departure Times
-    dep_timeDF = merged_df["dep_time"].str.split(':', 2, expand=True)
-    dep_timeDF = dep_timeDF.rename(columns={0: "Dep_Hour", 1: "Dep_Minute", 2: "Dep_Second"})
+    dep_timeDF = merged_df["dep_time"].str.split(":", 2, expand=True)
+    dep_timeDF = dep_timeDF.rename(
+        columns={0: "Dep_Hour", 1: "Dep_Minute", 2: "Dep_Second"}
+    )
     merged_df = pd.concat([merged_df, dep_timeDF], axis=1, sort=False)
 
     # Arrival Times
-    arr_timeDF = merged_df['arrival_time'].str.split(':', 2, expand=True)
-    arr_timeDF = arr_timeDF.rename(columns={0: "Arr_Hour", 1: "Arr_Minute", 2: "Arr_Second"})
+    arr_timeDF = merged_df["arrival_time"].str.split(":", 2, expand=True)
+    arr_timeDF = arr_timeDF.rename(
+        columns={0: "Arr_Hour", 1: "Arr_Minute", 2: "Arr_Second"}
+    )
     merged_df = pd.concat([merged_df, arr_timeDF], axis=1, sort=False)
 
     # Drop the Redundant Columns
-    merged_df = merged_df.drop('dep_date', 1)
-    merged_df = merged_df.drop('dep_time', 1)
-    merged_df = merged_df.drop('arrival_date', 1)
-    merged_df = merged_df.drop('arrival_time', 1)
+    merged_df = merged_df.drop("dep_date", 1)
+    merged_df = merged_df.drop("dep_time", 1)
+    merged_df = merged_df.drop("arrival_date", 1)
+    merged_df = merged_df.drop("arrival_time", 1)
 
-    merged_df.is_copy = False  # pd.options.mode.chained_assignment = None is another option
-    merged_df['Transit_Time'] = merged_df.apply(transit_calc, axis=1)
+    merged_df.is_copy = (
+        False  # pd.options.mode.chained_assignment = None is another option
+    )
+    merged_df["Transit_Time"] = merged_df.apply(transit_calc, axis=1)
 
     return merged_df
+
 
 def transit_calc(row):
     """
     Assumptions - Arrival time is always after departure time
+
+    Arguments:
+        Row : A row of a pandas data frame
+
+    Returns:
+        val : A integer that represents transit time
+
     """
     # Most case: Departure time is 2:58 and Arrival Time is 4:01
-    if int(row['Dep_Hour']) <= int(row['Arr_Hour']):
-        diff = int(row['Arr_Hour']) - int(row['Dep_Hour'])
+    if int(row["Dep_Hour"]) <= int(row["Arr_Hour"]):
+        diff = int(row["Arr_Hour"]) - int(row["Dep_Hour"])
 
         if diff == 0:
             # For Instance, Departure time was 3:28 and Arrival Time was 3:58
-            val = int(row['Arr_Minute']) - int(row['Dep_Minute'])
+            val = int(row["Arr_Minute"]) - int(row["Dep_Minute"])
 
         elif diff == 1:
             # For Instance, Departure time was 3:50 and Arrival Time was 4:01
-            val = 60 - (int(row['Dep_Minute'])) + int(row['Arr_Minute'])
+            val = 60 - (int(row["Dep_Minute"])) + int(row["Arr_Minute"])
 
         else:
             # For instance, Departure time was 3:59 and Arrival Time was 5:03
-            val = 60 - (int(row['Dep_Minute'])) + int(row['Arr_Minute']) + 60 * (diff - 1)
+            val = (
+                60 - (int(row["Dep_Minute"])) + int(row["Arr_Minute"]) + 60 * (diff - 1)
+            )
 
     # Pathological Case : Departure time is at 23:50 and Arrival time is 00:30
     else:
 
-        time_until_midnight = 60 * (24 - int(row['Dep_Hour']) - 1) + 60 - int(row['Dep_Minute'])
-        time_after_midnight = 60 * int(row['Arr_Hour']) + int(row['Arr_Minute'])
+        time_until_midnight = (
+            60 * (24 - int(row["Dep_Hour"]) - 1) + 60 - int(row["Dep_Minute"])
+        )
+        time_after_midnight = 60 * int(row["Arr_Hour"]) + int(row["Arr_Minute"])
         val = time_until_midnight + time_after_midnight
     return val
 
 
-
 def clean_inc(ar):
     """
+    Cleans the incident
+
+    Arguments:
+        ar (numpy array): A numpy array of incident data
+
+    Returns:
+        A clean data frame
     """
     # change to pass back df
     # add naming and other cleaning function from emhres code
@@ -192,19 +219,48 @@ def clean_inc(ar):
     merged_df[5] = merged_df[5].str[1:-1]
 
     # remove all entries without x, y coordinates
-    merged_df = merged_df[merged_df[4] != '']
-    merged_df = merged_df[merged_df[5] != '']
+    merged_df = merged_df[merged_df[4] != ""]
+    merged_df = merged_df[merged_df[5] != ""]
     merged_df[4] = merged_df[4].astype("int")
     merged_df[5] = merged_df[5].astype("int")
 
     # placing decimal place in correct position
-    merged_df[4] = merged_df[4]/(10.0**6)
+    merged_df[4] = merged_df[4] / (10.0 ** 6)
     merged_df[5] = merged_df[5] / (10.0 ** 6)
 
+    merged_df = merged_df.rename(
+        columns={
+            "0": "Incident_ID",
+            "1": "Call_Type",
+            "2": "Address",
+            "3": "City_ID",
+            "4": "Longitude",
+            "5": "Latitude",
+        }
+    )
 
-    ## Emhre code here!!! : )
+    # We then merge it with the call types xlsx file and reformat to be usable for
+    #     data exploration.
+    data_dir = path.join(path.dirname(path.dirname(getcwd())), "data")
+    call_data = path.join(data_dir, "CAD Call Types - ImageTrend values.xlsx")
 
-    return merged_df
+    call_df = pd.read_excel(
+        call_data
+    )  # This is an excel file that has the call type codes and descriptions
+
+    call_df = call_df.rename(
+        columns={
+            "TYPE": "Call_Type",
+            "DESCRIPTION": "Description",
+            "DEFAULT PRIOITY": "Default_Priority",
+        }
+    )  # Rename columns for Merging and for Standard Naming Procedures
+
+    formatted_merged_df = pd.merge(
+        merged_df, call_df, on="Call_Type"
+    )  # Merge on Key Call_Type
+
+    return formatted_merged_df
 
 
 def wrangle_cad(directory):
@@ -237,5 +293,5 @@ def main():
     wrangle_cad(data_dir)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
