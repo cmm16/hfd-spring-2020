@@ -114,7 +114,7 @@ def clean_inc(ar):
     """
     """
     # change to pass back df
-    # add naming and other cleaning function from emhres code
+    # add naming and other cleaning function from emres code
 
     merged_df = pd.DataFrame(ar)
 
@@ -133,8 +133,6 @@ def clean_inc(ar):
     # placing decimal place in correct position
     merged_df[4] = merged_df[4]/(10.0**6)
     merged_df[5] = merged_df[5] / (10.0 ** 6)
-
-
 
     return merged_df
 
