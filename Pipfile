@@ -11,6 +11,8 @@ pandas = "*"
 jupyterlab = "*"
 matplotlib = "*"
 xlrd = "*"
+geopandas = "*"
+shapely = "*"
 
 [requires]
 python_version = "3.7"
