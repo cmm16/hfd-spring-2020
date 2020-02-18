@@ -2,6 +2,8 @@ import pandas as pd
 import geopandas as gpd
 from shapely.geometry import Point
 from multiprocessing import Pool
+from os import path
+from os import getcwd
 
 
 class SpatialJoin:
@@ -15,7 +17,8 @@ class SpatialJoin:
         """
         self.geo_map = gpd.read_file(path_to_geojson)
         self.point_data = pd.read_csv(path_to_point_data)
-        self.points = [Point(row["Longitude"], row["Latitude"]) for row in self.point_data]
+        # compute list of point type object row[4] is for longitude and row[5] os for latitude
+        self.points = [Point(row[4], row[5]) for row in self.point_data.values]
 
     def id_fips_codes(self):
         """
@@ -59,6 +62,12 @@ class SpatialJoin:
         self.point_data["location"] = locations
         self.point_data.to_csv(save_name, index=False)
 
+
+def spatial_join():
+    path_to_geojson = path.join(path.dirname(path.dirname(getcwd())), "data/Uploaded_Shapefiles/CensusBlock_2010/censusblock_2010_clip_by_fir.geojson")
+    path_to_point_data = path.join(path.dirname(path.dirname(getcwd())), "data/test_inc_cad_clean.csv")
+    sp = SpatialJoin(path_to_geojson, path_to_point_data)
+    sp.spatial_join_and_save(path.join(path.dirname(path.dirname(getcwd())), "data/test_inc_cad_clean_with_loc.csv"))
 
 
 

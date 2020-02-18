@@ -288,10 +288,6 @@ def wrangle_cad(directory):
     inc_clean_ar.to_csv(path.join(directory, "inc_cad_clean.csv"), index=False)
 
 
-def main():
+def cad_wrangling():
     data_dir = path.join(path.dirname(path.dirname(getcwd())), "data")
     wrangle_cad(data_dir)
-
-
-if __name__ == "__main__":
-    main()
