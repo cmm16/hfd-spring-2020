@@ -64,11 +64,16 @@ class SpatialJoin:
 
 
 def spatial_join():
-    path_to_geojson = path.join(path.dirname(path.dirname(getcwd())), "data/Uploaded_Shapefiles/CensusBlock_2010/censusblock_2010_clip_by_fir.geojson")
-    path_to_point_data = path.join(path.dirname(path.dirname(getcwd())), "data/test_inc_cad_clean.csv")
+    path_to_geojson = path.join(
+        path.dirname(path.dirname(getcwd())),
+        "data/Uploaded_Shapefiles/CensusBlock_2010/censusblock_2010_clip_by_fir.geojson",
+    )
+    path_to_point_data = path.join(
+        path.dirname(path.dirname(getcwd())), "data/inc_cad_clean.csv"
+    )
     sp = SpatialJoin(path_to_geojson, path_to_point_data)
-    sp.spatial_join_and_save(path.join(path.dirname(path.dirname(getcwd())), "data/test_inc_cad_clean_with_loc.csv"))
-
-
-
-
+    sp.spatial_join_and_save(
+        path.join(
+            path.dirname(path.dirname(getcwd())), "data/inc_cad_clean_with_loc.csv"
+        )
+    )
