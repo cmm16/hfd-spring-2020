@@ -2,8 +2,17 @@ from sklearn.model_selection import train_test_split
 import pandas as pd
 
 
-def test_train_split(input_data_path, save_path):
+def test_train_split(input_data_path, save_path, test_percent=.2):
+    """
+    Splits input data into a train and test set and saves each separately
+
+    Arguments:
+         input_data_path (str): String path to input data
+         save_path (str): String path to desired save location
+         test_percent (float): float between 0.0 and 1.0, naturally .2
+    """
+
     df = pd.read_csv(input_data_path)
-    train, test = train_test_split(df, test_size=0.2)
+    train, test = train_test_split(df, test_size=test_percent)
     train.to_csv(save_path + "_train")
     test.to_csv(save_path + "_test")
