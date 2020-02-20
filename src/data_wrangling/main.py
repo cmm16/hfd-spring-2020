@@ -8,7 +8,6 @@ from src.data_wrangling.aggregate import aggregate
 def main():
     # set data directory to base plus /data
     data_dir = path.join(path.dirname(path.dirname(getcwd())), "data")
-    print(data_dir)
     # unzip merge and clean csvs saving to save path location
     # for incidents csvs
     inc_save_path = path.join(data_dir, "inc_cad_clean.csv")
@@ -19,7 +18,6 @@ def main():
 
     # performs spatial join on geojson data and points data saving to save path location
     geojson_data_path = path.join(data_dir, "Uploaded_Shapefiles/CensusBlock_2010/censusblock_2010_clip_by_fir.geojson")
-    print(data_dir, geojson_data_path)
     points_data_path = path.join(data_dir, "inc_cad_clean.csv")
     geo_join_save_path = path.join(data_dir, "inc_cad_clean_with_loc.csv")
     spatial_join(geojson_data_path, points_data_path, geo_join_save_path)
