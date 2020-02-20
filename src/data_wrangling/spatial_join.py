@@ -15,6 +15,7 @@ class SpatialJoin:
             path_to_geojson (str): String path to geojson csv file
             path_to_point_data (str): String path to point data csv file
         """
+        print(path_to_geojson)
         self.geo_map = gpd.read_file(path_to_geojson)
         self.point_data = pd.read_csv(path_to_point_data)
         # compute list of point type object row[4] is for longitude and row[5] os for latitude
@@ -63,17 +64,16 @@ class SpatialJoin:
         self.point_data.to_csv(save_name, index=False)
 
 
-def spatial_join():
-    path_to_geojson = path.join(
-        path.dirname(path.dirname(getcwd())),
-        "data/Uploaded_Shapefiles/CensusBlock_2010/censusblock_2010_clip_by_fir.geojson",
-    )
-    path_to_point_data = path.join(
-        path.dirname(path.dirname(getcwd())), "data/inc_cad_clean.csv"
-    )
+def spatial_join(path_to_geojson, path_to_point_data, save_path):
+    """
+    Instantiates SpatialJoin class and then performs join saving the result
+
+    Arguments:
+        path_to_geojson (str): String path to geojson data
+        path_to_point_data (str): String path to point data
+        save_path (str): String path to where save results should go
+    """
     sp = SpatialJoin(path_to_geojson, path_to_point_data)
     sp.spatial_join_and_save(
-        path.join(
-            path.dirname(path.dirname(getcwd())), "data/inc_cad_clean_with_loc.csv"
-        )
+        save_path
     )
