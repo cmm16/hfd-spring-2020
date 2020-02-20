@@ -1,3 +1,5 @@
+import pandas as pd
+
 """
 This function will group a dataframe by specified columns and 
 count the number of entries in the specified groups. 
