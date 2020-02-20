@@ -14,6 +14,6 @@ def test_train_split(input_data_path, train_save_path, test_save_path, test_perc
 
     df = pd.read_csv(input_data_path)
     train, test = train_test_split(df, test_size=test_percent, random_state=17)
-    print(type(train))
-    # train.to_csv(train_save_path)
-    # test.to_csv(test_save_path)
+
+    train.to_csv(train_save_path)
+    test.to_csv(test_save_path)
