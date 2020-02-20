@@ -8,6 +8,11 @@ verify_ssl = true
 [packages]
 numpy = "*"
 pandas = "*"
+jupyterlab = "*"
+matplotlib = "*"
+xlrd = "*"
+geopandas = "*"
+shapely = "*"
 
 [requires]
 python_version = "3.7"
