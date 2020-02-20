@@ -24,5 +24,6 @@ def aggregate_call_type(df, groupby_columns):
 def aggregate():
     df = pd.read_csv(path.join(path.dirname(path.dirname(getcwd())), "data/inc_cad_clean_with_loc.csv"))
     df = compute_bg_column(df)
-    return aggregate_call_type(df, ["Block_Group", "Call_Type"])
+    aggregate_df = aggregate_call_type(df, ["Block_Group", "Call_Type"])
+    aggregate_df.to_csv(path.join(path.dirname(path.dirname(getcwd())), "data/aggregate.csv"), index=False)
 
