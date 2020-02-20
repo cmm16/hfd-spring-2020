@@ -72,10 +72,10 @@ def read_sql_csv(path_to_csv):
     # logic to determine how many lines should be skipped based off of extra sql
     if len(first_line) == 6:
         # skip first two lines since these are sql garbage, will make first actual row into column names
-        df = pd.read_csv(path_to_csv, skiprows=2)
+        df = pd.read_csv(path_to_csv, skiprows=2, low_memory=False)
     elif len(first_line) == 7:
         # skip first line since this is sql garbage, will make first actual row into column names
-        df = pd.read_csv(path_to_csv, skiprows=1)
+        df = pd.read_csv(path_to_csv, skiprows=1, low_memory=False)
     else:
         return np.ndarray((0, 6))
 
@@ -263,31 +263,32 @@ def clean_inc(ar):
     return formatted_merged_df
 
 
-def wrangle_cad(directory):
+def cad_wrangling(directory, save_path, inc_type="inc", unzip=True):
     """
     Runs all functions needed to wrangle the cad incident unit data given a target data base directory
 
     Arguments:
         directory (str): String path to the data folder
+        save_path (str): String path to save location
+        inc_type (str): String that should be "inc" or "unit" depending on the cad data to be merged
+        unzip (bool): Boolean whether input data needs to be unziped or nnot
     """
 
-    # refactor this so that we call wrangle cad on the two data sets separately
+    if unzip:
+        zip_cad_path = path.join(directory, "UPDATE CAD DATA/")
+        data_path = path.join(directory, "unzip_cad")
+        unzip_folders(zip_cad_path, data_path)
 
-    zip_cad_path = path.join(directory, "UPDATE CAD DATA/")
-    unzip_cad_path = path.join(directory, "unzip_cad")
+    else:
+        data_path = directory
 
-    unzip_folders(zip_cad_path, unzip_cad_path)
+    if inc_type=="inc":
+        inc_ar = merge_csvs(data_path, "inc")
+        inc_clean_ar = clean_inc(inc_ar)
+        inc_clean_ar.to_csv(save_path, index=False)
 
-    unit_ar = merge_csvs(unzip_cad_path, "unit")
-    inc_ar = merge_csvs(unzip_cad_path, "inc")
+    if inc_type=="unit":
+        unit_ar = merge_csvs(data_path, "unit")
+        unit_clean_ar = clean_unit(unit_ar)
+        unit_clean_ar.to_csv(save_path, index=False)
 
-    unit_clean_ar = clean_unit(unit_ar)
-    inc_clean_ar = clean_inc(inc_ar)
-
-    unit_clean_ar.to_csv(path.join(directory, "unit_cad_clean.csv"), index=False)
-    inc_clean_ar.to_csv(path.join(directory, "inc_cad_clean.csv"), index=False)
-
-
-def cad_wrangling():
-    data_dir = path.join(path.dirname(path.dirname(getcwd())), "data")
-    wrangle_cad(data_dir)
