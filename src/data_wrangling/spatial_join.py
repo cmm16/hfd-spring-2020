@@ -7,17 +7,17 @@ from os import getcwd
 
 
 class SpatialJoin:
-    def __init__(self, path_to_geojson, path_to_point_data):
+    def __init__(self, path_to_geojson, point_data):
         """
         Spatial join class which is used to spatially join geojson file to point data
 
         Arguments:
             path_to_geojson (str): String path to geojson csv file
-            path_to_point_data (str): String path to point data csv file
+            point_data (df): Pandas data frame of point data (typically either inc or unit data)
         """
         print(path_to_geojson)
         self.geo_map = gpd.read_file(path_to_geojson)
-        self.point_data = pd.read_csv(path_to_point_data)
+        self.point_data = point_data
         # compute list of point type object row[4] is for longitude and row[5] os for latitude
         self.points = [Point(row[4], row[5]) for row in self.point_data.values]
 
@@ -52,28 +52,28 @@ class SpatialJoin:
         else:
             return None
 
-    def spatial_join_and_save(self, save_name):
+    def spatial_join_and_save(self):
         """
         Spatially joins and saves data so that each row in the point df will have a corresponding 15 digit fips code
 
-        Arguments:
-            save_name (str): String path name for the desired save location for the output data csv
+        Returns:
+            (DataFrame): Returns a data frame that includes location
         """
         locations = self.id_fips_codes()
         self.point_data["location"] = locations
-        self.point_data.to_csv(save_name, index=False)
+        return self.point_data
 
 
-def spatial_join(path_to_geojson, path_to_point_data, save_path):
+def spatial_join(path_to_geojson, path_to_point_data):
     """
     Instantiates SpatialJoin class and then performs join saving the result
 
     Arguments:
         path_to_geojson (str): String path to geojson data
         path_to_point_data (str): String path to point data
-        save_path (str): String path to where save results should go
+
+    Returns:
+        (DataFrame): Returns a data frame that includes location
     """
     sp = SpatialJoin(path_to_geojson, path_to_point_data)
-    sp.spatial_join_and_save(
-        save_path
-    )
+    return sp.spatial_join_and_save()
