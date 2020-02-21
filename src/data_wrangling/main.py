@@ -34,10 +34,7 @@ def main():
     acres_path = path.join(data_dir, "acres.csv")
     aggregate_acres_fips_to_bg(geojson_data_path, acres_path)
 
-    path_to_census = path.join(
-        data_dir,
-        "Census Data/census_hfd_counties_BG.csv"
-    )
+    path_to_census = path.join(data_dir, "Census Data/census_hfd_counties_BG.csv")
     census_save_path = path.join(data_dir, "census_merged.csv")
     merge_by_bg(
         groupby_save_path, path_to_census, "Block_Group", "GeoID17bg", census_save_path
