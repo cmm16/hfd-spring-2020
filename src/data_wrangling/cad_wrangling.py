@@ -263,15 +263,17 @@ def clean_inc(ar):
     return formatted_merged_df
 
 
-def cad_wrangling(directory, save_path, inc_type="inc", unzip=True):
+def cad_wrangling(directory, inc_type="inc", unzip=True):
     """
     Runs all functions needed to wrangle the cad incident unit data given a target data base directory
 
     Arguments:
         directory (str): String path to the data folder
-        save_path (str): String path to save location
         inc_type (str): String that should be "inc" or "unit" depending on the cad data to be merged
-        unzip (bool): Boolean whether input data needs to be unziped or nnot
+        unzip (bool): Boolean whether input data needs to be unziped or not
+
+    Returns:
+        (DataFrame): Returns cleaned merged pandas data frame of either inc or unit data
     """
 
     if unzip:
@@ -284,11 +286,10 @@ def cad_wrangling(directory, save_path, inc_type="inc", unzip=True):
 
     if inc_type=="inc":
         inc_ar = merge_csvs(data_path, "inc")
-        inc_clean_ar = clean_inc(inc_ar)
-        inc_clean_ar.to_csv(save_path, index=False)
+        return clean_inc(inc_ar)
 
     if inc_type=="unit":
         unit_ar = merge_csvs(data_path, "unit")
-        unit_clean_ar = clean_unit(unit_ar)
-        unit_clean_ar.to_csv(save_path, index=False)
+        return clean_unit(unit_ar)
+
 
