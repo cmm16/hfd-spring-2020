@@ -14,5 +14,5 @@ def merge_by_bg(
     """
     df1 = pd.read_csv(path_to_data1)
     df2 = pd.read_csv(path_to_data2)
-    merged_df = df1.merge(df2, left_on=merge_column_name1, right_on=merge_column_name2)
+    merged_df = df1.merge(df2, how="left", left_on=merge_column_name1, right_on=merge_column_name2)
     merged_df.to_csv(save_path, index=False)

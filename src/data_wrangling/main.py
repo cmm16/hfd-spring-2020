@@ -31,13 +31,13 @@ def main():
     groupby_save_path = path.join(data_dir, "bg_call_type_aggregate.csv")
     aggregate(geo_join_save_path, group_columns, groupby_save_path)
 
-    path_to_bg_data = path.join(
+    path_to_census = path.join(
         data_dir,
-        "American_Community_Survey_(ACS)_2017_Harris/Curated/2017/ACS20175Harris_BG_v01.csv",
+        "Census Data/census_hfd_counties_BG.csv"
     )
     census_save_path = path.join(data_dir, "census_merged.csv")
     merge_by_bg(
-        groupby_save_path, path_to_bg_data, "Block_Group", "GeoID17bg", census_save_path
+        groupby_save_path, path_to_census, "Block_Group", "GeoID17bg", census_save_path
     )
 
     train_save_path = path.join(data_dir, "bg_inc_train.csv")
