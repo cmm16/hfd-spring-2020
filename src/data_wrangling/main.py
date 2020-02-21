@@ -16,7 +16,7 @@ def main():
     # cad_wrangling(data_dir, inc_save_path, inc_type="inc", unzip=True)
     # for unit csvs
     unit_save_path = path.join(data_dir, "unit_cad_clean.csv")
-    # cad_wrangling(data_dir, unit_save_path, inc_type="unit", unzip=True)
+    cad_wrangling(data_dir, unit_save_path, inc_type="unit", unzip=True)
 
     # performs spatial join on geojson data and points data saving to save path location
     geojson_data_path = path.join(
@@ -24,7 +24,7 @@ def main():
         "Uploaded_Shapefiles/CensusBlock_2010/censusblock_2010_clip_by_fir.geojson",
     )
     geo_join_save_path = path.join(data_dir, "inc_cad_clean_with_loc.csv")
-    # spatial_join(geojson_data_path, inc_save_path, geo_join_save_path)
+    spatial_join(geojson_data_path, inc_save_path, geo_join_save_path)
 
     # performs group by on specified columns
     group_columns = ["Block_Group", "Call_Type"]
