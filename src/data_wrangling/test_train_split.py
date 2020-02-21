@@ -8,7 +8,8 @@ def test_train_split(input_data_path, train_save_path, test_save_path, test_perc
 
     Arguments:
          input_data_path (str): String path to input data
-         save_path (str): String path to desired save location
+         train_save_path (str): String path to desired save location
+         test_save_path (str): String path to desired save location
          test_percent (float): float between 0.0 and 1.0, naturally .2
     """
 
