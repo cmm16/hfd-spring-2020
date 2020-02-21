@@ -31,9 +31,11 @@ def main():
     groupby_save_path = path.join(data_dir, "bg_call_type_aggregate.csv")
     aggregate(geo_join_save_path, group_columns, groupby_save_path)
 
+    # calculate arces
     acres_path = path.join(data_dir, "acres.csv")
     aggregate_acres_fips_to_bg(geojson_data_path, acres_path)
 
+    # merge census data, acres data, and call grouped by bg data
     path_to_census = path.join(data_dir, "Census Data/census_hfd_counties_BG.csv")
     census_save_path = path.join(data_dir, "census_merged.csv")
     merge_by_bg(
@@ -43,6 +45,7 @@ def main():
         census_save_path, acres_path, "Block_Group", "Block_Group", census_save_path
     )
 
+    # perform test train split and save
     train_save_path = path.join(data_dir, "train_wrangled.csv")
     test_save_path = path.join(data_dir, "test_wrangled.csv")
     test_train_split(census_save_path, train_save_path, test_save_path)
