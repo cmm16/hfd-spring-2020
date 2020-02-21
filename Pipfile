@@ -13,6 +13,7 @@ matplotlib = "*"
 xlrd = "*"
 geopandas = "*"
 shapely = "*"
+sklearn = "*"
 
 [requires]
 python_version = "3.7"
