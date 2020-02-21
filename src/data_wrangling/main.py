@@ -43,8 +43,8 @@ def main():
         census_save_path, acres_path, "Block_Group", "Block_Group", census_save_path
     )
 
-    train_save_path = path.join(data_dir, "bg_inc_train.csv")
-    test_save_path = path.join(data_dir, "bg_inc_test.csv")
+    train_save_path = path.join(data_dir, "train_wrangled.csv")
+    test_save_path = path.join(data_dir, "test_wrangled.csv")
     test_train_split(census_save_path, train_save_path, test_save_path)
 
 
