@@ -29,6 +29,6 @@ def aggregate_acres_fips_to_bg(path_to_data, save_path):
     """
     shape_df = gpd.read_file(path_to_data)
     shape_df["Block_Group"] = shape_df["FIPS"].astype(str).str[:12]
-    grouped_df = shape_df.groupby(["BG"]).sum()
+    grouped_df = shape_df.groupby(["Block_Group"]).sum()
     acres_df = pd.DataFrame(zip(grouped_df.index, grouped_df.Acres), columns=["Block_Group", "Acres"])
     acres_df.to_csv(save_path, index=False)
