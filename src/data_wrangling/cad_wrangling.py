@@ -284,12 +284,10 @@ def cad_wrangling(directory, inc_type="inc", unzip=True):
     else:
         data_path = directory
 
-    if inc_type=="inc":
+    if inc_type == "inc":
         inc_ar = merge_csvs(data_path, "inc")
         return clean_inc(inc_ar)
 
-    if inc_type=="unit":
+    if inc_type == "unit":
         unit_ar = merge_csvs(data_path, "unit")
         return clean_unit(unit_ar)
-
-
