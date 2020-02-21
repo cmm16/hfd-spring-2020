@@ -62,18 +62,3 @@ class SpatialJoin:
         locations = self.id_fips_codes()
         self.point_data["location"] = locations
         return self.point_data
-
-
-def spatial_join(path_to_geojson, path_to_point_data):
-    """
-    Instantiates SpatialJoin class and then performs join saving the result
-
-    Arguments:
-        path_to_geojson (str): String path to geojson data
-        path_to_point_data (str): String path to point data
-
-    Returns:
-        (DataFrame): Returns a data frame that includes location
-    """
-    sp = SpatialJoin(path_to_geojson, path_to_point_data)
-    return sp.spatial_join_and_save()

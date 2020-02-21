@@ -1,7 +1,7 @@
 from os import path
 from os import getcwd
 from src.data_wrangling.cad_wrangling import cad_wrangling
-from src.data_wrangling.spatial_join import spatial_join
+from src.data_wrangling.spatial_join import SpatialJoin
 from src.data_wrangling.aggregate import aggregate
 from src.data_wrangling.test_train_split import test_train_split
 from src.data_wrangling.merge_on_bg import merge_by_bg, aggregate_acres_fips_to_bg
@@ -21,7 +21,8 @@ def main():
         "Uploaded_Shapefiles/CensusBlock_2010/censusblock_2010_clip_by_fir.geojson",
     )
     geo_join_save_path = path.join(data_dir, "inc_cad_clean_with_loc.csv")
-    spatial_join(geojson_data_path, inc_save_path, geo_join_save_path)
+    spatial_join = SpatialJoin(geojson_data_path, inc_df)
+    spatial_join_df = spatial_join.spatial_join_and_save()
 
     # performs group by on specified columns
     group_columns = ["Block_Group", "Call_Type"]
