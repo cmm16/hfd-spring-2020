@@ -11,12 +11,9 @@ def main():
     # set data directory to base plus /data
     data_dir = path.join(path.dirname(path.dirname(getcwd())), "data")
     # unzip merge and clean csvs saving to save path location
-    # for incidents csvs
-    inc_save_path = path.join(data_dir, "inc_cad_clean.csv")
-    cad_wrangling(data_dir, inc_save_path, inc_type="inc", unzip=True)
-    # for unit csvs
-    unit_save_path = path.join(data_dir, "unit_cad_clean.csv")
-    cad_wrangling(data_dir, unit_save_path, inc_type="unit", unzip=True)
+
+    inc_df = cad_wrangling(data_dir, inc_type="inc", unzip=True)
+    unit_df = cad_wrangling(data_dir, inc_type="unit", unzip=True)
 
     # performs spatial join on geojson data and points data saving to save path location
     geojson_data_path = path.join(
