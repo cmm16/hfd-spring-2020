@@ -26,8 +26,7 @@ def main():
 
     # performs group by on specified columns
     group_columns = ["Block_Group", "Call_Type"]
-    groupby_save_path = path.join(data_dir, "bg_call_type_aggregate.csv")
-    aggregate(geo_join_save_path, group_columns, groupby_save_path)
+    aggregate_df = aggregate(spatial_join_df, group_columns)
 
     # calculate arces
     acres_path = path.join(data_dir, "acres.csv")

@@ -21,9 +21,8 @@ def aggregate_call_type(df, groupby_columns):
     return counts.unstack(fill_value = 0)
 
 
-def aggregate(data_path, groupby_columns, save_path):
-    df = pd.read_csv(data_path)
+def aggregate(df, groupby_columns):
     df = compute_bg_column(df)
     aggregate_df = aggregate_call_type(df, groupby_columns)
-    aggregate_df.to_csv(save_path)
+    return aggregate_df
 
