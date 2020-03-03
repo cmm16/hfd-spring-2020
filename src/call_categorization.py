@@ -50,7 +50,17 @@ call_category_map = {'FEAB': 'health',
  'FEPS': 'mental_illness',
  'FEUN': 'other',
  'FEHZ': 'other',
- 'FEHU': 'other'}
+ 'FEHU': 'other', 
+ # unknown call types here 
+ 'FECK': 'other', # check patient 
+ 'FEAM': 'other', # automatic alert 
+ 'FEFD': 'other', # walk in 
+ 'FESC': 'other', # HPD on scene 
+ 'FEDA': 'unknown', # dead upon arrival 
+ 'FEVJ': 'unknown', # fire stand by 
+ 'FEAF': 'unknown', # assist the firefighter 
+ 'FEET': 'unknown' # emergency transfer 
+ }
 
  def getSubcall(df): 
  	"""
