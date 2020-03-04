@@ -7,9 +7,8 @@ from src.data_wrangling.test_train_split import test_train_split
 from src.data_wrangling.merge_on_bg import merge_by_bg
 
 
-def main():
+def main(data_dir):
     # set data directory to base plus /data
-    data_dir = path.join(path.dirname(path.dirname(getcwd())), "data")
     # unzip merge and clean csvs saving to save path location
     # for incidents csvs
     inc_save_path = path.join(data_dir, "inc_cad_clean.csv")
