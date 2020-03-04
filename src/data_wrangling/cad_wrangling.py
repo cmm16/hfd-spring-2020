@@ -241,7 +241,7 @@ def clean_inc(ar):
 
     # We then merge it with the call types xlsx file and reformat to be usable for
     #     data exploration.
-    data_dir = path.join(path.dirname(path.dirname(getcwd())), "data")
+    data_dir = path.join(path.dirname(getcwd()), "data")
     call_data = path.join(data_dir, "CAD Call Types - ImageTrend values.xlsx")
 
     call_df = pd.read_excel(

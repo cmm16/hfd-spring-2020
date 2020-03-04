@@ -15,7 +15,6 @@ class SpatialJoin:
             path_to_geojson (str): String path to geojson csv file
             path_to_point_data (str): String path to point data csv file
         """
-        print(path_to_geojson)
         self.geo_map = gpd.read_file(path_to_geojson)
         self.point_data = pd.read_csv(path_to_point_data)
         # compute list of point type object row[4] is for longitude and row[5] os for latitude
@@ -44,7 +43,7 @@ class SpatialJoin:
             multiple matches are found since this should not occur
 
         """
-        FIPS = self.geo_map[self.geo_map["geometry"].contains(point)]["FIPS"].values
+        FIPS = self.geo_map[self.geo_map["geometry"].contains(point)]["Name"].values
         if len(FIPS) == 1:
             return FIPS[0]
         elif len(FIPS) > 1:
