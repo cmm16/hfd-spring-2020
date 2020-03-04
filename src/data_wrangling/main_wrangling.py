@@ -15,7 +15,7 @@ def main(data_dir):
     # cad_wrangling(data_dir, inc_save_path, inc_type="inc", unzip=True)
     # for unit csvs
     unit_save_path = path.join(data_dir, "unit_cad_clean.csv")
-    cad_wrangling(data_dir, unit_save_path, inc_type="unit", unzip=True)
+    #cad_wrangling(data_dir, unit_save_path, inc_type="unit", unzip=True)
 
     # performs spatial join on geojson data and points data saving to save path location
     geojson_data_path = path.join(
