@@ -8,4 +8,4 @@ def hfd_pipeline():
 
 
 def test_hfd_pipeline(hfd_pipeline):
-    assert hfd_pipeline()
+    assert hfd_pipeline is None

@@ -14,8 +14,8 @@ def main(data_dir):
     inc_save_path = path.join(data_dir, "inc_cad_clean.csv")
     cad_wrangling(data_dir, inc_save_path, inc_type="inc", unzip=True)
     # for unit csvs
-    unit_save_path = path.join(data_dir, "unit_cad_clean.csv")
-    #cad_wrangling(data_dir, unit_save_path, inc_type="unit", unzip=True)
+    # unit_save_path = path.join(data_dir, "unit_cad_clean.csv")
+    # cad_wrangling(data_dir, unit_save_path, inc_type="unit", unzip=True)
 
     # performs spatial join on geojson data and points data saving to save path location
     geojson_data_path = path.join(
@@ -32,7 +32,11 @@ def main(data_dir):
 
     # calculate arces
     acres_path = path.join(data_dir, "acres.csv")
-    aggregate_acres_fips_to_bg(geojson_data_path, acres_path)
+    acres_data_path = path.join(
+        data_dir,
+        "Uploaded_Shapefiles/CensusBlock_2010/Census_2010_Clip_by_Har.geojson",
+    )
+    aggregate_acres_fips_to_bg(acres_data_path, acres_path)
 
     # merge census data, acres data, and call grouped by bg data
     path_to_census = path.join(data_dir, "Census Data/census_hfd_counties_BG.csv")
