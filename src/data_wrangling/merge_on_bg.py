@@ -30,6 +30,7 @@ def aggregate_acres_fips_to_bg(path_to_data, save_path):
             save_path (str): String path to desired save location
     """
     shape_df = gpd.read_file(path_to_data)
+    shape_df = shape_df.rename({"Name": "FIPS"}, axis=1)
     shape_df["Block_Group"] = shape_df["FIPS"].astype(str).str[:12]
     grouped_df = shape_df.groupby(["Block_Group"]).sum()
     acres_df = pd.DataFrame(
