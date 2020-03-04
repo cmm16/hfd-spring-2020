@@ -43,7 +43,7 @@ class SpatialJoin:
             multiple matches are found since this should not occur
 
         """
-        FIPS = self.geo_map[self.geo_map["geometry"].contains(point)]["FIPS"].values
+        FIPS = self.geo_map[self.geo_map["geometry"].contains(point)]["Name"].values
         if len(FIPS) == 1:
             return FIPS[0]
         elif len(FIPS) > 1:
