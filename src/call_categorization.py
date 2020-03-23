@@ -35,8 +35,6 @@ call_category_map = {'FEAB': 'health',
  'FEFR': 'injuries_external',
  'FEIJ': 'injuries_external',
  'FEIN': 'injuries_external',
- 'FEMA': 'injuries_external',
- 'FEMC': 'injuries_external',
  'FEPD': 'injuries_external',
  'FEPO': 'injuries_external',
  'FESG': 'injuries_external',
@@ -44,6 +42,8 @@ call_category_map = {'FEAB': 'health',
  'FESW': 'injuries_external',
  'FETA': 'injuries_external',
  'FETE': 'injuries_external',
+ 'FEMA': 'motor',
+ 'FEMC': 'motor',
  'FEAL': 'mental_illness',
  'FEHG': 'mental_illness',
  'FEOD': 'mental_illness',
@@ -51,15 +51,14 @@ call_category_map = {'FEAB': 'health',
  'FEUN': 'other',
  'FEHZ': 'other',
  'FEHU': 'other', 
- # unknown call types here 
  'FECK': 'other', # check patient 
  'FEAM': 'other', # automatic alert 
  'FEFD': 'other', # walk in 
  'FESC': 'other', # HPD on scene 
- 'FEDA': 'unknown', # dead upon arrival 
- 'FEVJ': 'unknown', # fire stand by 
- 'FEAF': 'unknown', # assist the firefighter 
- 'FEET': 'unknown' # emergency transfer 
+ 'FEDA': 'other', # dead upon arrival 
+ 'FEVJ': 'other', # fire stand by 
+ 'FEAF': 'other', # assist the firefighter 
+ 'FEET': 'other' # emergency transfer 
  }
 
  def getSubcall(df): 
@@ -78,7 +77,8 @@ call_category_map = {'FEAB': 'health',
 def getCallCategories(df, mapping=call_category_map):
 	"""
  	Categorizes each call entry in an inputted dataframe into a user defined 
- 	category. 
+ 	category. If an unknown call code is encountered, will label the call 
+ 	as "unknown" category. 
 
  	Input: 
  		- df: the dataframe with 4 letter call code under column "Subcall_Type"
@@ -88,7 +88,6 @@ def getCallCategories(df, mapping=call_category_map):
  	Returns: input data frame with a new column titled "Call_Category" with 
  		the category for that row's call type. 
 
-	TODO: add error catching for unknown call types 
 	"""
-	df['Call_Category'] = df['Subcall_Type'].apply(lambda x: mapping[x])
+	df['Call_Category'] = df['Subcall_Type'].apply(lambda x: call_category_map[x] if x in call_category_map.keys() else "unknown")
 	return df
