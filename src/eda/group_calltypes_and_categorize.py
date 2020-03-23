@@ -128,7 +128,7 @@ def main():
     # Subset train_categories to only get the necessary columns
     categories = train_categories[['Block_Group', 'health',
                                    'injuries_external', "mental_illness", 'motor',
-                                   'other', 'unknown']]
+                                   'other']]
 
     # Merge the two data sets
     train_cat_and_calltype = train.merge(categories, left_on="Block_Group", right_on="Block_Group")
