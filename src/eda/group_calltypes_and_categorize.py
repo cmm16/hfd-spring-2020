@@ -60,6 +60,7 @@ def get_wrangled_data(file):
 
 
 def main():
+    # THE TRAIN PORTION
 
     # Train categories gets the count of each broad category of emergency
     train_categories = get_wrangled_data('train_categories.csv')
@@ -117,12 +118,12 @@ def main():
     train = group_columns_by_call_type(train, ["FETE"])
     train = group_columns_by_call_type(train, ["FEUC"])
     train = group_columns_by_call_type(train, ["FEUN"])
-    train = group_columns_by_call_type(train, ["FEAM"]) # Possible Cardiac Arrest
-    train = group_columns_by_call_type(train, ["FECK"]) # Check Patient
-    train = group_columns_by_call_type(train, ["FEDA"]) # DEAD ON ARRIVAL
-    train = group_columns_by_call_type(train, ["FEET"]) # Emergency Transfer
-    train = group_columns_by_call_type(train, ["FESC"]) # Assist HPD
-    train = group_columns_by_call_type(train, ["FEFD"]) # Self Initiated EMS Event?
+    train = group_columns_by_call_type(train, ["FEAM"])  # Possible Cardiac Arrest
+    train = group_columns_by_call_type(train, ["FECK"])  # Check Patient
+    train = group_columns_by_call_type(train, ["FEDA"])  # DEAD ON ARRIVAL
+    train = group_columns_by_call_type(train, ["FEET"])  # Emergency Transfer
+    train = group_columns_by_call_type(train, ["FESC"])  # Assist HPD
+    train = group_columns_by_call_type(train, ["FEFD"])  # Self Initiated EMS Event?
 
     # Subset train_categories to only get the necessary columns
     categories = train_categories[['Block_Group', 'health',
@@ -135,7 +136,84 @@ def main():
     # Save the data
     data_dir = path.join(path.dirname(path.dirname(getcwd())), "data")
     train_cat_and_calltype_data_name = path.join(data_dir, 'train_with_categories_and_codes.csv')
-    train_cat_and_calltype.to_csv(train_cat_and_calltype_data_name,  index=False)
+    train_cat_and_calltype.to_csv(train_cat_and_calltype_data_name, index=False)
+
+    # THE TEST PORTION
+
+    # Read in the test data
+    test = pd.read_csv('/Users/emreyurtbay/PycharmProjects/hfd-spring-2020/Data/test_wrangled.csv')
+
+    # Merge Columns
+    test = group_columns_by_call_type(test, ["FEAB"])
+    test = group_columns_by_call_type(test, ["FEAV"])
+    test = group_columns_by_call_type(test, ["FEAL"])
+    test = group_columns_by_call_type(test, ["FEAR"])
+    test = group_columns_by_call_type(test, ["FEVR"])
+    test = group_columns_by_call_type(test, ["FEAL"])
+    test = group_columns_by_call_type(test, ["FEAS"])
+    test = group_columns_by_call_type(test, ["FEBA"])
+    test = group_columns_by_call_type(test, ["FEBI"])
+    test = group_columns_by_call_type(test, ["FEBL"])
+    test = group_columns_by_call_type(test, ["FEBU"])
+    test = group_columns_by_call_type(test, ["FECA"])
+    test = group_columns_by_call_type(test, ["FECH"])
+    test = group_columns_by_call_type(test, ["FECP"])
+    test = group_columns_by_call_type(test, ["FEDI"])
+    test = group_columns_by_call_type(test, ["FEDR"])
+    test = group_columns_by_call_type(test, ["FEEL"])
+    test = group_columns_by_call_type(test, ["FEFA"])
+    test = group_columns_by_call_type(test, ["FEFR"])
+    test = group_columns_by_call_type(test, ["FEHD"])
+    test = group_columns_by_call_type(test, ["FEHV"])
+    test = group_columns_by_call_type(test, ["FEHG"])
+    test = group_columns_by_call_type(test, ["FEHT"])
+    test = group_columns_by_call_type(test, ["FEHU"])
+    test = group_columns_by_call_type(test, ["FEHZ"])
+    test = group_columns_by_call_type(test, ["FEIJ"])
+    test = group_columns_by_call_type(test, ["FEIN"])
+    test = group_columns_by_call_type(test, ["FEMA"])
+    test = group_columns_by_call_type(test, ["FEMC"])
+    test = group_columns_by_call_type(test, ["FEOB"])
+    test = group_columns_by_call_type(test, ["FEOD"])
+    test = group_columns_by_call_type(test, ["FEPD"])
+    test = group_columns_by_call_type(test, ["FEPF"])
+    test = group_columns_by_call_type(test, ["FEBV"])
+    test = group_columns_by_call_type(test, ["FEOD"])
+    test = group_columns_by_call_type(test, ["FEPO"])
+    test = group_columns_by_call_type(test, ["FEPS"])
+    test = group_columns_by_call_type(test, ["FERE"])
+    test = group_columns_by_call_type(test, ["FESE"])
+    test = group_columns_by_call_type(test, ["FESG"])
+    test = group_columns_by_call_type(test, ["FESH"])
+    test = group_columns_by_call_type(test, ["FESI"])
+    test = group_columns_by_call_type(test, ["FEST"])
+    test = group_columns_by_call_type(test, ["FESW"])
+    test = group_columns_by_call_type(test, ["FESY"])
+    test = group_columns_by_call_type(test, ["FETA"])
+    test = group_columns_by_call_type(test, ["FETE"])
+    test = group_columns_by_call_type(test, ["FEUC"])
+    test = group_columns_by_call_type(test, ["FEUN"])
+    test = group_columns_by_call_type(test, ["FEAM"])  # Possible Cardiac Arrest
+    test = group_columns_by_call_type(test, ["FECK"])  # Check Patient
+    test = group_columns_by_call_type(test, ["FEDA"])  # DEAD ON ARRIVAL
+    test = group_columns_by_call_type(test, ["FEET"])  # Emergency Transfer
+    test = group_columns_by_call_type(test, ["FESC"])  # Assist HPD
+    test = group_columns_by_call_type(test, ["FEFD"])  # Self Initiated EMS Event?
+
+    # Read in the Categories
+    test_categories = pd.read_csv('/Users/emreyurtbay/PycharmProjects/hfd-spring-2020/Data/test_categories.csv')
+
+    # Subset the categories to get only the relevant columns
+    categories = test_categories[['Block_Group', 'health',
+                                  'injuries_external', "mental_illness", 'motor',
+                                  'other']]
+
+    # Merge
+    test_cat_and_calltype = test.merge(categories, left_on="Block_Group", right_on="Block_Group")
+
+    # Save to CSV file
+    test_cat_and_calltype.to_csv(
+        '/Users/emreyurtbay/PycharmProjects/hfd-spring-2020/Data/test_with_categories_and_codes.csv', index=False)
 
 
 if __name__ == '__main__':
