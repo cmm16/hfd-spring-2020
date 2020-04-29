@@ -15,6 +15,7 @@ geopandas = "*"
 shapely = "*"
 sklearn = "*"
 pytest = "*"
+seaborn = "*"
 
 [requires]
 python_version = "3.7"
