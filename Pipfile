@@ -16,6 +16,7 @@ shapely = "*"
 sklearn = "*"
 pytest = "*"
 seaborn = "*"
+lightgbm = "*"
 
 [requires]
 python_version = "3.7"

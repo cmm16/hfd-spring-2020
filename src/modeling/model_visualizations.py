@@ -16,3 +16,12 @@ def visualize_targets(y_data):
         sns.swarmplot(col, data=y_data)
         plt.show()
 
+
+def visualize_model_features(name, model, X_train):
+    """
+
+    """
+    # add title
+    explainer = shap.TreeExplainer(model)
+    shap_values = explainer.shap_values(X_train)
+    shap.summary_plot(shap_values, X_train, plot_type="bar")
