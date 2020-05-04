@@ -28,24 +28,12 @@ from sklearn.model_selection import StratifiedKFold, cross_val_score
 # Lightgbm for model
 import lightgbm as lgb
 
-bounds_lgb = {
-    'feature_fraction': (0.3, 1),
-    'lambda_l1': (0., 70.),
-    'lambda_l2': (0., 70.),
-    'learning_rate': (0.001, 1),
-    'max_depth': (2, 9),
-    'min_data_in_leaf': (5, 50),
-    'min_gain_to_split': (0, 1),
-    'min_sum_hessian_in_leaf': (0.01, 1),
-    'num_leaves': (10, 100)
-}
-
-
 class LGBModelPipeline:
     def __int__(self, x_train, y_train, param_boundaries):
         self.param_boundaries = param_boundaries
         self.x_train = x_train
         self.y_train = y_train
+        self.optimal_params = None
 
     def optimize(self):
         LGB_BO = BayesianOptimization(self.lgb_bayesian, self.param_boundaries, random_state=7, verbose=0)
