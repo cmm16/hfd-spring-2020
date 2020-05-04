@@ -40,7 +40,7 @@ bounds_lgb = {
     'num_leaves': (10, 100)
 }
 
-class ModelPipeline:
+class LBGModelPipeline:
     def __int__(self, x_train, y_train, param_boundaries):
         self.param_boundaries = param_boundaries
         self.x_train = x_train
