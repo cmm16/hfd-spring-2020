@@ -26,10 +26,10 @@ def visualize_model_features(name, model, X_train, viz_type):
     # add title
     explainer = shap.TreeExplainer(model)
     shap_values = explainer.shap_values(X_train)
-    plt.figure()
+    fig=plt.figure(figsize=(10, 8))
     plt.title(name, fontsize=22)
     # viz type either 'bar' or None
-    shap.summary_plot(shap_values, X_train, plot_type=viz_type, show=False)
+    shap.summary_plot(shap_values, X_train, plot_type=viz_type, show=False, plot_size=(10, 8))
     return plt
 
 

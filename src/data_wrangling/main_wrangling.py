@@ -7,6 +7,7 @@ from src.data_wrangling.aggregate import aggregate, image_trend_aggregate
 from src.data_wrangling.test_train_split import test_train_split
 from src.data_wrangling.merge_on_bg import merge_by_bg, aggregate_acres_fips_to_bg
 from src.data_wrangling.model_prep import model_prep
+from src.data_wrangling.covid_risk_incides import CovidRiskCalculator
 import pandas as pd
 
 
@@ -28,34 +29,32 @@ def main(data_dir):
     group_columns = ["Block_Group", "Event_Type"]
     groupby_save_path = join(data_dir, "bg_call_type_aggregate.csv")
     df = image_trend_aggregate(pd.read_csv(geo_join_save_path))
-
-    #drop air ports
-    df = dropAirports(df)
-    post_airports = join(data_dir, "post_airports.csv")
-    df.to_csv(join(data_dir, post_airports))
-
-    # calculate arces
-    #acres_path = path.join(data_dir, "acres.csv")
-    #acres_data_path = path.join(
-    #    data_dir,
-    #    "Uploaded_Shapefiles/CensusBlock_2010/Census_2010_Clip_by_Har.geojson",
-    #)
-    #aggregate_acres_fips_to_bg(acres_data_path, acres_path)
+    aggregate_path = join(data_dir, "post_airports.csv")
+    df.to_csv(aggregate_path, index=False)
 
     # merge census data, acres data, and call grouped by bg data
     path_to_census = join(data_dir, "Census Data/census_hfd_counties_BG.csv")
     census_save_path = join(data_dir, "census_merged.csv")
     merge_by_bg(
-        post_airports, path_to_census, "Block_Group", "GeoID17bg", census_save_path
+        aggregate_path, path_to_census, "Block_Group", "GeoID17bg", census_save_path
     )
 
-    x_df, _, y_df = model_prep(pd.read_csv(census_save_path))
+    covid_save_path = join(data_dir, "covid_indices.csv")
+    covid_risk_calculator = CovidRiskCalculator(pd.read_csv(census_save_path), data_dir, covid_save_path)
+    covid_risk_calculator.create_covid_df()
 
-
-    #merge_by_bg(
+    # merge_by_bg(
     #    census_save_path, acres_path, "Block_Group", "Block_Group", census_save_path
-    #)
+    # )
 
+    # drop air ports
+    df = dropAirports(df)
+    post_airports = join(data_dir, "post_airports.csv")
+    df.to_csv(join(data_dir, post_airports))
+
+
+    # model prep
+    x_df, _, y_df = model_prep(pd.read_csv(census_save_path))
     # perform test train split and save
     x_train_save_path = join(data_dir, "x_train.csv")
     y_train_save_path = join(data_dir, "y_train.csv")
@@ -70,4 +69,15 @@ def main(data_dir):
 
 if __name__ == "__main__":
     main(join(dirname((dirname(getcwd()))), "Data"))
+
+
+
+    # calculate arces
+    #acres_path = path.join(data_dir, "acres.csv")
+    #acres_data_path = path.join(
+    #    data_dir,
+    #    "Uploaded_Shapefiles/CensusBlock_2010/Census_2010_Clip_by_Har.geojson",
+    #)
+    #aggregate_acres_fips_to_bg(acres_data_path, acres_path)
+
 
