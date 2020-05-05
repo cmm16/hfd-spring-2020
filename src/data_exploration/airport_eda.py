@@ -22,3 +22,7 @@ def plot_per_capita_calls_by_block_group(df, title, output_dir, with_out_hobby):
     sns_plot.figure.savefig(join(output_dir, title))
     sns_plot.figure.clf()
 
+def run_airports_eda(output_dir, df):
+    plot_per_capita_calls_by_block_group(df, "Swarm Plot of Calls per Capita by Block Group", output_dir, False)
+    plot_per_capita_calls_by_block_group(df, "Swarm Plot of Calls per Capita by Block Group without Bush", output_dir, True)
+

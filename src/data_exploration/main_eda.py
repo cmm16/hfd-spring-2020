@@ -8,7 +8,7 @@ from src.data_exploration.race_eda import run_race_eda
 from src.data_exploration.age_eda import run_age_eda
 from src.data_exploration.income_eda import run_income_eda
 from src.data_exploration.language_eda import run_language_eda
-from src.data_exploration.airport_eda import plot_per_capita_calls_by_block_group
+from src.data_exploration.airport_eda import run_airports_eda
 import seaborn as sns
 
 def main(data_dir):
@@ -26,9 +26,7 @@ def main(data_dir):
     train_df = pd.read_csv(join(data_dir, "final_train_categories.csv"))
     with_airports_df = pd.read_csv(join(data_dir, "with_airports_for_eda.csv"))
 
-    plot_per_capita_calls_by_block_group(with_airports_df, "Swarm Plot of Calls per Capita by Block Group", output_dir, False)
-    plot_per_capita_calls_by_block_group(with_airports_df, "Swarm Plot of Calls per Capita by Block Group without Bush", output_dir, True)
-
+    run_airports_eda(output_dir, with_airports_df)
     run_time_eda(output_dir, incidents_df)
     run_race_eda(output_dir, train_df)
     run_age_eda(output_dir, train_df)

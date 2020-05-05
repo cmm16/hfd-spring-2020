@@ -15,7 +15,7 @@ def main(data_dir):
     y_train_all = pd.read_csv(join(data_dir, "y_train.csv")).set_index("Block_Group")
     X_train = pd.read_csv(join(data_dir, "x_train.csv")).set_index("Block_Group")
 
-    model_viz_path = join(data_dir, "model_viz")
+    model_viz_path = join(dirname(data_dir), "model_viz")
     bounds_lgb = {
         'feature_fraction': (0.3, 1),
         'lambda_l1': (0., 70.),
@@ -33,17 +33,11 @@ def main(data_dir):
 
     optimal_params_list = []
 
-    if not os.path.exists(join(data_dir, "models")):
-        mkdir(join(data_dir, "models"))
+    if not os.path.exists(model_viz_path):
+        mkdir(model_viz_path)
     else:
-        shutil.rmtree(join(data_dir, "models"))  # Removes all the subdirectories!
-        mkdir(join(data_dir, "models"))
-
-    if not os.path.exists(join(data_dir, "model_viz")):
-        mkdir(join(data_dir, "model_viz"))
-    else:
-        shutil.rmtree(join(data_dir, "model_viz"))  # Removes all the subdirectories!
-        mkdir(join(data_dir, "model_viz"))
+        shutil.rmtree(model_viz_path)  # Removes all the subdirectories!
+        mkdir(model_viz_path)
 
     X_test = pd.read_csv(join(data_dir, "x_test.csv")).set_index("Block_Group")
     y_test = pd.read_csv(join(data_dir, "y_test.csv")).set_index("Block_Group")
