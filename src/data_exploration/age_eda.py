@@ -12,17 +12,18 @@ def run_age_eda(output_dir, train_df):
 	Output: 
 		- single column data frame of data  
 	"""
-	portions_df, train_df = data_wrangling(train_df)
+	portions_df, train_df = data_wrangling(output_dir, train_df)
 	general_eda.plot_quartiles(output_dir, train_df, 'avgAge', "Weighted Average Age")
 	general_eda.plot_call_dist(output_dir, portions_df, "Age", ['Youngest', 'Middle Younger', 'Middle Older', 'Oldest'])
 
-def data_wrangling(data):
+def data_wrangling(output_dir, data):
 	"""
-	This function prepares the data for age wrangling. First, the function adds 'avgAge',
+	This function prepares the data for age eda. First, the function adds 'avgAge',
 	which is the weighted average age for the block group, to the dataframe passed in. 
 	Then the function creates a table of proportions for each quartile. 
 
 	Input: 
+		- output_dir: String path to output directory
 		- data: train_categories dataframe 
 
 	Output: 
@@ -30,7 +31,8 @@ def data_wrangling(data):
 		- modified input dataframe with 'avgAge' column
 	"""
 	data['avgAge'] = data['pctAge0004']/100*2 + data['pctAge0017']/100*10.5 + data['pctAdult1829']/100*23.5 + data['pctAdult3044']/100*37 + data['pctAdult4564']/100*54.5 + data['pctAdult65p']/100*72.5
-	portions = general_eda.make_quartile_proportions('avgAge', data)
+	avgs, portions = general_eda.get_quantile_data('avgAge', data)
+	avgs.to_csv(join(output_dir, "age_call_category_averages.csv"))
 	return portions, data 
 
 

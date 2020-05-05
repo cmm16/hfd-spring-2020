@@ -43,5 +43,5 @@ def plot_race_proportions():
 	plt.savefig(join(output_dir, "race_donut_chart.png"))
 
 
-train_df = pd.read_csv("test/final_train_categories.csv")
+# train_df = pd.read_csv("test/final_train_categories.csv")
 
