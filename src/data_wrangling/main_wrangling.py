@@ -32,12 +32,17 @@ def main(data_dir):
     aggregate_path = join(data_dir, "post_airports.csv")
     df.to_csv(aggregate_path, index=False)
 
+    path_to_census = join(data_dir, "Census Data/census_hfd_counties_BG.csv")
+    merge_by_bg(
+        aggregate_path, path_to_census, "Block_Group", "GeoID17bg", join(data_dir, "with_airports_for_eda.csv")
+    )
+
     df = dropAirports(df)
     post_airports = join(data_dir, "post_airports.csv")
     df.to_csv(join(data_dir, post_airports))
 
     # merge census data, and call grouped by bg data
-    path_to_census = join(data_dir, "Census Data/census_hfd_counties_BG.csv")
+
     census_save_path = join(data_dir, "census_merged.csv")
     merge_by_bg(
         post_airports, path_to_census, "Block_Group", "GeoID17bg", census_save_path
@@ -59,6 +64,9 @@ def main(data_dir):
     train_y.to_csv(y_train_save_path)
     test_x.to_csv(x_test_save_path)
     test_y.to_csv(y_test_save_path)
+
+    pd.read_csv(census_save_path).set_index("Block_Group").loc[train_x.index, :].to_csv(join(data_dir, "final_train_categories.csv"))
+
 
     # create covid data set
     covid_save_path = join(data_dir, "covid_indices.csv")
