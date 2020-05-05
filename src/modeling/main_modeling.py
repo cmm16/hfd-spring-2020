@@ -1,10 +1,10 @@
 from src.modeling.model_object import LGBModel
 from src.modeling.model_visualizations import visualize_model_features, visualize_predictions
 import pandas as pd
-import lightgbm as lgb
 from os.path import join, dirname
-from os import getcwd
-# correct data paths later
+from os import getcwd, mkdir
+import os
+import shutil
 
 
 def main(data_dir):
@@ -23,6 +23,13 @@ def main(data_dir):
         'num_leaves': (10, 50)
     }
     optimal_params_list = []
+
+    if not os.path.exists(join(data_dir, "models")):
+        mkdir(join(data_dir, "models"))
+    else:
+        shutil.rmtree(join(data_dir, "models"))  # Removes all the subdirectories!
+        mkdir(join(data_dir, "models"))
+
     for col in y_train_all.columns:
         y_train = y_train_all[col]
         model_pipeline = LGBModel(X_train, y_train, bounds_lgb)
@@ -30,13 +37,14 @@ def main(data_dir):
         optimal_params_list.append(optimal_params)
 
         model = model_pipeline.train(optimal_params)
-        model.save_model(col + " model.txt")
+        model.save_model(join(join(data_dir, "models"), col + " model.txt"))
 
         visualize_model_features(col + " Feature Importance", model, X_train, 'bar')
         visualize_model_features(col + " Feature Importance", model, X_train, None)
         visualize_predictions(model, X_train, y_train, col)
 
-    pd.DataFrame(optimal_params_list, index=y_train_all.columns)
+    print(pd.DataFrame(optimal_params_list, index=y_train_all.columns))
+
 
 if __name__ == '__main__':
     main(join(dirname((dirname(getcwd()))), "Data"))

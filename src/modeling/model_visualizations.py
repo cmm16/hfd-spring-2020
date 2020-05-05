@@ -29,6 +29,7 @@ def visualize_model_features(name, model, X_train, viz_type):
     plt.title(name, fontsize=22)
     # viz type either 'bar' or None
     shap.summary_plot(shap_values, X_train, plot_type=viz_type)
+    return plt
 
 
 def create_model_bounds_df(bounds_lgb):
@@ -48,8 +49,5 @@ def visualize_predictions(model, x_df, y_df, name):
                           markersize=10, label='Blue point')
     red_line = mlines.Line2D([], [], color='red', marker='_', linestyle='None',
                           markersize=10, label='Red line')
-    plt.legend([red_line, blue_dot], ["Perfect Prediction Line", "Block Group"], loc = 'lower right')
-    #print("mean abs error", np.mean(np.abs(model.predict(x_df) - y_df.iloc[:,i])))
-    #print("target mean", np.mean(y_df.iloc[:,i]))
-    #print("target var", np.var(y_df.iloc[:,i]))
-    plt.show()
+    plt.legend([red_line, blue_dot], ["Perfect Prediction Line", "Block Group"], loc='lower right')
+    return plt

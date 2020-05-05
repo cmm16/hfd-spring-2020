@@ -17,6 +17,7 @@ from sklearn.tree import DecisionTreeRegressor
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.ensemble import GradientBoostingRegressor
 import matplotlib.pyplot as plt
+from sklearn.metrics import r2_score
 
 import warnings
 warnings.simplefilter('ignore', category=FutureWarning)
@@ -46,6 +47,7 @@ class LGBModel:
         lgb_train = lgb.Dataset(self.x_train, self.y_train, free_raw_data=False, params={'verbose': -1})
         num_rounds = 5000
         clf = lgb.train(formated_params, lgb_train, num_rounds, verbose_eval=False)
+        print(type(clf))
         return clf
 
     def lgb_bayesian(self, num_leaves, min_data_in_leaf, learning_rate, min_sum_hessian_in_leaf, feature_fraction, lambda_l1,
@@ -71,25 +73,25 @@ class LGBModel:
             'objective': 'regression',
             'boosting_type': 'gbdt',
             'verbose': -1,
-            'metric': {'l2', 'l1'},
+            'metric': {'l2'},
             'is_unbalance': True,
             'boost_from_average': True,
             'n_jobs': -1
         }
         formated_params = format_params(params)
-        KFolds = KFold(n_splits=2, shuffle=True, random_state=9).split(self.x_train, self.y_train)
-        for fold in KFolds:
-            lgb_train, lgb_valid, fold_val_x, fold_val_y = self.generate_lgb_fold_data(fold)
+        KFolds = KFold(n_splits=4, shuffle=True, random_state=9).split(self.x_train, self.y_train)
 
-            num_rounds = 5000
-            clf = lgb.train(formated_params, lgb_train, num_rounds,
+        lgb_train, lgb_valid, fold_val_x, fold_val_y = self.generate_lgb_fold_data(list(KFolds)[0])
+
+        num_rounds = 5000
+        clf = lgb.train(formated_params, lgb_train, num_rounds,
                             valid_sets=[lgb_valid],
                             verbose_eval=False,
                             early_stopping_rounds=50)
-            val_preds = clf.predict(fold_val_x, num_iterations=clf.best_iteration)
+        val_preds = clf.predict(fold_val_x, num_iterations=clf.best_iteration)
 
-            score = np.mean(np.abs(fold_val_y - val_preds))
-            return -1.0 * score
+        score = r2_score(fold_val_y, val_preds)
+        return score
 
     def generate_lgb_fold_data(self, fold):
         fold_train_x = self.x_train.iloc[fold[0], :]
@@ -132,7 +134,7 @@ def format_params(param_boundaries):
             'objective': 'regression',
             'boosting_type': 'gbdt',
             'verbose': -1,
-            'metric': {'l2', 'l1'},
+            'metric': {'l2'},
             'is_unbalance': True,
             'boost_from_average': True,
             'n_jobs': -1
