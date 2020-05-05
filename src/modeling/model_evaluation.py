@@ -35,8 +35,11 @@ def compute_error_metrics(X_train, X_test, y_train, y_test, models):
     all_actuals_df = y_test.append(y_train)
 
     # create error metric data frame
-    error_df = pd.DataFrame(zip(all_actuals_df.mean(), all_actuals_df.std()),
-                            columns=["Mean", "Std"], index=all_actuals_df.columns)
+    error_df = pd.DataFrame(
+        zip(all_actuals_df.mean(), all_actuals_df.std()),
+        columns=["Mean", "Std"],
+        index=all_actuals_df.columns,
+    )
     train_mae = []
     train_rsme = []
     test_mae = []
