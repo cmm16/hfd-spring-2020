@@ -3,15 +3,17 @@ import pandas as pd
 from os import getcwd, mkdir
 
 import time_eda
+import race_eda
 # each helper file should have one or two functions that you call here those
 
 incidents_df = pd.read_csv("test/imagetrend_incidents.csv")
+train_df = pd.read_csv("test/final_train_categories.csv")
 
 def main(output_dir):
-    mkdir(output_dir)
+    # mkdir(output_dir)
 
-    # data dir will be set to any users Data directory if they put it at the top level of the project
-    time_eda.run_time_eda(output_dir, incidents_df) 
+    # time_eda.run_time_eda(output_dir, incidents_df) 
+    race_eda.run_race_eda(output_dir, train_df)
 
     # run_race_eda()
     print("hello")

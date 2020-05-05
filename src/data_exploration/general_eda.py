@@ -2,6 +2,15 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
+# def makeVolumeDf():
+
+# y = ydf[['health','injuries_external','mental_illness', 'motor', 'fire', 'other']].mean()
+# my = mydf[['health','injuries_external','mental_illness', 'motor', 'fire', 'other']].mean()
+# mo = modf[['health','injuries_external','mental_illness', 'motor', 'fire', 'other']].mean()
+# o = odf[['health','injuries_external','mental_illness', 'motor', 'fire', 'other']].mean()
+# avgs = pd.DataFrame([y, my, mo, o])
+# avgs.head()
+
 def EMSvsFireBarPlot(data, title="Daily Calls", day = True): 
 	"""
 	Plots the proportion of calls that are EMS vs. Fire 

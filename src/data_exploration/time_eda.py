@@ -4,20 +4,20 @@ import numpy as np
 import matplotlib.pyplot as plt
 from statsmodels.tsa.seasonal import seasonal_decompose
 
-def run_time_eda(data_dir, incidents_df): 
+def run_time_eda(output_dir, incidents_df): 
 	"""
 	This function runs the time portion of EDA. 
 
 	Input: 
-		- data_dir: String path to data directory 
+		- output_dir: String path to data directory 
 		- incidents_df: Dataframe of incidents that must include parsed time and call category
 	Output: 
 		- single column data frame of data  
 	"""
 	timedf = data_wrangle(incidents_df)
-	plot_raw_data(data_dir, timedf)
-	plot_decomposition(data_dir, timedf)
-	plot_yearly_dist(data_dir, incidents_df)
+	plot_raw_data(output_dir, timedf)
+	plot_decomposition(output_dir, timedf)
+	plot_yearly_dist(output_dir, incidents_df)
 
 
 def data_wrangle(df, start_date="2013-01", level="Day"):
@@ -44,12 +44,12 @@ def data_wrangle(df, start_date="2013-01", level="Day"):
 
 	return timedf
 
-def plot_raw_data(data_dir, timedf, title="Daily Number of Calls from 1/1/2013 - 4/12/2020"):
+def plot_raw_data(output_dir, timedf, title="Daily Number of Calls from 1/1/2013 - 4/12/2020"):
 	"""
 	This function creates a time series plot and saves it to specified output directory. 
 
 	Input: 
-		- data_dir: String of path to eda outputs
+		- output_dir: String of path to eda outputs
 		- timedf: single column data frame of daily call counts 
 		- title: String title of plot
 	"""
@@ -59,24 +59,24 @@ def plot_raw_data(data_dir, timedf, title="Daily Number of Calls from 1/1/2013 -
 	plt.xticks(fontsize=16)
 	plt.ylabel("Number of Calls", fontsize=18)
 	plt.yticks(fontsize=16)
-	plt.savefig(join(data_dir, "timeseries.png"))
+	plt.savefig(join(output_dir, "timeseries.png"))
 
-def plot_decomposition(data_dir, timedf): 
+def plot_decomposition(output_dir, timedf): 
 	"""
 	This function creates a seasonal decomposition plot and saves it to 
 	specified output directory. 
 
 	Input: 
-		- data_dir: String of path to eda outputs
+		- output_dir: String of path to eda outputs
 		- timedf: single column data frame of daily call counts 
 	"""	
 	result = seasonal_decompose(timedf, model='additive',freq=365)
 	plt.rcParams['figure.figsize'] = [15, 10]
 	result.plot()
 	plt.xlabel("Date")
-	plt.savefig(join(data_dir, "timeseries_decomposition.png"))
+	plt.savefig(join(output_dir, "timeseries_decomposition.png"))
 
-def plot_yearly_dist(data_dir, incidents_df): 
+def plot_yearly_dist(output_dir, incidents_df): 
 	fig = plt.figure(figsize=(15,10))
 	ax = fig.add_subplot(111)
 	years = incidents_df.groupby(["Year", "Call_Category"]).Event_Number.count().unstack(1)
@@ -89,5 +89,5 @@ def plot_yearly_dist(data_dir, incidents_df):
 	plt.xlabel("Year", fontsize=18)
 	plt.xticks(fontsize=15)
 	plt.legend(labels = mylabels)
-	plt.savefig(join(data_dir, "yearly_call_distribution.png"))
+	plt.savefig(join(output_dir, "yearly_call_distribution.png"))
 
