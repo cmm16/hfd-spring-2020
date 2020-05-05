@@ -47,7 +47,6 @@ class LGBModel:
         lgb_train = lgb.Dataset(self.x_train, self.y_train, free_raw_data=False, params={'verbose': -1})
         num_rounds = 5000
         clf = lgb.train(formated_params, lgb_train, num_rounds, verbose_eval=False)
-        print(type(clf))
         return clf
 
     def lgb_bayesian(self, num_leaves, min_data_in_leaf, learning_rate, min_sum_hessian_in_leaf, feature_fraction, lambda_l1,

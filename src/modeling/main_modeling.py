@@ -30,6 +30,13 @@ def main(data_dir):
         shutil.rmtree(join(data_dir, "models"))  # Removes all the subdirectories!
         mkdir(join(data_dir, "models"))
 
+    if not os.path.exists(join(data_dir, "model_viz")):
+        mkdir(join(data_dir, "model_viz"))
+    else:
+        shutil.rmtree(join(data_dir, "model_viz"))  # Removes all the subdirectories!
+        mkdir(join(data_dir, "model_viz"))
+    model_viz_path = join(data_dir, "model_viz")
+
     for col in y_train_all.columns:
         y_train = y_train_all[col]
         model_pipeline = LGBModel(X_train, y_train, bounds_lgb)
@@ -39,11 +46,11 @@ def main(data_dir):
         model = model_pipeline.train(optimal_params)
         model.save_model(join(join(data_dir, "models"), col + " model.txt"))
 
-        visualize_model_features(col + " Feature Importance", model, X_train, 'bar')
-        visualize_model_features(col + " Feature Importance", model, X_train, None)
-        visualize_predictions(model, X_train, y_train, col)
+        visualize_model_features(col + " Feature Importance", model, X_train, 'bar').savefig(join(model_viz_path, col + " abs"))
+        visualize_model_features(col + " Feature Importance", model, X_train, None).savefig(join(model_viz_path, col + " heat"))
+        visualize_predictions(model, X_train, y_train, col).savefig(join(model_viz_path, col + " imp"))
 
-    print(pd.DataFrame(optimal_params_list, index=y_train_all.columns))
+    pd.DataFrame(optimal_params_list, index=y_train_all.columns).to_csv(join(data_dir, "optimal_params.csv"))
 
 
 if __name__ == '__main__':
