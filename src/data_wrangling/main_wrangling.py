@@ -32,26 +32,16 @@ def main(data_dir):
     aggregate_path = join(data_dir, "post_airports.csv")
     df.to_csv(aggregate_path, index=False)
 
-    # merge census data, acres data, and call grouped by bg data
-    path_to_census = join(data_dir, "Census Data/census_hfd_counties_BG.csv")
-    census_save_path = join(data_dir, "census_merged.csv")
-    merge_by_bg(
-        aggregate_path, path_to_census, "Block_Group", "GeoID17bg", census_save_path
-    )
-
-    covid_save_path = join(data_dir, "covid_indices.csv")
-    covid_risk_calculator = CovidRiskCalculator(pd.read_csv(census_save_path), data_dir, covid_save_path)
-    covid_risk_calculator.create_covid_df()
-
-    # merge_by_bg(
-    #    census_save_path, acres_path, "Block_Group", "Block_Group", census_save_path
-    # )
-
-    # drop air ports
     df = dropAirports(df)
     post_airports = join(data_dir, "post_airports.csv")
     df.to_csv(join(data_dir, post_airports))
 
+    # merge census data, and call grouped by bg data
+    path_to_census = join(data_dir, "Census Data/census_hfd_counties_BG.csv")
+    census_save_path = join(data_dir, "census_merged.csv")
+    merge_by_bg(
+        post_airports, path_to_census, "Block_Group", "GeoID17bg", census_save_path
+    )
 
     # model prep
     x_df, _, y_df = model_prep(pd.read_csv(census_save_path))
@@ -65,6 +55,11 @@ def main(data_dir):
     train_y.to_csv(y_train_save_path)
     test_x.to_csv(x_test_save_path)
     test_y.to_csv(y_test_save_path)
+
+    # create covid data set
+    covid_save_path = join(data_dir, "covid_indices.csv")
+    covid_risk_calculator = CovidRiskCalculator(pd.read_csv(census_save_path), df.set_index("Block_Group"),  data_dir, covid_save_path)
+    covid_risk_calculator.create_covid_df()
 
 
 if __name__ == "__main__":

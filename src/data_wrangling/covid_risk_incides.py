@@ -5,7 +5,7 @@ import pandas as pd
 from os import getcwd
 
 class CovidRiskCalculator:
-    def __init__(self, dat, data_dir, save_path):
+    def __init__(self, dat, call_counts, data_dir, save_path):
         dat['pct_elderly'] = dat["pctAdult4564"] + dat['pctAge65p']
         dat['health_pc'] = dat["health"] / dat['TotalPop']
 
@@ -18,7 +18,7 @@ class CovidRiskCalculator:
 
         dat = dat.merge(insurance, on="Block_Group")
         dat = dat.fillna(dat.median())
-
+        dat["Call Percent"] = call_counts.sum(1)/ sum(call_counts.sum(1))
 
         self.dat = dat
         self.save_path = save_path
@@ -36,7 +36,7 @@ class CovidRiskCalculator:
 
         self.dat['Risk_Index'] = self.dat.apply(self.calculateRiskIndex, axis=1)
 
-        indexDF = self.dat[["Block_Group", "Health_Affliction_Index", 'Poverty_Index','Diversity_Index', "Risk_Index"]]
+        indexDF = self.dat[["Block_Group", "Health_Affliction_Index", 'Poverty_Index','Diversity_Index', "Risk_Index", "Call Percent"]]
         indexDF.to_csv(self.save_path, index=False)
 
 
@@ -110,7 +110,6 @@ class CovidRiskCalculator:
         diversity_index = np.mean(indicies)
 
         return diversity_index
-
 
     def calculateHealthAfflictionIndex(self, row):
         '''
