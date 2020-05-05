@@ -2,39 +2,47 @@ import pandas as pd
 from os.path import join
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy import stats
 
-def make_volume_chart(output_dir, df, title, xaxis_label, xticks, xtick_labels):
+# Global variable for defining call category columns 
+call_cols = ['health','injuries_external','mental_illness', 'motor', 'fire', 'other']
+
+#########################################################################
+#					WRANGLING & TEST FUNCTIONS					 		#
+#########################################################################
+
+def chi_squared_test(output_dir, counts_df, type): 
 	"""
-	TODO: change to plot and move to bottom 
-
-	Creates a bar chart of average calls per block group. 
+	This function calculates a chi-squared test for a given 
+	subgroups of a demographic factor. 
 
 	Inputs: 
 		- output_dir: String path to output directory
-		- df: dataframe where each row is a category, and there is a 
-			"total_calls" column with the average call 
-		- title: string title of graph 
-		- xaxis_label: string to label x-axis 
-		- xticks: array of number of ticks on x-axis 
-		- xtick_labels: array of strings for each x-tick label 
+		- counts_df: dataframe where each row is a category, and 
+			columns are call category average
+		- type: String describing demographic factor 
 	"""
-	plt.figure(figsize=(10, 10))
-	df.total_calls_per_cap.plot(kind="bar", color=['coral', 'red', 'darkorange', 'firebrick'])
-	plt.title(title, fontsize=20)
-	plt.ylabel("Average Call Volume", fontsize=18)
-	plt.yticks(fontsize=15)
-	plt.xlabel(xaxis_label, fontsize=18)
-	plt.xticks(ticks=xticks,labels=xtick_labels, fontsize=15, rotation=0)
-	plt.savefig(join(output_dir, title+".png"))
-
+	single_list = []
+	for row in range(counts_df.shape[0]): 
+	    single_list.append(counts_df.iloc[row][call_cols])
+	single = np.array(single_list)
+	chi2_stat, p_val, dof, ex = stats.chi2_contingency(single)
+	f = open(output_dir+"/"+type+"_chi_squared_test.txt", "a")
+	f.write("===Chi2 Stat==="+"\n")
+	f.write(str(chi2_stat)+"\n")
+	f.write("===Degrees of Freedom==="+"\n")
+	f.write(str(dof)+"\n")
+	f.write("===P-Value==="+"\n")
+	f.write(str(p_val)+"\n")
+	f.write("===Contingency Table==="+"\n")
+	f.write(str(ex)+"\n")
+	f.close()
 
 def calculate_total_calls(data): 
 	"""
 	This function calculates total calls for a given input dataframe, and returns 
 	the sum of the calls and calls per cap as new columns. 
 	"""
-	# Calculate total number of calls 
-	call_cols = ['health','injuries_external','mental_illness', 'motor', 'fire', 'other']
 	data['total_calls'] = 0
 	for call in call_cols: 
 		data['total_calls'] += data[call]
@@ -54,7 +62,6 @@ def get_quantile_data(column, data):
 	Output: 
 		- dataframe of call proportions for each quartile 
 	""" 
-	call_cols = ['health','injuries_external','mental_illness', 'motor', 'fire', 'other']
 	data = calculate_total_calls(data)
 	# Calculate quantiles 
 	q25 = data[column].quantile(.25)
@@ -81,6 +88,33 @@ def get_quantile_data(column, data):
 	portions.at[3, 'quartile'] = "Highest"
 	return avgs, portions 
 
+
+
+#########################################################################
+#						PLOTTING FUNCTIONS						 		#
+#########################################################################
+
+def plot_volume_chart(output_dir, df, title, xaxis_label, xticks, xtick_labels):
+	"""
+	Creates a bar chart of average calls per block group. 
+
+	Inputs: 
+		- output_dir: String path to output directory
+		- df: dataframe where each row is a category, and there is a 
+			"total_calls" column with the average call 
+		- title: string title of graph 
+		- xaxis_label: string to label x-axis 
+		- xticks: array of number of ticks on x-axis 
+		- xtick_labels: array of strings for each x-tick label 
+	"""
+	plt.figure(figsize=(10, 10))
+	df.total_calls_per_cap.plot(kind="bar", color=['coral', 'red', 'darkorange', 'firebrick'])
+	plt.title(title, fontsize=20)
+	plt.ylabel("Average Call Volume", fontsize=18)
+	plt.yticks(fontsize=15)
+	plt.xlabel(xaxis_label, fontsize=18)
+	plt.xticks(ticks=xticks,labels=xtick_labels, fontsize=15, rotation=0)
+	plt.savefig(join(output_dir, title+".png"))
 
 def plot_donut_chart(output_dir, values, labels, description): 
 	"""
@@ -129,13 +163,18 @@ def plot_quartiles(output_dir, data, column, column_name):
 	plt.legend(['25th Quartile','50th Quartile','75th Quartile'])
 	plt.savefig(join(output_dir, column_name+"_quartiles.png"))
 
-def plot_call_dist(output_dir, portions_df, column_name, labels): 
+def plot_call_dist(output_dir, portions_df, xlabel, labels, factor): 
 	"""
 	This function creates a stacked bar chart of the call proportions 
 	for each quantile.  
 
-	Input: 
-
+	Inputs: 
+		- output_dir: String path to output directory
+		- portions_df: dataframe where each row is a category, and 
+			columns are call category proportions
+		- xlabel: String describing name of x axis 
+		- labels: array of strings to rename xticks
+		- factor: String describing demographic factor plot is about 
 	"""
 	callLabels = ["Health (internal)", "External Injuries", "Mental Illness", "Motor", 'Fire', 'Other']
 	fig = plt.figure(figsize=(20,15))
@@ -144,10 +183,10 @@ def plot_call_dist(output_dir, portions_df, column_name, labels):
 	plt.title("Call Distribution", fontsize=20)
 	plt.ylabel("Proportion of Calls", fontsize=18)
 	plt.yticks(fontsize=15)
-	plt.xlabel(column_name+" Quantile", fontsize=18)
+	plt.xlabel(xlabel, fontsize=18)
 	plt.legend(prop={'size': 20}, labels=callLabels)
 	plt.xticks(ticks=[0,1, 2, 3],labels=labels, fontsize=15)
-	plt.savefig(join(output_dir, column_name+"_call_dist.png"))
+	plt.savefig(join(output_dir, factor+"_call_dist.png"))
 
 
 

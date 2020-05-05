@@ -18,7 +18,12 @@ def run_race_eda(output_dir, train_df):
 	races = ['White', 'Hispanic', 'Black', 'Asian']
 	sizes, race_avgs = data_wrangling(train_df)
 	race_avgs.to_csv(join(output_dir, "race_call_category_averages.csv"))
-	general_eda.make_volume_chart(output_dir, race_avgs, "Average Calls per Racially Homogeneous Block Groups", 
+	
+	# Chi-squared test 
+	general_eda.chi_squared_test(output_dir, race_avgs, "Race")
+
+	# Volume chart 
+	general_eda.plot_volume_chart(output_dir, race_avgs, "Average Calls per Racially Homogeneous Block Groups", 
 		"Homogeneous Race", [0,1,2,3], races)
 	
 	# Create portion donut chart 
@@ -28,7 +33,7 @@ def run_race_eda(output_dir, train_df):
 	# Convert to proportions
 	call_cols = ['health','injuries_external','mental_illness', 'motor', 'fire', 'other']
 	portions = race_avgs[call_cols].apply(lambda row: row/row.sum(), axis=1)
-	general_eda.plot_call_dist(output_dir, portions, "Race", races)
+	general_eda.plot_call_dist(output_dir, portions, "Race", races, "Race")
 
 
 def data_wrangling(train): 
