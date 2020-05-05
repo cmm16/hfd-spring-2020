@@ -12,9 +12,10 @@ def run_age_eda(output_dir, train_df):
 	Output: 
 		- single column data frame of data  
 	"""
-	portions_df, train_df = data_wrangling(output_dir, train_df)
+	avgs, portions_df, train_df = data_wrangling(output_dir, train_df)
 	general_eda.plot_quartiles(output_dir, train_df, 'avgAge', "Weighted Average Age")
-	general_eda.plot_call_dist(output_dir, portions_df, "Age", ['Youngest', 'Middle Younger', 'Middle Older', 'Oldest'])
+	general_eda.plot_call_dist(output_dir, portions_df, "Age Quartiles", ['Youngest', 'Middle Younger', 'Middle Older', 'Oldest'], "Age")
+	general_eda.chi_squared_test(output_dir, avgs, "Age")
 
 def data_wrangling(output_dir, data):
 	"""
@@ -33,7 +34,7 @@ def data_wrangling(output_dir, data):
 	data['avgAge'] = data['pctAge0004']/100*2 + data['pctAge0017']/100*10.5 + data['pctAdult1829']/100*23.5 + data['pctAdult3044']/100*37 + data['pctAdult4564']/100*54.5 + data['pctAdult65p']/100*72.5
 	avgs, portions = general_eda.get_quantile_data('avgAge', data)
 	avgs.to_csv(join(output_dir, "age_call_category_averages.csv"))
-	return portions, data 
+	return avgs, portions, data 
 
 
 

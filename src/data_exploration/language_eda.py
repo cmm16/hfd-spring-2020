@@ -12,7 +12,8 @@ def run_language_eda(output_dir, train_df):
 	"""
 	lang = data_wrangling(train_df)
 	lang.to_csv(join(output_dir, "lang_call_category_averages.csv"))
-	general_eda.make_volume_chart(output_dir, lang, "Average Calls per Primary Language", 
+	general_eda.chi_squared_test(output_dir, lang, "Language")
+	general_eda.plot_volume_chart(output_dir, lang, "Average Calls per Primary Language", 
 		"Household Language", [0,1], ['English', 'Not English'])
 
 def data_wrangling(df):
