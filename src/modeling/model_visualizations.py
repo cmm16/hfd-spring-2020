@@ -2,7 +2,8 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import shap
 import pandas as pd
-
+import matplotlib.lines as mlines
+from sklearn.metrics import r2_score
 
 def visualize_targets(y_data):
     """
@@ -32,3 +33,23 @@ def visualize_model_features(name, model, X_train, viz_type):
 
 def create_model_bounds_df(bounds_lgb):
     return pd.DataFrame(bounds_lgb).transpose().rename({0: "Lower Bound", 1: "Upper Bound"}, axis=1)
+
+
+def visualize_predictions(model, x_df, y_df, name):
+    fig=plt.figure(figsize=(8, 6))
+    plt.plot(model.predict(x_df), y_df, 'p', alpha=0.5)
+    plt.ylim(min(y_df-.001), max(y_df) + .001)
+    plt.xlim(min(model.predict(x_df) - .001), max(model.predict(x_df)) + .001)
+    plt.plot([0,100], [0, 100], c="red")
+    plt.title("Actual vs Predicted Percent " + name + " Calls by Block Group")
+    plt.xlabel("Predicted Call Category Percent (%)")
+    plt.ylabel("True Call Category Percent (%)")
+    blue_dot = mlines.Line2D([], [], color='blue', marker='.', linestyle='None',
+                          markersize=10, label='Blue point')
+    red_line = mlines.Line2D([], [], color='red', marker='_', linestyle='None',
+                          markersize=10, label='Red line')
+    plt.legend([red_line, blue_dot], ["Perfect Prediction Line", "Block Group"], loc = 'lower right')
+    #print("mean abs error", np.mean(np.abs(model.predict(x_df) - y_df.iloc[:,i])))
+    #print("target mean", np.mean(y_df.iloc[:,i]))
+    #print("target var", np.var(y_df.iloc[:,i]))
+    plt.show()

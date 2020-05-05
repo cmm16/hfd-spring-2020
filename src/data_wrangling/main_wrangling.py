@@ -9,6 +9,7 @@ from src.data_wrangling.merge_on_bg import merge_by_bg, aggregate_acres_fips_to_
 from src.data_wrangling.model_prep import model_prep
 import pandas as pd
 
+
 def main(data_dir):
     # set data directory to base plus /data
     image_trend_data_path = join(data_dir, "Final Datasets")
@@ -50,8 +51,6 @@ def main(data_dir):
 
     x_df, _, y_df = model_prep(pd.read_csv(census_save_path))
 
-    print(x_df, y_df)
-
 
     #merge_by_bg(
     #    census_save_path, acres_path, "Block_Group", "Block_Group", census_save_path
@@ -63,11 +62,11 @@ def main(data_dir):
     x_test_save_path = join(data_dir, "x_test.csv")
     y_test_save_path = join(data_dir, "y_test.csv")
     train_x, test_x, train_y, test_y = test_train_split(x_df, y_df)
-
-    train_x.to_csv(x_test_save_path)
-    train_y.to_csv(y_test_save_path)
+    train_x.to_csv(x_train_save_path)
+    train_y.to_csv(y_train_save_path)
     test_x.to_csv(x_test_save_path)
     test_y.to_csv(y_test_save_path)
+
 
 if __name__ == "__main__":
     main(join(dirname((dirname(getcwd()))), "Data"))
