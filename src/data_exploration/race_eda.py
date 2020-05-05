@@ -1,6 +1,7 @@
 import pandas as pd
 from os.path import join
 import numpy as np 
+import general_eda
 import matplotlib.pyplot as plt
 
 def run_race_eda(output_dir, train_df): 
@@ -14,34 +15,39 @@ def run_race_eda(output_dir, train_df):
 	Output: 
 		- single column data frame of data  
 	"""
+	races = ['Hispanic', 'Black', 'White', 'Asian']
+	sizes, race_avgs = data_wrangling(train_df)
+	race_avgs.to_csv(join(output_dir, "race_call_category_averages.csv"))
+	general_eda.make_volume_chart(output_dir, race_avgs, "Average Calls per Racially Homogeneous Block Groups", 
+		"Homogeneous Race", [0,1,2,3], races)
+	
+	# Create portion donut chart 
+	labels=['White', 'Hispanic', 'Black', 'Asian', 'Heterogenous'] 
+	general_eda.plot_donut_chart(output_dir, sizes, labels, "race")
+
+	# Convert to proportions
+	call_cols = ['health','injuries_external','mental_illness', 'motor', 'fire', 'other']
+	portions = race_avgs[call_cols].apply(lambda row: row/row.sum(), axis=1)
+	general_eda.plot_call_dist(output_dir, portions, "Race", races)
+
+
+def data_wrangling(train): 
+	train = general_eda.calculate_total_calls(train)
 	# Split data into majority race dataframes 
-	train['TotalCalls'] = train['health'] + train['injuries_external'] + train['mental_illness'] + train['morow']
 	white_blocks = train[train['pctNHwht'] >= 50]
 	hisp_blocks = train[train['pctHisp'] >= 50]
 	blk_blocks = train[train['pctNHblk'] >= 50]
 	asian_blocks = train[train['pctNHasi'] >= 50]
-
-	white_blocks = white_blocks[interest_cols]
-
-	interest_cols = ["TotalPop", 'health','injuries_external','mental_illness', 'motor', 'fire', 'other']
-
-	# Create portion donut chart 
-
-def plot_race_proportions(): 
-	plt.rcParams['figure.figsize'] = [10, 10] # controls figure size
-	names='White', 'Hispanic', 'Black', 'Asian', 'Heterogenous'
-	size=[len(white_blocks), len(hisp_blocks), len(blk_blocks), len(asian_blocks), no_majority]
-	 
-	# Create a circle for the center of the plot
-	my_circle=plt.Circle((0,0), 0.7, color='white')
-
-	# Give color names
-	plt.pie(size, labels=names, colors=['darkorange','red','coral','firebrick','gold']) # fire themed
-	p=plt.gcf()
-	p.gca().add_artist(my_circle)
-
-	plt.savefig(join(output_dir, "race_donut_chart.png"))
-
-
-# train_df = pd.read_csv("test/final_train_categories.csv")
+	# Get sizes of each majority block group 
+	sizes = [white_blocks.shape[0], hisp_blocks.shape[0], blk_blocks.shape[0], asian_blocks.shape[0]]
+	no_majority = len(train) - sum(sizes) 
+	sizes.append(no_majority)
+	# Calculate average of each type 
+	columns = ['health','injuries_external','mental_illness', 'motor', 'fire', 'other', 'total_calls', 'total_calls_per_cap']
+	white_blocks_avg = white_blocks[columns].mean() 
+	hisp_blocks_avg = hisp_blocks[columns].mean()  
+	blk_blocks_avg = blk_blocks[columns].mean()
+	asian_blocks_avg = asian_blocks[columns].mean()
+	race_avgs = pd.DataFrame([white_blocks_avg, hisp_blocks_avg, blk_blocks_avg, asian_blocks_avg])
+	return sizes, race_avgs 
 

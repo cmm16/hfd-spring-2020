@@ -3,6 +3,45 @@ from os.path import join
 import numpy as np
 import matplotlib.pyplot as plt
 
+def make_volume_chart(output_dir, df, title, xaxis_label, xticks, xtick_labels):
+	"""
+	TODO: change to plot and move to bottom 
+
+	Creates a bar chart of average calls per block group. 
+
+	Inputs: 
+		- output_dir: String path to output directory
+		- df: dataframe where each row is a category, and there is a 
+			"total_calls" column with the average call 
+		- title: string title of graph 
+		- xaxis_label: string to label x-axis 
+		- xticks: array of number of ticks on x-axis 
+		- xtick_labels: array of strings for each x-tick label 
+	"""
+	plt.figure(figsize=(10, 10))
+	df.total_calls.plot(kind="bar", color=['coral', 'red', 'darkorange', 'firebrick'])
+	plt.title(title, fontsize=20)
+	plt.ylabel("Average Call Volume", fontsize=18)
+	plt.yticks(fontsize=15)
+	plt.xlabel(xaxis_label, fontsize=18)
+	plt.xticks(ticks=xticks,labels=xtick_labels, fontsize=15, rotation=0)
+	plt.savefig(join(output_dir, title+".png"))
+
+
+def calculate_total_calls(data): 
+	"""
+	This function calculates total calls for a given input dataframe, and returns 
+	the sum of the calls and calls per cap as new columns. 
+	"""
+	# Calculate total number of calls 
+	call_cols = ['health','injuries_external','mental_illness', 'motor', 'fire', 'other']
+	data['total_calls'] = 0
+	for call in call_cols: 
+		data['total_calls'] += data[call]
+	# Standardize per capita 
+	data['total_calls_per_cap'] =  data['total_calls']/data['TotalPop']
+	return data 
+
 def get_quantile_data(column, data):
 	"""
 	This function creates a matrix of the propotion of calls for each quartile
@@ -15,13 +54,8 @@ def get_quantile_data(column, data):
 	Output: 
 		- dataframe of call proportions for each quartile 
 	""" 
-	# Calculate total number of calls 
 	call_cols = ['health','injuries_external','mental_illness', 'motor', 'fire', 'other']
-	data['total_calls'] = 0
-	for call in call_cols: 
-		data['total_calls'] += data[call]
-	# Standardize per capita 
-	data['total_calls_per_cap'] =  data['total_calls']/data['TotalPop']
+	data = calculate_total_calls(data)
 	# Calculate quantiles 
 	q25 = data[column].quantile(.25)
 	q50 = data[column].quantile(.5)
@@ -47,6 +81,22 @@ def get_quantile_data(column, data):
 	portions.at[3, 'quartile'] = "Highest"
 	return avgs, portions 
 
+
+def plot_donut_chart(output_dir, values, labels, description): 
+	"""
+	TODO
+	"""
+	plt.figure(figsize=(10,10))
+
+	# Create a circle for the center of the plot
+	my_circle=plt.Circle( (0,0), 0.7, color='white')
+
+	# Give color names
+	plt.pie(values, labels=labels, colors=['darkorange','red','coral','firebrick', 'gold']) # fire themed
+	p=plt.gcf()
+	p.gca().add_artist(my_circle)
+
+	plt.savefig(join(output_dir, description+"_donut_chart.png"))
 
 def plot_quartiles(output_dir, data, column, column_name): 
 	"""

@@ -8,9 +8,7 @@ def run_income_eda(output_dir, train_df):
 
 	Input: 
 		- output_dir: String path to output directory 
-		- incidents_df: Dataframe of incidents that must include parsed time and call category
-	Output: 
-		- single column data frame of data  
+		- train_df: Dataframe of census and call counts per block group 
 	"""
 	# Data wrangling and preparation 
 	avgs, portions = general_eda.get_quantile_data('medHHinc', train_df)
