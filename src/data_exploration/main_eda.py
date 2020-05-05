@@ -4,6 +4,7 @@ from os import getcwd, mkdir
 
 import time_eda
 import race_eda
+import age_eda
 # each helper file should have one or two functions that you call here those
 
 incidents_df = pd.read_csv("test/imagetrend_incidents.csv")
@@ -13,8 +14,9 @@ def main(output_dir):
     # mkdir(output_dir)
 
     # time_eda.run_time_eda(output_dir, incidents_df) 
-    race_eda.run_race_eda(output_dir, train_df)
-
+    # race_eda.run_race_eda(output_dir, train_df)
+    age_eda.run_age_eda(output_dir, train_df)
+    
     # run_race_eda()
     print("hello")
 
