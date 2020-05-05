@@ -1,4 +1,4 @@
-from src.validation.model_evaluation import compute_error_metrics
+from src.modeling.model_evaluation import compute_error_metrics
 import pandas as pd
 import lightgbm as lgb
 from os.path import join, dirname

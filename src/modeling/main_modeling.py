@@ -1,5 +1,6 @@
 from src.modeling.model_object import LGBModel
 from src.modeling.model_visualizations import visualize_model_features, visualize_predictions
+from src.modeling.model_evaluation import compute_error_metrics
 import pandas as pd
 from os.path import join, dirname
 from os import getcwd, mkdir
@@ -36,7 +37,7 @@ def main(data_dir):
         shutil.rmtree(join(data_dir, "model_viz"))  # Removes all the subdirectories!
         mkdir(join(data_dir, "model_viz"))
     model_viz_path = join(data_dir, "model_viz")
-
+    models = []
     for col in y_train_all.columns:
         y_train = y_train_all[col]
         model_pipeline = LGBModel(X_train, y_train, bounds_lgb)
@@ -45,12 +46,16 @@ def main(data_dir):
 
         model = model_pipeline.train(optimal_params)
         model.save_model(join(join(data_dir, "models"), col + " model.txt"))
-
+        models.append(model)
         visualize_model_features(col + " Feature Importance", model, X_train, 'bar').savefig(join(model_viz_path, col + " abs"))
         visualize_model_features(col + " Feature Importance", model, X_train, None).savefig(join(model_viz_path, col + " heat"))
         visualize_predictions(model, X_train, y_train, col).savefig(join(model_viz_path, col + " imp"))
 
     pd.DataFrame(optimal_params_list, index=y_train_all.columns).to_csv(join(data_dir, "optimal_params.csv"))
+
+    X_test = pd.read_csv(join(data_dir, "x_test.csv"))
+    y_test = pd.read_csv(join(data_dir, "y_test.csv"))
+    print(compute_error_metrics(X_train, X_test, y_train_all, y_test, models))
 
 
 if __name__ == '__main__':
