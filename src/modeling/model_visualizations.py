@@ -5,6 +5,7 @@ import pandas as pd
 import matplotlib.lines as mlines
 import plotly.graph_objects as go
 import numpy as np
+from os.path import join
 
 def visualize_targets(y_data):
     """
@@ -73,3 +74,16 @@ def create_params_table(optimal_params_df, name):
     return fig
 
 
+def run_model_visuals(model_viz_path, col, model, X_train, y_train, X_test, y_test):
+    visualize_model_features(
+        col + " Feature Importance", model[0], X_train, "bar"
+    ).savefig(join(model_viz_path, col + " abs"))
+    visualize_model_features(
+        col + " Feature Importance", model[0], X_train, None
+    ).savefig(join(model_viz_path, col + " heat"))
+    visualize_predictions(model, X_train, y_train, "Train " + col[7:]).savefig(
+        join(model_viz_path, col + "train imp")
+    )
+    visualize_predictions(model, X_test, y_test[col], "Test " + col[7:]).savefig(
+        join(model_viz_path, col + "test imp")
+    )

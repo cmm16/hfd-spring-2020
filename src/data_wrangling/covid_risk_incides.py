@@ -19,6 +19,8 @@ class CovidRiskCalculator:
         dat = dat.merge(insurance, on="Block_Group")
         dat = dat.fillna(dat.median())
         dat["Call Percent"] = call_counts.sum(1)/ sum(call_counts.sum(1))
+        for col in ["fire", "health", "injuries_external", "mental_illness", "motor", "other"]:
+            dat["percent " + col] = call_counts[col] / sum(call_counts.sum(1))
 
         self.dat = dat
         self.save_path = save_path
@@ -36,7 +38,7 @@ class CovidRiskCalculator:
 
         self.dat['Risk_Index'] = self.dat.apply(self.calculateRiskIndex, axis=1)
 
-        indexDF = self.dat[["Block_Group", "Health_Affliction_Index", 'Poverty_Index','Diversity_Index', "Risk_Index", "Call Percent"]]
+        indexDF = self.dat[["Block_Group", "Health_Affliction_Index", 'Poverty_Index','Diversity_Index', "Risk_Index", "Call Percent"] + ["percent " + col for col in ["fire", "health", "injuries_external", "mental_illness", "motor", "other"]]]
         indexDF.to_csv(self.save_path, index=False)
 
 
