@@ -11,4 +11,4 @@ def main(data_dir):
     print("hello")
 
 if __name__ == '__main__':
-    main(join(dirname(dirname(getcwd()))), "Data")
+    main(join(dirname(dirname(getcwd())), "Data"))
