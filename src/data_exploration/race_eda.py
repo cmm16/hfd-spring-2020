@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import general_eda
 import mapping 
 
-def run_race_eda(output_dir, train_df, bg_filepath, fd_filepath): 
+def run_race_eda(output_dir, train_df): 
 	"""
 	This function runs the race portion of EDA, and will generate 
 	a donut chart of race, map, call volume, and call proportion plot. 

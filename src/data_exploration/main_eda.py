@@ -19,7 +19,7 @@ def main(output_dir):
 
     ##### GENERAL RISK ASSESSMENT EDA #####
     run_time_eda(output_dir, incidents_df) 
-    run_race_eda(output_dir, train_df, bg_filepath, fd_filepath)
+    run_race_eda(output_dir, train_df)
     run_age_eda(output_dir, train_df)
     run_income_eda(output_dir, train_df)
     run_language_eda(output_dir, train_df)
