@@ -1,6 +1,6 @@
 import pandas as pd
 from os.path import join
-import src.general_eda
+import src.data_exploration.general_eda as general_eda
 
 def run_age_eda(output_dir, train_df): 
 	"""
