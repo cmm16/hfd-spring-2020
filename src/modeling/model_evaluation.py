@@ -1,8 +1,6 @@
 import numpy as np
 import pandas as pd
 
-""" model_evaluation.py has all error metric and model evaluation functions """
-
 
 def compute_error_metrics(X_train, X_test, y_train, y_test, models):
     """
