@@ -1,8 +1,20 @@
 import numpy as np
 import pandas as pd
 
+""" model_evaluation.py has all error metric and model evaluation functions """
+
 
 def compute_error_metrics(X_train, X_test, y_train, y_test, models):
+    """
+    Creates predictions for test and train data then computes error metrics for test and train data
+
+    Arguments:
+        X_train (Data Frame): Train data frame of predictors
+        X_test (Data Frame): Test data frame of predictors
+        y_train (Data Frame): Train data frame of targets
+        y_test (Data Frame): Test data frame of targets
+        models: list of models one model per target data frame column
+    """
     train_prediction_df = pd.DataFrame(y_train.index).set_index("Block_Group")
     test_prediction_df = pd.DataFrame(y_test.index).set_index("Block_Group")
 
