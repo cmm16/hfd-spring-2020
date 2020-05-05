@@ -35,10 +35,6 @@ def main(data_dir):
     run_income_eda(output_dir, train_df)
     run_language_eda(output_dir, train_df)
 
-
-
-
-
 if __name__ == '__main__':
     main(join(dirname(dirname(getcwd())), "Data"))
 
