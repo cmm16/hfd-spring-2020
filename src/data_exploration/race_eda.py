@@ -15,7 +15,7 @@ def run_race_eda(output_dir, train_df):
 	Output: 
 		- single column data frame of data  
 	"""
-	races = ['Hispanic', 'Black', 'White', 'Asian']
+	races = ['White', 'Hispanic', 'Black', 'Asian']
 	sizes, race_avgs = data_wrangling(train_df)
 	race_avgs.to_csv(join(output_dir, "race_call_category_averages.csv"))
 	general_eda.make_volume_chart(output_dir, race_avgs, "Average Calls per Racially Homogeneous Block Groups", 

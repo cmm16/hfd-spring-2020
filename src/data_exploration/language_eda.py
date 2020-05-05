@@ -11,6 +11,7 @@ def run_language_eda(output_dir, train_df):
 		- train_df: Dataframe of census and call counts per block group 
 	"""
 	lang = data_wrangling(train_df)
+	lang.to_csv(join(output_dir, "lang_call_category_averages.csv"))
 	general_eda.make_volume_chart(output_dir, lang, "Average Calls per Primary Language", 
 		"Household Language", [0,1], ['English', 'Not English'])
 

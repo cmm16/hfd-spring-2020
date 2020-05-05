@@ -9,15 +9,15 @@ from income_eda import run_income_eda
 from language_eda import run_language_eda
 
 # incidents_df = pd.read_csv("test/imagetrend_incidents.csv")
-# train_df = pd.read_csv("test/final_train_categories.csv")
+train_df = pd.read_csv("test/final_train_categories.csv")
 
 def main(output_dir):
-    mkdir(output_dir)
+    # mkdir(output_dir)
 
-    run_time_eda(output_dir, incidents_df) 
-    run_race_eda(output_dir, train_df)
-    run_age_eda(output_dir, train_df)
-    run_income_eda(output_dir, train_df)
+    # run_time_eda(output_dir, incidents_df) 
+    # run_race_eda(output_dir, train_df)
+    # run_age_eda(output_dir, train_df)
+    # run_income_eda(output_dir, train_df)
     run_language_eda(output_dir, train_df)
 
 if __name__ == '__main__':

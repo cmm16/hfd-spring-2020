@@ -19,7 +19,7 @@ def make_volume_chart(output_dir, df, title, xaxis_label, xticks, xtick_labels):
 		- xtick_labels: array of strings for each x-tick label 
 	"""
 	plt.figure(figsize=(10, 10))
-	df.total_calls.plot(kind="bar", color=['coral', 'red', 'darkorange', 'firebrick'])
+	df.total_calls_per_cap.plot(kind="bar", color=['coral', 'red', 'darkorange', 'firebrick'])
 	plt.title(title, fontsize=20)
 	plt.ylabel("Average Call Volume", fontsize=18)
 	plt.yticks(fontsize=15)
