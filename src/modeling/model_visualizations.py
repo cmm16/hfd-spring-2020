@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import shap
 import pandas as pd
 import matplotlib.lines as mlines
-from sklearn.metrics import r2_score
+import plotly.graph_objects as go
 
 def visualize_targets(y_data):
     """
@@ -54,3 +54,17 @@ def visualize_predictions(model, x_df, y_df, name):
                           markersize=10, label='Red line')
     plt.legend([red_line, blue_dot], ["Perfect Prediction Line", "Block Group"], loc='lower right')
     return plt
+
+
+def create_params_table(optimal_params_df, name):
+    fig = go.Figure(data=[go.Table(
+        header=dict(values=[name] + list(optimal_params_df.columns),
+                    fill_color='paleturquoise',
+                    align='left'),
+        cells=dict(values=[optimal_params_df.index] + [col for col in optimal_params_df.transpose().values],
+                   fill_color='lavender',
+                   align='left'))
+    ])
+    return fig
+
+

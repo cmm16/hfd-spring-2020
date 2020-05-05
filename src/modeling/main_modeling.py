@@ -1,17 +1,21 @@
 from src.modeling.model_object import LGBModel
-from src.modeling.model_visualizations import visualize_model_features, visualize_predictions
+from src.modeling.model_visualizations import visualize_model_features, visualize_predictions, create_params_table
 from src.modeling.model_evaluation import compute_error_metrics
 import pandas as pd
 from os.path import join, dirname
 from os import getcwd, mkdir
 import os
 import shutil
+from pandas.plotting import table
+import matplotlib.pyplot as plt
+
 
 
 def main(data_dir):
     y_train_all = pd.read_csv(join(data_dir, "y_train.csv")).set_index("Block_Group")
     X_train = pd.read_csv(join(data_dir, "x_train.csv")).set_index("Block_Group")
 
+    model_viz_path = join(data_dir, "model_viz")
     bounds_lgb = {
         'feature_fraction': (0.3, 1),
         'lambda_l1': (0., 70.),
@@ -23,6 +27,10 @@ def main(data_dir):
         'min_sum_hessian_in_leaf': (0.01, 1),
         'num_leaves': (10, 50)
     }
+    bounds_df = pd.DataFrame(bounds_lgb).transpose().rename({0: "Lower Bound", 1: "Upper Bound"}, axis=1)
+    fig = create_params_table(bounds_df, "Hyperparameter")
+    fig.show()
+
     optimal_params_list = []
 
     if not os.path.exists(join(data_dir, "models")):
@@ -36,7 +44,7 @@ def main(data_dir):
     else:
         shutil.rmtree(join(data_dir, "model_viz"))  # Removes all the subdirectories!
         mkdir(join(data_dir, "model_viz"))
-    model_viz_path = join(data_dir, "model_viz")
+
     models = []
     for col in y_train_all.columns:
         y_train = y_train_all[col]
@@ -51,11 +59,18 @@ def main(data_dir):
         visualize_model_features(col + " Feature Importance", model, X_train, None).savefig(join(model_viz_path, col + " heat"))
         visualize_predictions(model, X_train, y_train, col).savefig(join(model_viz_path, col + " imp"))
 
-    pd.DataFrame(optimal_params_list, index=y_train_all.columns).to_csv(join(data_dir, "optimal_params.csv"))
+    optimal_params_df = pd.DataFrame(optimal_params_list, index=y_train_all.columns).to_csv(join(data_dir, "optimal_params.csv"))
 
-    X_test = pd.read_csv(join(data_dir, "x_test.csv"))
-    y_test = pd.read_csv(join(data_dir, "y_test.csv"))
-    print(compute_error_metrics(X_train, X_test, y_train_all, y_test, models))
+    fig = create_params_table(optimal_params_df, "Model")
+    fig.write_image(join(model_viz_path, "optimal_params.jpg"))
+
+    X_test = pd.read_csv(join(data_dir, "x_test.csv")).set_index("Block_Group")
+    y_test = pd.read_csv(join(data_dir, "y_test.csv")).set_index("Block_Group")
+
+    error_metrics_df = compute_error_metrics(X_train, X_test, y_train_all, y_test, models)
+
+
+
 
 
 if __name__ == '__main__':

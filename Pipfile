@@ -18,6 +18,9 @@ pytest = "*"
 seaborn = "*"
 lightgbm = "*"
 shap = "*"
+plotly = "*"
+psutil = "*"
+plotly-orca = "*"
 
 [requires]
 python_version = "3.7"
