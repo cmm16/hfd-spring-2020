@@ -17,6 +17,7 @@ def run_time_eda(data_dir, incidents_df):
 	timedf = data_wrangle(incidents_df)
 	plot_raw_data(data_dir, timedf)
 	plot_decomposition(data_dir, timedf)
+	plot_yearly_dist(data_dir, incidents_df)
 
 
 def data_wrangle(df, start_date="2013-01", level="Day"):
@@ -74,3 +75,19 @@ def plot_decomposition(data_dir, timedf):
 	result.plot()
 	plt.xlabel("Date")
 	plt.savefig(join(data_dir, "timeseries_decomposition.png"))
+
+def plot_yearly_dist(data_dir, incidents_df): 
+	fig = plt.figure(figsize=(15,10))
+	ax = fig.add_subplot(111)
+	years = incidents_df.groupby(["Year", "Call_Category"]).Event_Number.count().unstack(1)
+	callsPercent = years.apply(lambda row: row/row.sum(), axis=1)
+	callsPercent.plot(ax=ax,kind='bar', stacked=True, rot=0, color=['coral', 'red', 'yellow', 'darkorange', 'firebrick', 'gold'])
+	mylabels = ["Health (internal)", "External Injuries", "Mental Illness", "Motor", 'Fire', 'Other']
+	plt.title("Yearly Call Distribution", fontsize=20)
+	plt.ylabel("Portion of Calls", fontsize=18)
+	plt.yticks(fontsize=15)
+	plt.xlabel("Year", fontsize=18)
+	plt.xticks(fontsize=15)
+	plt.legend(labels = mylabels)
+	plt.savefig(join(data_dir, "yearly_call_distribution.png"))
+

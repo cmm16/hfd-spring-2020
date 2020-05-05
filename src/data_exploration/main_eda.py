@@ -1,8 +1,8 @@
 from os.path import join, dirname
 import pandas as pd
 from os import getcwd, mkdir
-# you should import all helper files here
-import time_series as time_eda
+
+import time_eda
 # each helper file should have one or two functions that you call here those
 
 incidents_df = pd.read_csv("test/imagetrend_incidents.csv")
