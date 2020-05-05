@@ -46,6 +46,10 @@ def main(data_dir):
     # model prep
     x_df, _, y_df = model_prep(pd.read_csv(census_save_path))
     # perform test train split and save
+    print(y_df.columns)
+    y_df = y_df[['Percent Fire Related Calls', 'Percent Health Related Calls',
+       'Percent Injuries External Related Calls',
+       'Percent Mental Illness Related Calls']]
     x_train_save_path = join(data_dir, "x_train.csv")
     y_train_save_path = join(data_dir, "y_train.csv")
     x_test_save_path = join(data_dir, "x_test.csv")

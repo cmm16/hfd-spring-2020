@@ -45,6 +45,9 @@ def main(data_dir):
         shutil.rmtree(join(data_dir, "model_viz"))  # Removes all the subdirectories!
         mkdir(join(data_dir, "model_viz"))
 
+    X_test = pd.read_csv(join(data_dir, "x_test.csv")).set_index("Block_Group")
+    y_test = pd.read_csv(join(data_dir, "y_test.csv")).set_index("Block_Group")
+
     models = []
     for col in y_train_all.columns:
         y_train = y_train_all[col]
@@ -53,22 +56,24 @@ def main(data_dir):
         optimal_params_list.append(optimal_params)
 
         model = model_pipeline.train(optimal_params)
-        model.save_model(join(join(data_dir, "models"), col + " model.txt"))
+        #model.save_model(join(join(data_dir, "models"), col + " model.txt"))
         models.append(model)
-        visualize_model_features(col + " Feature Importance", model, X_train, 'bar').savefig(join(model_viz_path, col + " abs"))
-        visualize_model_features(col + " Feature Importance", model, X_train, None).savefig(join(model_viz_path, col + " heat"))
-        visualize_predictions(model, X_train, y_train, col).savefig(join(model_viz_path, col + " imp"))
+        visualize_model_features(col + " Feature Importance", model[0], X_train, 'bar').savefig(join(model_viz_path, col + " abs"))
+        visualize_model_features(col + " Feature Importance", model[0], X_train, None).savefig(join(model_viz_path, col + " heat"))
+        visualize_predictions(model, X_train, y_train, "Train " + col[7:]).savefig(join(model_viz_path, col + "train imp"))
+        visualize_predictions(model, X_test, y_test[col], "Test " + col[7:]).savefig(join(model_viz_path, col + "test imp"))
 
-    optimal_params_df = pd.DataFrame(optimal_params_list, index=y_train_all.columns).to_csv(join(data_dir, "optimal_params.csv"))
-
+    optimal_params_df = pd.DataFrame(optimal_params_list, index=y_train_all.columns)
+    optimal_params_df.to_csv(join(data_dir, "optimal_params.csv"))
     fig = create_params_table(optimal_params_df, "Model")
-    fig.write_image(join(model_viz_path, "optimal_params.jpg"))
+    fig.show()
 
-    X_test = pd.read_csv(join(data_dir, "x_test.csv")).set_index("Block_Group")
-    y_test = pd.read_csv(join(data_dir, "y_test.csv")).set_index("Block_Group")
 
-    error_metrics_df = compute_error_metrics(X_train, X_test, y_train_all, y_test, models)
 
+    error_metrics_df, all_predictions_df = compute_error_metrics(X_train, X_test, y_train_all, y_test, models)
+    fig = create_params_table(error_metrics_df, "Model")
+    fig.show()
+    all_predictions_df.to_csv(join(data_dir, "model_predictions.csv"))
 
 
 

@@ -43,11 +43,20 @@ class LGBModel:
         return LGB_BO.max['params']
 
     def train(self, params):
+        models = []
+        KFolds = KFold(n_splits=5, shuffle=True, random_state=9).split(self.x_train, self.y_train)
         formated_params = format_params(params)
-        lgb_train = lgb.Dataset(self.x_train, self.y_train, free_raw_data=False, params={'verbose': -1})
-        num_rounds = 5000
-        clf = lgb.train(formated_params, lgb_train, num_rounds, verbose_eval=False)
-        return clf
+        for fold in KFolds:
+            lgb_train, lgb_valid, fold_val_x, fold_val_y = self.generate_lgb_fold_data(fold)
+            #lgb_train = lgb.Dataset(self.x_train, self.y_train, free_raw_data=False, params={'verbose': -1})
+            num_rounds = 5000
+            clf = lgb.train(formated_params, lgb_train, num_rounds,
+                            valid_sets=[lgb_valid],
+                            verbose_eval=False,
+                            early_stopping_rounds=50)
+            #val_preds = clf.predict(fold_val_x, num_iterations=clf.best_iteration)
+            models.append(clf)
+        return models
 
     def lgb_bayesian(self, num_leaves, min_data_in_leaf, learning_rate, min_sum_hessian_in_leaf, feature_fraction, lambda_l1,
                  lambda_l2, min_gain_to_split, max_depth):
@@ -78,7 +87,7 @@ class LGBModel:
             'n_jobs': -1
         }
         formated_params = format_params(params)
-        KFolds = KFold(n_splits=4, shuffle=True, random_state=9).split(self.x_train, self.y_train)
+        KFolds = KFold(n_splits=5, shuffle=True, random_state=9).split(self.x_train, self.y_train)
 
         lgb_train, lgb_valid, fold_val_x, fold_val_y = self.generate_lgb_fold_data(list(KFolds)[0])
 

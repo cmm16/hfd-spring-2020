@@ -4,6 +4,7 @@ import shap
 import pandas as pd
 import matplotlib.lines as mlines
 import plotly.graph_objects as go
+import numpy as np
 
 def visualize_targets(y_data):
     """
@@ -41,9 +42,13 @@ def create_model_bounds_df(bounds_lgb):
 
 def visualize_predictions(model, x_df, y_df, name):
     fig=plt.figure(figsize=(8, 6))
-    plt.plot(model.predict(x_df), y_df, 'p', alpha=0.5)
+    preds = []
+    for s_model in model:
+        preds.append(s_model.predict(x_df))
+    plt.plot(np.mean(preds, 0), y_df, 'p', alpha=0.5)
+
     plt.ylim(min(y_df-.001), max(y_df) + .001)
-    plt.xlim(min(model.predict(x_df) - .001), max(model.predict(x_df)) + .001)
+    plt.xlim(min(np.mean(preds, 0) - .001), max(np.mean(preds, 0) + .001))
     plt.plot([0,100], [0, 100], c="red")
     plt.title("Actual vs Predicted Percent " + name + " Calls by Block Group")
     plt.xlabel("Predicted Call Category Percent (%)")
