@@ -20,7 +20,7 @@ lightgbm = "*"
 shap = "*"
 plotly = "*"
 psutil = "*"
-plotly-orca = "*"
+statsmodels = "*"
 
 [requires]
 python_version = "3.7"
