@@ -18,7 +18,7 @@ class SpatialJoin:
         self.geo_map = gpd.read_file(path_to_geojson)
         self.point_data = pd.read_csv(path_to_point_data)
         # compute list of point type object row[4] is for longitude and row[5] os for latitude
-        self.points = [Point(row[4], row[5]) for row in self.point_data.values]
+        self.points = [Point(row[5], row[6]) for row in self.point_data.values]
 
     def id_fips_codes(self):
         """
