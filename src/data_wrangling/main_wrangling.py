@@ -4,7 +4,10 @@ from os.path import join, dirname
 import pandas as pd
 
 from src.data_wrangling.aggregate import image_trend_aggregate
-from src.data_wrangling.covid_risk_incides import CovidRiskCalculator
+from src.data_wrangling.covid_risk_incides import (
+    CovidRiskCalculator,
+    aggregate_covid_to_fire_dist,
+)
 from src.data_wrangling.imagetrend_wrangling import dropAirports
 from src.data_wrangling.merge_on_bg import merge_by_bg
 from src.data_wrangling.model_prep import model_prep
@@ -85,6 +88,12 @@ def main(data_dir):
         covid_save_path,
     )
     covid_risk_calculator.create_covid_df()
+    fire_dist_save_path = join(data_dir, "firedist_covid.csv")
+    aggregate_covid_to_fire_dist(
+        pd.read_csv(join(data_dir, "Image_Trend_Merged_SpatialJOIN.csv")),
+        pd.read_csv(covid_save_path),
+        fire_dist_save_path,
+    )
 
 
 if __name__ == "__main__":

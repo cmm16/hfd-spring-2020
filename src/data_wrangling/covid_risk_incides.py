@@ -23,17 +23,10 @@ class CovidRiskCalculator:
         dat = dat.merge(insurance, on="Block_Group")
         dat = dat.fillna(dat.median())
         call_counts = call_counts.loc[dat.set_index("Block_Group").index, :]
-        dat["Call Percent"] = (call_counts.sum(1) / sum(call_counts.sum(1))).values
-        for col in [
-            "fire",
-            "health",
-            "injuries_external",
-            "mental_illness",
-            "motor",
-            "other",
-        ]:
-            percents = call_counts[col] / sum(call_counts.sum(1))
-            dat["percent " + col] = percents.values
+        dat[
+            ["fire", "health", "injuries_external", "mental_illness", "motor", "other"]
+        ] = call_counts.values
+
         self.dat = dat
         self.save_path = save_path
 
@@ -69,18 +62,14 @@ class CovidRiskCalculator:
                 "Poverty_Index",
                 "Diversity_Index",
                 "Risk_Index",
-                "Call Percent",
             ]
             + [
-                "percent " + col
-                for col in [
-                    "fire",
-                    "health",
-                    "injuries_external",
-                    "mental_illness",
-                    "motor",
-                    "other",
-                ]
+                "fire",
+                "health",
+                "injuries_external",
+                "mental_illness",
+                "motor",
+                "other",
             ]
         ]
         indexDF.to_csv(self.save_path, index=False)
@@ -215,3 +204,31 @@ class CovidRiskCalculator:
 
         return risk
 
+
+def aggregate_covid_to_fire_dist(df, covid_df, save_path):
+    df1 = df.groupby(["AdminDist", "Name"]).count()[["Event_Number"]].reset_index()
+    df2 = df.groupby(["AdminDist"]).count()[["Event_Number"]].reset_index()
+    df3 = df1.merge(df2, how="left", left_on="AdminDist", right_on="AdminDist")
+    df3["scaler"] = df3["Event_Number_x"] / df3["Event_Number_y"]
+
+    merged_df = covid_df.merge(df3, how="inner", left_on="Block_Group", right_on="Name")
+    indices_to_scale = ["Health_Affliction_Index", "Poverty_Index", "Diversity_Index"]
+    col_names = []
+    call_types = [
+        "fire",
+        "health",
+        "injuries_external",
+        "mental_illness",
+        "motor",
+        "other",
+    ]
+    merged_df["Call Percent"] = merged_df[call_types].sum(1) / sum(
+        merged_df[call_types].sum(1)
+    )
+
+    for col in indices_to_scale:
+        col_names.append("Scaled " + col)
+        merged_df["Scaled " + col] = merged_df[col] * merged_df["scaler"]
+    new_df = merged_df[col_names + ["scaler", "AdminDist", "Call Percent"]]
+    # replace with save path
+    new_df.groupby(["AdminDist"]).sum().reset_index().to_csv(save_path)
