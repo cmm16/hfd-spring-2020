@@ -33,3 +33,4 @@ def assignCallDemandLabel(data):
 	data.loc[data.prob_call >= avg, 'prob_call_level'] = "high"
 	data.loc[data.prob_call < avg, 'prob_call_level'] = "low"
 	return data 
+
