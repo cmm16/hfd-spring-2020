@@ -24,6 +24,7 @@ statsmodels = "*"
 folium = "*"
 pyshp = "*"
 pymannkendall = "*"
+bayesian-optimization = "*"
 
 [requires]
 python_version = "3.7"
