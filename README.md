@@ -16,6 +16,7 @@ Follow the bellow instructions or copy and paste the commandline prompts under i
    `$ pipenv sync;`
 #### Download Data
 Got to project box and download Data folder move to top level of this project\
+The path to the data folder should now be "hfd-spring-2020/Data"
 
 Unzip folder and make sure all contents go into folder called Data\
 (on linux `unzip Data.zip`)
