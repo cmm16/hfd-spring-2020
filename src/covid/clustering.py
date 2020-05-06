@@ -2,23 +2,29 @@ from os.path import join
 import pandas as pd
 import matplotlib.pyplot as plt 
 import numpy as np
+import mapping 
 from sklearn.cluster import KMeans
 from mpl_toolkits.mplot3d import Axes3D 
 import matplotlib.lines as mlines
 
 indices = ['Health_Affliction_Index', 'Poverty_Index', 'Diversity_Index']
 
-def run(output_dir, incidents):
+def run(output_dir, incidents, bg_filepath):
 
 	# k was found using the NBClust package in R 
 	# for our data, we found that the 2 clusters was the most optimal 
 	clustered_df = clustering(incidents, k=2)
-
+	clustered_df = nameClusters(clustered_df)
 	plotPoints(output_dir, clustered_df, False)
 	plotPoints(output_dir, clustered_df, True)
 	getClusterCenters(output_dir, clustered_df)
 	plotHistograms(output_dir, clustered_df)
-	plotCallDist(output_dir, clustered_df, [0,1], ['High', 'Low'])
+	plotCallDist(output_dir, clustered_df, [0,1], ['Low', 'High'])
+
+	map_df = clustered_df[['Block_Group', 'cluster']]
+	map_df['cluster_inv'] = abs(1 - map_df['cluster'])
+	mapping.makeSingleBGMap(output_dir, bg_filepath, 'feature.properties.Name', 'Risk-clusters', map_df, 
+		['Block_Group', 'cluster_inv'], 'Risk Level')
 	return clustered_df
 
 def clustering(df, k): 
@@ -31,12 +37,17 @@ def clustering(df, k):
 	df['cluster'] = labels
 	return df 
 
+def nameClusters(df): 
+	df.loc[df.cluster == 0, 'cluster_name'] = "high"
+	df.loc[df.cluster == 1, 'cluster_name'] = "low"
+	return df 
+
 def getClusterCenters(output_dir, df): 
 	# Create subset of each cluster 
 	c0 = df[df['cluster'] == 0]
 	c1 = df[df['cluster'] == 1]
-	c0_stats = c0[['Health_Affliction_Index','Poverty_Index','Diversity_Index', 'Risk_Index']].mean()
-	c1_stats = c1[['Health_Affliction_Index','Poverty_Index','Diversity_Index', 'Risk_Index']].mean()
+	c0_stats = c0[['Health_Affliction_Index','Poverty_Index','Diversity_Index','Risk_Index']].mean()
+	c1_stats = c1[['Health_Affliction_Index','Poverty_Index','Diversity_Index','Risk_Index']].mean()
 	avg = pd.DataFrame([c0_stats,c1_stats])
 	avg.to_csv(join(output_dir, "cluster-averages.csv"))
 
@@ -77,12 +88,11 @@ def plotHistograms(output_dir, df):
 		plt.close()
 
 def plotCallDist(output_dir, df, xticks, xlabels): 
-	# Create subset of each cluster 
+	call_cols = ['health','injuries_external','mental_illness', 'motor', 'fire', 'other']
 	c0 = df[df['cluster'] == 0]
 	c1 = df[df['cluster'] == 1]
-	# Get average call proportion 
-	c0_stats = c0[['health','injuries_external','mental_illness', 'motor', 'fire', 'other']].mean()
-	c1_stats = c1[['health','injuries_external','mental_illness', 'motor', 'fire', 'other']].mean()
+	c0_stats = c0[call_cols].mean()
+	c1_stats = c1[call_cols].mean()
 	avg = pd.DataFrame([c0_stats,c1_stats])
 	callsPercent = avg.apply(lambda row: row/row.sum(), axis=1)
 

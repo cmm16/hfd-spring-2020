@@ -185,7 +185,7 @@ def plot_call_dist(output_dir, portions_df, xlabel, labels, factor):
 	plt.yticks(fontsize=15)
 	plt.xlabel(xlabel, fontsize=18)
 	plt.legend(prop={'size': 20}, labels=callLabels)
-	plt.xticks(ticks=[0,1, 2, 3],labels=labels, fontsize=15)
+	plt.xticks(ticks=list(range(0,len(labels))),labels=labels, fontsize=15)
 	plt.savefig(join(output_dir, factor+"_call_dist.png"))
 
 

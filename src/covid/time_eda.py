@@ -5,12 +5,12 @@ import numpy as np
 import pymannkendall as mk
 
 def run(output_dir, incidents_df):
-	y20 = data_wrangling(incidents_df)
+	y20 = dataWrangling(incidents_df)
 	plotTS(output_dir, y20, '3/1/2020', '4/12/2020')
 	categories_df = plotCategories(output_dir, y20, '3/1/2020', '4/12/2020')
 	trendTest(output_dir, categories_df)
 
-def data_wrangling(incidents_df): 
+def dataWrangling(incidents_df): 
 	# Currently contains only calls from march and april 
 	y20 = incidents_df[incidents_df['Year'] == 2020]
 	y20 = y20[(y20['Month'] == 3) | (y20['Month'] == 4)]
@@ -34,6 +34,7 @@ def plotTS(output_dir, data, start_date, end_date):
     plt.ylabel('Call Count', fontsize=16)
     plt.xlabel('Date', fontsize=16)
     plt.savefig(join(output_dir, "daily_calls_during_covid.png"))
+    plt.close()
 
 def makeSingle(data): 
     counts = data.groupby(['Month','Date']).count()['Event_Number'].unstack(0)
@@ -67,6 +68,7 @@ def plotCategories(output_dir, data, start_date, end_date):
 	plt.ylabel("Number of Calls", fontsize=18)
 	plt.yticks(fontsize=16)
 	plt.savefig(join(output_dir, "daily_call_categories_during_covid.png"))
+	plt.close()
 	return df
 
 def trendTest(output_dir, data): 
