@@ -29,12 +29,11 @@ def main(data_dir):
     group_columns = ["Block_Group", "Event_Type"]
     groupby_save_path = join(data_dir, "bg_call_type_aggregate.csv")
     df = image_trend_aggregate(pd.read_csv(geo_join_save_path))
-    aggregate_path = join(data_dir, "post_airports.csv")
-    df.to_csv(aggregate_path, index=False)
+    df.to_csv(groupby_save_path, index=False)
 
     path_to_census = join(data_dir, "Census Data/census_hfd_counties_BG.csv")
     merge_by_bg(
-        aggregate_path,
+        groupby_save_path,
         path_to_census,
         "Block_Group",
         "GeoID17bg",
@@ -55,7 +54,6 @@ def main(data_dir):
     # model prep
     x_df, _, y_df = model_prep(pd.read_csv(census_save_path))
     # perform test train split and save
-    print(y_df.columns)
     y_df = y_df[
         [
             "Percent Fire Related Calls",

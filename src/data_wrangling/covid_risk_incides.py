@@ -214,3 +214,4 @@ class CovidRiskCalculator:
         # risk = np.mean(indicies)
 
         return risk
+

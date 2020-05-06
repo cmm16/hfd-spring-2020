@@ -37,6 +37,10 @@ def aggregate(data_path, groupby_columns, save_path):
     aggregate_df.to_csv(save_path)
 
 
+def fire_district_aggregate():
+    pass
+
+
 call_category_map = {
     "FEAB": "health",
     "FEAV": "health",
