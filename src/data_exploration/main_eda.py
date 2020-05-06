@@ -1,15 +1,17 @@
-from os.path import join, dirname
-import pandas as pd
-from os import getcwd, mkdir
 import os
 import shutil
-from src.data_exploration.time_eda import run_time_eda
-from src.data_exploration.race_eda import run_race_eda
+from os import getcwd, mkdir
+from os.path import join, dirname
+
+import pandas as pd
+
 from src.data_exploration.age_eda import run_age_eda
+from src.data_exploration.airport_eda import run_airports_eda
 from src.data_exploration.income_eda import run_income_eda
 from src.data_exploration.language_eda import run_language_eda
-from src.data_exploration.airport_eda import run_airports_eda
-import seaborn as sns
+from src.data_exploration.race_eda import run_race_eda
+from src.data_exploration.time_eda import run_time_eda
+
 
 def main(data_dir):
     print(data_dir)
@@ -33,7 +35,6 @@ def main(data_dir):
     run_income_eda(output_dir, train_df)
     run_language_eda(output_dir, train_df)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main(join(dirname(dirname(getcwd())), "Data"))
-
-
