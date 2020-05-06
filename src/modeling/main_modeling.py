@@ -4,6 +4,7 @@ from os import getcwd, mkdir
 from os.path import join, dirname
 
 import pandas as pd
+import numpy as np
 
 from src.modeling.mapping import run_map_maker
 from src.modeling.model_evaluation import compute_error_metrics
@@ -86,8 +87,21 @@ def main(data_dir):
     fig.show()
     all_predictions_df.to_csv(join(data_dir, "model_predictions.csv"))
 
-    run_map_maker(model_viz_path, all_predictions_df, bg_filepath, fd_filepath)
-
+    y_train_all = pd.read_csv(join(data_dir, "y_train.csv"))
+    y_test = pd.read_csv(join(data_dir, "y_test.csv"))
+    y_all = y_test.append(y_train_all)
+    all_predictions_df = pd.read_csv(join(data_dir, "model_predictions.csv"))
+    names = list(y_all.columns) + ["_"] + list(all_predictions_df.columns[1:])
+    input_df = pd.DataFrame(np.concatenate([y_all.values, all_predictions_df.values], axis=1), columns=names)
+    bg_filepath = join(
+        join(join(data_dir, "Uploaded_Shapefiles"), "CensusBlock_2010"),
+        "Census_FIP12_within_Fire_Dis.geojson",
+    )
+    fd_filepath = join(
+        join(join(data_dir, "Uploaded_Shapefiles"), "Fire_Districts"),
+        "fire_districts.geojson",
+    )
+    run_map_maker(model_viz_path, input_df, bg_filepath, fd_filepath)
 
 if __name__ == "__main__":
     main(join(dirname((dirname(getcwd()))), "Data"))

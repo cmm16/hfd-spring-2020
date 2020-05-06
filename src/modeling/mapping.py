@@ -5,12 +5,12 @@ import folium
 import branca
 from folium import FeatureGroup, LayerControl, Map
 
-callTypes = ['Fire','Health','Injuries External', 'Mental Illness', 'Motor', 'Other']
+callTypes = ['Fire','Health','Injuries External', 'Mental Illness']
 columns = ['Percent Fire Related Calls',
        'Percent Health Related Calls',
        'Percent Injuries External Related Calls',
-       'Percent Mental Illness Related Calls', 'Percent Motor Related Calls',
-       'Percent Other Related Calls', 'Predicted Percent Fire Related Calls',
+       'Percent Mental Illness Related Calls',
+        'Predicted Percent Fire Related Calls',
        'Predicted Percent Health Related Calls',
        'Predicted Percent Injuries External Related Calls',
        'Predicted Percent Mental Illness Related Calls']
@@ -26,8 +26,7 @@ def run_map_maker(output_dir, data, bg_filepath, fd_filepath):
     data['Block_Group'] = data['Block_Group'].str[:12]
 
     # Make single maps 
-    for column in callTypes: 
-        print(column)
+    for column in callTypes:
         formal_name = "Percent "+column+" Related Calls"
         makeSingleFDOutlineMap(output_dir, bg_filepath, fd_filepath, "feature.properties.Name", 
             "actual_"+column+"_blockGroup_map", data, formal_name, "Proportion of "+column+" Calls", column) 
@@ -133,8 +132,10 @@ def makeInteractiveMap(output_dir, data, bg_filepath, fd_filepath):
     fmap = folium.Map(location=[29.72, -95.60], name="Map", tiles='cartodbpositron', 
                       zoom_start=10, control=False, overlay=False)
 
-    for column in columns: 
+    for column in columns:
+        print(column, data)
         data[column] = data[column].round().astype(int)
+
         folium_del_legend(folium.Choropleth(geo_data=bg_filepath, 
                 overlay=False, show = False, name=column, data=data, 
                 threshold_scale = [0, 5, 10, 20, 30, 40, 50, 60, 80, 101],
