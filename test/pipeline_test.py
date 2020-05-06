@@ -3,7 +3,7 @@ import pytest
 
 @pytest.fixture
 def hfd_pipeline():
-    from src.main import main
+    from src.__main__ import main
     return main("/home/cole-work/PycharmProjects/hfd-spring-2020/test_data")
 
 
