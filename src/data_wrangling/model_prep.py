@@ -1,7 +1,10 @@
+from os.path import join
+
 import numpy as np
 import pandas as pd
 
 pd.options.mode.chained_assignment = None
+
 
 
 def combine_demographic_features(df):
@@ -107,17 +110,12 @@ def combine_demographic_features(df):
     return new_df
 
 
-def table_joins(initial_df):
+def table_joins(data_dir, initial_df):
     """ Joins feature engineered data frame to additional data sets for new features """
-    df_acres = pd.read_csv(
-        "/home/cole-work/PycharmProjects/hfd-spring-2020/data/acres.csv"
-    )
-    df_fire_station = pd.read_csv(
-        "/home/cole-work/PycharmProjects/hfd-spring-2020/data/centroid_nearest_firestation_censusblockgroup.csv"
-    )
-    intersections_df = pd.read_excel(
-        "/home/cole-work/PycharmProjects/hfd-spring-2020/data/Intersection_SpatialJoin_BlockGroup.xls"
-    )
+    df_acres = pd.read_csv(join(data_dir,"acres.csv"))
+    df_fire_station = pd.read_csv(join(data_dir,"centroid_nearest_firestation_censusblockgroup.csv"))
+    intersections_df = pd.read_excel(join(data_dir,"Intersection_SpatialJoin_BlockGroup.xls"))
+
     intersections_df = (
         intersections_df.groupby("BlockGroup")
         .count()
@@ -208,9 +206,9 @@ def create_targets_df(df, intial_df):
     return target_df
 
 
-def model_prep(initial_df):
+def model_prep(data_dir, initial_df):
     """ Combines all functions necessary to prepare data from modeling going but before test train split """
-    df = table_joins(initial_df)
+    df = table_joins(data_dir, initial_df)
     df = combine_demographic_features(df)
     df = remove_nulls(df)
     target_df = create_targets_df(df, initial_df)

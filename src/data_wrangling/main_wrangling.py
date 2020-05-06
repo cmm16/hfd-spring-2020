@@ -60,7 +60,7 @@ def main(data_dir, args):
     )
 
     # model prep
-    x_df, _, y_df = model_prep(pd.read_csv(census_save_path))
+    x_df, _, y_df = model_prep(data_dir, pd.read_csv(census_save_path))
     # perform test train split and save
     y_df = y_df[
         [
