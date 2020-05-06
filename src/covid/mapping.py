@@ -10,8 +10,22 @@ def make_bg_geo_data(bg_filepath, data, bg_column_name):
 	bg_geo_data_df = bg_geo_df.merge(data, left_on=bg_data_col_name, right_on="Block_Group")
 	return bg_geo_data_df
 
-def makeSingleFDOutlineCategorialMap(output_dir, bg_filepath, fd_filepath, geojson_key, map_filename, 
-	data, columns, legend_name, color="YlOrRd", mapname="Map", bg_info_col, bg_info_col_name, bg_data_col_name): 
+def makeSingleBGMap(output_dir, bg_filepath, geojson_key, map_filename, df, columns, legend_name, color="YlOrRd"):
+    # Change block group to string type for mapping 
+    df['Block_Group'] = df['Block_Group'].astype(str)
+    df['Block_Group'] = df['Block_Group'].str[:12]
+
+    fmap = folium.Map(location=[29.72, -95.60], tiles='cartodbpositron', zoom_start=10)
+
+    folium.Choropleth(geo_data=bg_filepath, 
+                    data=df, columns=columns, key_on=geojson_key, 
+                    fill_color=color, fill_opacity=1, line_opacity=0.2, 
+                    nan_fill_color='White', legend_name=legend_name).add_to(fmap)
+
+    fmap.save(output_dir+"/"+map_filename+".html")  
+
+def makeSingleFDOutlineMap(output_dir, bg_filepath, fd_filepath, geojson_key, map_filename, data, 
+    columns, legend_name, bg_info_col, bg_info_col_name, bg_data_col_name, color="YlOrRd", mapname="Map"): 
 	"""
 	Creates choloropleth map of single value with toggleable fire district outlines. 
 
