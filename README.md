@@ -4,17 +4,25 @@ DSCI 435 Spring 2020 \
 Rice University 
 
 ### Description 
-This is the repository for Team HFD's entire project. This set of scripts form a complete data science pipeline to create a general Risk Assessment and covid-19 risk assessment of Houston. 
+This is the repository for Team HFD's entire project. This set of scripts form a complete data science pipeline to create a general Risk Assessment and covid-19 risk assessment of Houston.
 
-### Members
-| Name | Email |
-| ----------- | ----------- |
-| Melinda Ding | mjd4@rice.edu |
-| Nick Falkenberg | nff1@rice.edu |
-| Neyda Mami | ncm6@rice.edu |
-| Cole Morgan | cmm16@rice.edu |
-| Ohifeme Longe | otl1@rice.edu |
-| Emre Yurtbay | eay2@rice.edu |
+#### Methods Used 
+- Time Series Decomposition
+- Chi-squared tests
+- Mann-Kendall trend test
+- Light Gradient Boosting Model
+- K-means clustering 
+
+#### Technologies Used 
+- Python 
+   - NumPy/pandas
+   - matplotlib 
+   - scikit-learn
+   - seaborn
+   - folium 
+- R 
+   - NBClust 
+   - Clustree
 
 ---
 ## Documentation 
@@ -57,3 +65,13 @@ To run project but skip spatial join (saves time)\
 `$ pipenv run python $PWD --skip True;`
 
 After running the project, you can find general risk assessment outputs in "hfd-spring-2020/eda_output" and covid risk assessment outputs in "hfd-spring-20202/covid_output". 
+
+---
+### Members
+
+- Melinda Ding 
+- Nick Falkenberg
+- Neyda Mami 
+- Cole Morgan
+- Ohifeme Longe
+- Emre Yurtbay
