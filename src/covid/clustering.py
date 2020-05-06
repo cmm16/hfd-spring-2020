@@ -1,11 +1,11 @@
 from os.path import join
-import pandas as pd
-import matplotlib.pyplot as plt 
-import numpy as np
-import mapping 
-from sklearn.cluster import KMeans
-from mpl_toolkits.mplot3d import Axes3D 
+
 import matplotlib.lines as mlines
+import matplotlib.pyplot as plt
+import pandas as pd
+from sklearn.cluster import KMeans
+
+import src.covid.mapping as mapping
 
 indices = ['Health_Affliction_Index', 'Poverty_Index', 'Diversity_Index']
 

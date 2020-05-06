@@ -1,9 +1,8 @@
-import pandas as pd
-import geopandas as gpd
-from shapely.geometry import Point
 from multiprocessing import Pool
-from os import path
-from os import getcwd
+
+import geopandas as gpd
+import pandas as pd
+from shapely.geometry import Point
 
 
 class SpatialJoin:
@@ -73,6 +72,4 @@ def spatial_join(path_to_geojson, path_to_point_data, save_path):
         save_path (str): String path to where save results should go
     """
     sp = SpatialJoin(path_to_geojson, path_to_point_data)
-    sp.spatial_join_and_save(
-        save_path
-    )
+    sp.spatial_join_and_save(save_path)

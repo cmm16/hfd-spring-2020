@@ -20,7 +20,10 @@ lightgbm = "*"
 shap = "*"
 plotly = "*"
 psutil = "*"
-plotly-orca = "*"
+statsmodels = "*"
+folium = "*"
+pyshp = "*"
+pymannkendall = "*"
 
 [requires]
 python_version = "3.7"
