@@ -5,6 +5,7 @@ from os.path import join, dirname
 
 import pandas as pd
 
+from src.modeling.mapping import run_map_maker
 from src.modeling.model_evaluation import compute_error_metrics
 from src.modeling.model_object import LGBModel
 from src.modeling.model_visualizations import (
@@ -84,6 +85,8 @@ def main(data_dir):
     fig = create_params_table(error_metrics_df, "Model")
     fig.show()
     all_predictions_df.to_csv(join(data_dir, "model_predictions.csv"))
+
+    run_map_maker(model_viz_path, all_predictions_df, bg_filepath, fd_filepath)
 
 
 if __name__ == "__main__":

@@ -33,8 +33,5 @@ def main(data_dir):
     run_income_eda(output_dir, train_df)
     run_language_eda(output_dir, train_df)
 
-    ## NEEDS MODEL OUTPUT SO PROB MOVE TO MODELLING SECTION ##
-    run_map_maker(output_dir, model_output, bg_filepath, fd_filepath)
-
 if __name__ == '__main__':
-    main(join(dirname(dirname(getcwd())), "eda_output"))
+    main(join(dirname(dirname(getcwd())), "Data"))
