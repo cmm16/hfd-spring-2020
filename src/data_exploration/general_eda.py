@@ -45,6 +45,11 @@ def calculate_total_calls(data):
     """
 	This function calculates total calls for a given input dataframe, and returns 
 	the sum of the calls and calls per cap as new columns. 
+
+	Input:
+		- data: dataframe of call categories per grouping and total population
+
+	Returns: dataframe of total_calls and total_calls per capita
 	"""
     data["total_calls"] = 0
     for call in call_cols:
@@ -63,7 +68,8 @@ def get_quantile_data(column, data):
 		- column: String name of column
 		- data: train_categories dataframe 
 	
-	Output: 
+	Returns:
+		- dataframe of average number of calls per quartile
 		- dataframe of call proportions for each quartile 
 	"""
     data = calculate_total_calls(data)
@@ -122,10 +128,15 @@ def plot_volume_chart(output_dir, df, title, xaxis_label, xticks, xtick_labels):
     plt.xticks(ticks=xticks, labels=xtick_labels, fontsize=15, rotation=0)
     plt.savefig(join(output_dir, title + ".png"))
 
+def plot_donut_chart(output_dir, values, labels, description): 
+	"""
+	Creates donut chart.
 
-def plot_donut_chart(output_dir, values, labels, description):
-    """
-	TODO
+	Inputs:
+		- output_dir: String path to output directory
+		- values: array of numerical values to graph
+		- labels: array of string labels for each value
+		- description: String description of the chart
 	"""
     plt.figure(figsize=(10, 10))
 

@@ -17,6 +17,15 @@ columns = ['Percent Fire Related Calls',
 
 
 def run_map_maker(output_dir, data, bg_filepath, fd_filepath): 
+    """
+    Creates all interactive maps for model. 
+
+    Input: 
+        - data_dir: String path to data directory 
+        - data: Dataframe of block group data 
+        - bg_filepath: String path to block group geojson 
+        - fd_filepath: String path to fire district geojson 
+    """
     # Correct typo in data 
     data = data.rename({'Percent Other Calls':'Percent Other Related Calls', 
           'Pecent Motor Related Calls': 'Percent Motor Related Calls'}, axis=1)
@@ -40,6 +49,12 @@ def run_map_maker(output_dir, data, bg_filepath, fd_filepath):
 
 
 def make_bg_geo_data(bg_filepath, data): 
+    """
+    Creates a geoDataFrame for 
+    Input: 
+        - data_dir: String path to data directory 
+        - data: Dataframe of block group data 
+    """
     bg_geo_df = gpd.read_file(bg_filepath, driver='GeoJSON')
     bg_geo_df = bg_geo_df[['Name', 'geometry']]
     bg_geo_data_df = bg_geo_df.merge(data, left_on='Name', right_on="Block_Group")

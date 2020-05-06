@@ -5,18 +5,42 @@ import numpy as np
 import pymannkendall as mk
 
 def run(output_dir, incidents_df):
+	"""
+	Creates all time-related covid-19 visualizations.
+
+	Inputs:
+		- output_dir: String path to output directory
+		- incidents_df: Dataframe of ImageTrend incidents
+	"""
 	y20 = dataWrangling(incidents_df)
 	plotTS(output_dir, y20, '3/1/2020', '4/12/2020')
 	categories_df = plotCategories(output_dir, y20, '3/1/2020', '4/12/2020')
 	trendTest(output_dir, categories_df)
 
 def dataWrangling(incidents_df): 
-	# Currently contains only calls from march and april 
+	"""
+	Subsets the data to covid-19 period.
+
+	Inputs:
+		- incidents_df: Dataframe of ImageTrend incidents
+
+	Returns: subsetted dataframe
+	"""
+	# Currently contains only calls from march and april
 	y20 = incidents_df[incidents_df['Year'] == 2020]
 	y20 = y20[(y20['Month'] == 3) | (y20['Month'] == 4)]
 	return y20
 
 def plotTS(output_dir, data, start_date, end_date):
+	"""
+	Create single time series plot of daily calls.
+
+	Inputs:
+		- output_dir: String path to output directory
+		- data: incident data of time period you want to graph
+		- start_date: string representation of data's start date in 'M/D/YYYY' format
+		- end_date: string representation of data's end date in 'M/D/YYYY' format
+	"""
     counts = data.groupby(['Month','Date']).count()['Event_Number'].unstack(0)
     
     # Flatten data frame into single column
@@ -37,6 +61,14 @@ def plotTS(output_dir, data, start_date, end_date):
     plt.close()
 
 def makeSingle(data): 
+	"""
+	Flattens an incident dataframe into a single column of daily counts.
+
+	Inputs:
+		- data: dataframe of incidents
+
+	Returns: a single array of daily counts
+	"""
     counts = data.groupby(['Month','Date']).count()['Event_Number'].unstack(0)
     # Flatten data frame into single column
     all_data = counts.values.flatten(order='F')
@@ -44,6 +76,17 @@ def makeSingle(data):
     return flat_data
 
 def plotCategories(output_dir, data, start_date, end_date):
+	"""
+	Plots time series broken down into each call category.
+
+	Inputs:
+		- output_dir: String path to output directory
+		- data: incident data of time period you want to graph
+		- start_date: string representation of data's start date in 'M/D/YYYY' format
+		- end_date: string representation of data's end date in 'M/D/YYYY' format
+
+	Returns: dataframe of daily call counts per call category
+	"""
 	data["Subcall_Code"] = data["Event_Type"].str[:4]
 	data["Call_Category"] = data["Subcall_Code"].apply(
 		lambda x: call_category_map[x])
@@ -75,6 +118,15 @@ def plotCategories(output_dir, data, start_date, end_date):
 	return df
 
 def trendTest(output_dir, data): 
+	"""
+	Tests each of the call categories during a given time period for
+	a monotonic trend by using the mann-kendall test. Results of this
+	test are saved to a csv file.
+
+	Inputs:
+		- output_dir: String path to output directory
+		- data: incident data of time period you want to graph
+	"""
 	call_categories = ['injuries_external', 'motor', 'health', 'fire', 'mental_illness', 'other']
 	trend = []
 	h = []

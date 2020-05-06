@@ -5,6 +5,20 @@ import folium
 from folium import FeatureGroup, LayerControl, Map
 
 def makeSingleBGMap(output_dir, geojson_filepath, geojson_key, map_filename, df, columns, legend_name, color="YlOrRd", bg=True):
+    """
+    Creates an interactive map of a single variable at block group level. 
+
+    Inputs: 
+        - output_dir: String path to output directory 
+        - geojson_filepath: String path to block group geojson 
+        - geojson_key: String key in geojson file to merge with block group in dataset
+        - map_filename: String name of filename to save map to 
+        - df: Dataframe with "Block_Group" column and other variable to plot
+        - columns: array of string column names to plot 
+        - legend_name: string name of legend 
+        - color: string colorbrewer code 
+        - bg: true if graphing results at block group level
+    """
     if bg:
         # Make sure block group is string type for mapping 
         df['Block_Group'] = df['Block_Group'].astype(str)
