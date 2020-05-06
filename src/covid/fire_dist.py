@@ -3,10 +3,10 @@ import pandas as pd
 import matplotlib.pyplot as plt 
 import numpy as np
 
-import clustering
-import call_prob
-import final_labels 
-import mapping
+import src.covid.call_prob as call_prob
+import src.covid.clustering as clustering
+import src.covid.final_labels as final_labels
+import src.covid.mapping as mapping
 
 def run(output_dir, fd_data, fd_filepath): 
 	"""
