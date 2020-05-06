@@ -26,6 +26,10 @@ def main(data_dir):
         join(join(data_dir, "Uploaded_Shapefiles"), "CensusBlock_2010"),
         "Census_FIP12_within_Fire_Dis.geojson",
     )
+    fd_filepath = join(
+        join(join(data_dir, "Uploaded_Shapefiles"), "Fire_Districts"),
+        "fire_districts.geojson",
+    )
     ### BLOCK GROUP FUNCTIONS ### 
     time_eda.run(output_dir, incidents)
     clustered_df = clustering.run(output_dir, data, bg_filepath)
