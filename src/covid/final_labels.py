@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt 
 import numpy as np
 
-import mapping
+import src.covid.mapping as mapping
 
 def run(output_dir, df, bg_filepath): 
 	labelled = assign_labels(output_dir, df)

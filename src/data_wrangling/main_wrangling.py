@@ -25,8 +25,7 @@ def main(data_dir, args):
     # performs spatial join on geojson data and points data saving to save path location
     geojson_data_path = join(
         data_dir,
-        "Uploaded_Shapefiles/CensusBlock_2010/Census_FIP12_within_Fire_Dis.geojson",
-    )
+        join("Uploaded_Shapefiles", join("CensusBlock_2010", "Census_FIP12_within_Fire_Dis.geojson")))
 
     geo_join_save_path = join(data_dir, "inc_cad_clean_with_loc.csv")
     if args["small"] is not None:
@@ -36,12 +35,11 @@ def main(data_dir, args):
         spatial_join(geojson_data_path, image_trend_wrangled_path, geo_join_save_path)
 
     # performs group by on specified columns
-    group_columns = ["Block_Group", "Event_Type"]
     groupby_save_path = join(data_dir, "bg_call_type_aggregate.csv")
     df = image_trend_aggregate(pd.read_csv(geo_join_save_path))
     df.to_csv(groupby_save_path, index=False)
 
-    path_to_census = join(data_dir, "Census Data/census_hfd_counties_BG.csv")
+    path_to_census = join(data_dir, join("Census Data","census_hfd_counties_BG.csv"))
     merge_by_bg(
         groupby_save_path,
         path_to_census,
