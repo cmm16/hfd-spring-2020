@@ -37,11 +37,11 @@ def air_create_airport_bar_charts(counts, output_dir):
     a = pd.DataFrame([h, b, c], columns=calls, index=["hobby", "iah", "not-airport"])
     a.to_csv(join(output_dir, "airport_proportions.csv"))
     callLabels = [
+        "Fire",
         "Health (internal)",
         "External Injuries",
         "Mental Illness",
         "Motor",
-        "Fire",
         "Other",
     ]
     fig = plt.figure(figsize=(20, 15))
