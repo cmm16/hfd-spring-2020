@@ -113,7 +113,8 @@ def table_joins(initial_df):
     """ Joins feature engineered data frame to additional data sets for new features """
 
     # data_dir should put you in the hfd-spring-2020 directory
-    data_dir = path.join(path.dirname(path.dirname(getcwd())), "data")
+    # data_dir = path.join(path.dirname(path.dirname(getcwd())), "data")
+    data_dir = path.join(getcwd(), "data")
     acres_file = "acres.csv"
     acres_path = path.join(data_dir, acres_file)
     centroid_file = "centroid_nearest_firestation_censusblockgroup.csv"
@@ -237,3 +238,5 @@ def model_prep(initial_df):
     target_df.to_csv("target.csv")
 
     return dem_only_preds, df, target_df
+
+print(getcwd())
