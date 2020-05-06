@@ -189,14 +189,15 @@ def plot_call_dist(output_dir, portions_df, xlabel, labels, factor):
 		- labels: array of strings to rename xticks
 		- factor: String describing demographic factor plot is about 
 	"""
-	callLabels = ["Health (internal)", "External Injuries", "Mental Illness", "Motor", 'Fire', 'Other']
-	fig = plt.figure(figsize=(20,15))
-	ax = fig.add_subplot(111)
-	portions_df.plot(ax=ax,kind='bar', stacked=True, rot=0, color=['coral', 'red', 'yellow', 'darkorange', 'firebrick', 'gold'])
-	plt.title("Call Distribution", fontsize=20)
-	plt.ylabel("Proportion of Calls", fontsize=18)
-	plt.yticks(fontsize=15)
-	plt.xlabel(xlabel, fontsize=18)
-	plt.legend(prop={'size': 20}, labels=callLabels)
-	plt.xticks(ticks=list(range(0,len(labels))),labels=labels, fontsize=15)
-	plt.savefig(join(output_dir, factor+"_call_dist.png"))
+    callLabels = ["Health (internal)", "External Injuries", "Mental Illness", "Motor", 'Fire', 'Other']
+    fig = plt.figure(figsize=(20,15))
+    ax = fig.add_subplot(111)
+    portions_df.plot(ax=ax,kind='bar', stacked=True, rot=0, color=['coral', 'red', 'yellow', 'darkorange', 'firebrick', 'gold'])
+    plt.title("Call Distribution", fontsize=20)
+    plt.ylabel("Proportion of Calls", fontsize=18)
+    plt.yticks(fontsize=15)
+    plt.xlabel(xlabel, fontsize=18)
+    plt.legend(prop={'size': 20}, labels=callLabels)
+    plt.xticks(ticks=list(range(0,len(labels))),labels=labels, fontsize=15)
+    plt.savefig(join(output_dir, factor+"_call_dist.png"))
+
