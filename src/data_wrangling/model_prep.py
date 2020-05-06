@@ -238,5 +238,3 @@ def model_prep(initial_df):
     target_df.to_csv("target.csv")
 
     return dem_only_preds, df, target_df
-
-print(getcwd())
