@@ -15,7 +15,9 @@ Got to project box and download Data file move to top level of this project
 #### Run
 To run whole project (will take a lot of time)
 `$ pipenv run python $PWD`
+
 To run project but skip spatial join (saves time)
 `$ pipenv run python $PWD --skip True`
+
 To run project on smaller dataset (saves time)
 `$ pipenv run python $PWD --small True`
