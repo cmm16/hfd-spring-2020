@@ -1,5 +1,7 @@
 import numpy as np
 import pandas as pd
+from os import path
+from os import getcwd
 
 pd.options.mode.chained_assignment = None
 
@@ -109,14 +111,24 @@ def combine_demographic_features(df):
 
 def table_joins(initial_df):
     """ Joins feature engineered data frame to additional data sets for new features """
+
+    # data_dir should put you in the hfd-spring-2020 directory
+    data_dir = path.join(path.dirname(path.dirname(getcwd())), "data")
+    acres_file = "acres.csv"
+    acres_path = path.join(data_dir, acres_file)
+    centroid_file = "centroid_nearest_firestation_censusblockgroup.csv"
+    centroid_path = path.join(data_dir, centroid_file)
+    spatial_join_file = "Intersection_SpatialJoin_BlockGroup.xls"
+    spatial_join_path = path.join(data_dir, spatial_join_file)
+
     df_acres = pd.read_csv(
-        "/home/cole-work/PycharmProjects/hfd-spring-2020/data/acres.csv"
+       acres_path
     )
     df_fire_station = pd.read_csv(
-        "/home/cole-work/PycharmProjects/hfd-spring-2020/data/centroid_nearest_firestation_censusblockgroup.csv"
+        centroid_path
     )
     intersections_df = pd.read_excel(
-        "/home/cole-work/PycharmProjects/hfd-spring-2020/data/Intersection_SpatialJoin_BlockGroup.xls"
+        spatial_join_path
     )
     intersections_df = (
         intersections_df.groupby("BlockGroup")
