@@ -16,13 +16,13 @@ Follow the bellow instructions or copy and paste the commandline prompts under i
 Got to project box and download Data folder move to top level of this project\
 
 Unzip folder and make sure all contents go into folder called Data\
-(on linux `unzip Data.zip`)\
+(on linux `unzip Data.zip`)
 #### Run
 To run whole project (will take a lot of time)\
-`$ pipenv run python $PWD`\
+`$ pipenv run python $PWD`
 
 To run project but skip spatial join (saves time)\
-`$ pipenv run python $PWD --skip True`\
+`$ pipenv run python $PWD --skip True`
 
 To run project on smaller dataset (saves time)\
-`$ pipenv run python $PWD --small True`\
+`$ pipenv run python $PWD --small True`
