@@ -66,13 +66,13 @@ def air_create_airport_bar_charts(counts, output_dir):
 
 
 def run_airports_eda(output_dir, df):
-    #plot_per_capita_calls_by_block_group(
-    #    df, "Swarm Plot of Calls per Capita by Block Group", output_dir, False
-    #)
-    #plot_per_capita_calls_by_block_group(
-    #    df,
-    #    "Swarm Plot of Calls per Capita by Block Group without Bush",
-    #    output_dir,
-    #    True,
-    #)
+    plot_per_capita_calls_by_block_group(
+        df, "Swarm Plot of Calls per Capita by Block Group", output_dir, False
+    )
+    plot_per_capita_calls_by_block_group(
+        df,
+        "Swarm Plot of Calls per Capita by Block Group without Bush",
+        output_dir,
+        True,
+    )
     air_create_airport_bar_charts(df, output_dir)

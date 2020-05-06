@@ -27,6 +27,7 @@ def main(data_dir, args):
         data_dir,
         join("Uploaded_Shapefiles", join("CensusBlock_2010", "Census_FIP12_within_Fire_Dis.geojson")))
 
+
     geo_join_save_path = join(data_dir, "inc_cad_clean_with_loc.csv")
     if args["small"] is not None:
         geo_join_save_path = join(data_dir, "small_inc_cad_clean_with_loc.csv")
