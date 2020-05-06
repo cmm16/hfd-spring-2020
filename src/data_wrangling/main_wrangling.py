@@ -27,14 +27,12 @@ def main(data_dir, args):
         data_dir,
         "Uploaded_Shapefiles/CensusBlock_2010/Census_FIP12_within_Fire_Dis.geojson",
     )
-    geo_join_save_path = join(data_dir, "inc_cad_clean_with_loc.csv")
 
+    geo_join_save_path = join(data_dir, "inc_cad_clean_with_loc.csv")
     if args["small"] is not None:
-        print("small")
         geo_join_save_path = join(data_dir, "small_inc_cad_clean_with_loc.csv")
 
     if args['skip'] is None:
-        print("skipping")
         spatial_join(geojson_data_path, image_trend_wrangled_path, geo_join_save_path)
 
     # performs group by on specified columns

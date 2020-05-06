@@ -105,7 +105,7 @@ def dropAirports(data):
     return data
 
 
-def wrangle_image_trend(base_dir, save_dir, arg):
+def wrangle_image_trend(base_dir, save_dir, args):
     years = ["2013", "2014", "2015", "2016", "2017", "2018", "2019"]
     end = " - Event_Data_For_Rice_University (Rpt_Data_Rice_Events).csv"
 
@@ -137,7 +137,6 @@ def wrangle_image_trend(base_dir, save_dir, arg):
     df = df.dropna()
 
     if args["small"] is not None:
-        print("small")
         df = df.iloc[:1000]
 
     df.to_csv(save_dir, index=False)
