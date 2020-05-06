@@ -133,7 +133,6 @@ def makeInteractiveMap(output_dir, data, bg_filepath, fd_filepath):
                       zoom_start=10, control=False, overlay=False)
 
     for column in columns:
-        print(column, data)
         data[column] = data[column].round().astype(int)
 
         folium_del_legend(folium.Choropleth(geo_data=bg_filepath, 

@@ -31,7 +31,6 @@ def assign_labels(output_dir, data, filename="final_category_counts.csv"):
 
 	counts = pd.DataFrame(data.groupby(['cluster_name', 'prob_call_level']).Poverty_Index.count().reset_index())
 
-	print(data.groupby(['cluster_name', 'prob_call_level']).Poverty_Index.count())
 	counts.to_csv(join(output_dir, filename))
 
 	return data 
