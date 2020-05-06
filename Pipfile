@@ -23,6 +23,7 @@ psutil = "*"
 statsmodels = "*"
 folium = "*"
 pyshp = "*"
+pymannkendall = "*"
 
 [requires]
 python_version = "3.7"

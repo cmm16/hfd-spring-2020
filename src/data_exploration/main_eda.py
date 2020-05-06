@@ -14,8 +14,6 @@ from src.data_exploration.time_eda import run_time_eda
 
 
 def main(data_dir):
-    print(data_dir)
-
     output_dir = join(dirname(data_dir), "eda_output")
 
     if not os.path.exists(output_dir):
