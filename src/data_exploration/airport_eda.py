@@ -6,6 +6,15 @@ import seaborn as sns
 
 
 def plot_per_capita_calls_by_block_group(df, title, output_dir, with_out_hobby):
+    """
+    Create swamplot of block group calls per capita. 
+
+    Inputs: 
+        - df: dataframe of block group with call counts 
+        - title: String name of plot 
+        - output_dir: string path to output directory 
+        - with_out_hobby: dataframe without hobby block group 
+    """
     df["total_cals"] = df[
         ["fire", "health", "injuries_external", "mental_illness", "motor", "other"]
     ].sum(1)
@@ -24,6 +33,13 @@ def plot_per_capita_calls_by_block_group(df, title, output_dir, with_out_hobby):
 
 
 def air_create_airport_bar_charts(counts, output_dir):
+    """
+    Create call distribution stacked bar charts for airports. 
+
+    inputs: 
+        - counts: dataframe with counts per airport and non airport block group 
+        - output_dir: string path to output directory 
+    """
     calls = ["fire", "health", "injuries_external", "mental_illness", "motor", "other"]
     h = counts[counts["Block_Group"] == 482019800001]
     h = h[calls].values.reshape(-1)
@@ -66,6 +82,13 @@ def air_create_airport_bar_charts(counts, output_dir):
 
 
 def run_airports_eda(output_dir, df):
+    """
+    Run entire airport eda section. 
+
+    Inputs: 
+        - output_dir: string path to output directory 
+        - df: dataframe of block group with call counts 
+    """
     plot_per_capita_calls_by_block_group(
         df, "Swarm Plot of Calls per Capita by Block Group", output_dir, False
     )

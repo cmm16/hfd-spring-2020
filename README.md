@@ -1,14 +1,14 @@
 # HFD_Spring_2020
 Team Houston Fire Department \
 DSCI 435 Spring 2020 \
-Rice University \
+Rice University 
 
 ---
 ## Documentation 
 
 #### D2K Showcase 2020: Covid-19 Risk Assessment 
 **People's Choice Winner**
-[1 Minute Presentation Video](https://www.youtube.com/watch?v=amsAb2AAe24) 
+[1 Minute Presentation Video](https://www.youtube.com/watch?v=amsAb2AAe24) \
 [5 Minute Presentation Video](https://rice.app.box.com/s/qoxwjch1cir9ggsjkea5wj91gqmauir7)
 
 ---

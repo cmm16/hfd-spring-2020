@@ -2,6 +2,11 @@ import pandas as pd
 
 
 def image_trend_aggregate(df):
+    """
+    Aggregates the calls by subcall code count. 
+    Input: dataframe of incidents 
+    Returns: dataframe of block groups with call counts 
+    """
     data = df.copy()
     data["Subcall_Code"] = data["Event_Type"].str[:4]
     data["Call_Category"] = data["Subcall_Code"].apply(lambda x: call_category_map[x])
@@ -13,6 +18,12 @@ def image_trend_aggregate(df):
 
 
 def compute_bg_column(df):
+    """
+    Changes block group code to 12 character string. 
+
+    Input: dataframe with "Block_Group" column 
+    Returns: modified input dataframe with block_group column as 12 character string 
+    """
     df["Block_Group"] = df.location.astype(str).str[:12].astype(float)
     return df
 
@@ -31,6 +42,14 @@ def aggregate_call_type(df, groupby_columns):
 
 
 def aggregate(data_path, groupby_columns, save_path):
+    """
+    Runs all the aggregation steps. 
+
+    Inputs: 
+        - data_path: string path to data file 
+        - groupby_columns: array of string columns to group data 
+        - save_path: string path to save the aggregated data frame 
+    """
     df = pd.read_csv(data_path)
     df = compute_bg_column(df)
     aggregate_df = aggregate_call_type(df, groupby_columns)

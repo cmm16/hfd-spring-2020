@@ -6,7 +6,19 @@ from scipy.stats.mstats import gmean
 
 
 class CovidRiskCalculator:
+    """
+    Runs the entire covid risk calculation. 
+    """
     def __init__(self, dat, call_counts, data_dir, save_path):
+        """
+        Initalizes calculation 
+
+        Inputs: 
+            - dat: dataframe to modify
+            - call_counts: dataframe of call counts per block group 
+            - data_dir: string path to data directory 
+            - save_path: string path to save data in 
+        """
         dat["pct_elderly"] = dat["pctAdult4564"] + dat["pctAge65p"]
         dat["health_pc"] = dat["health"] / dat["TotalPop"]
 
@@ -31,6 +43,9 @@ class CovidRiskCalculator:
         self.save_path = save_path
 
     def create_covid_df(self):
+        """
+        Calculates indices, adds them as 3 new columns, and saves output to csv. 
+        """
         self.dat["Poverty_Index"] = self.dat.apply(self.calculatePovertyIndex, axis=1)
         self.dat["Diversity_Index"] = self.dat.apply(
             self.calculateDiversityIndex, axis=1
@@ -206,6 +221,14 @@ class CovidRiskCalculator:
 
 
 def aggregate_covid_to_fire_dist(df, covid_df, save_path):
+    """
+    Aggregates columns to fire district level. 
+
+    Inputs: 
+        - df: dataframe of incident counts 
+        - covid_df: dataframe of block group indices 
+        - save_path: string path to save aggregates csv to correct folder 
+    """
     df1 = df.groupby(["AdminDist", "Name"]).count()[["Event_Number"]].reset_index()
     df2 = df.groupby(["AdminDist"]).count()[["Event_Number"]].reset_index()
     df3 = df1.merge(df2, how="left", left_on="AdminDist", right_on="AdminDist")

@@ -5,11 +5,6 @@ from os import path
 from os import getcwd
 from zipfile import ZipFile
 
-# Refactor so that we are passing along data frames instead of numpy array
-# determine all column names
-# find good way to distinguish cad unit and incident
-# determine what "-" file is
-
 
 def unzip_folders(target_directory, save_directory):
     """

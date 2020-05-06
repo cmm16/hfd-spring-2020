@@ -105,6 +105,14 @@ def dropAirports(data):
     return data
 
 
+"""
+Reads in each image trend csv and combines into one. 
+
+Inputs: 
+    - base_dir: string path to base directory 
+    - save_dir: string path to output directory 
+    - args: array of string args
+"""
 def wrangle_image_trend(base_dir, save_dir, args):
     years = ["2013", "2014", "2015", "2016", "2017", "2018", "2019"]
     end = " - Event_Data_For_Rice_University (Rpt_Data_Rice_Events).csv"

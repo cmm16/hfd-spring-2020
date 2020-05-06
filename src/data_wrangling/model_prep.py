@@ -111,6 +111,12 @@ def combine_demographic_features(df):
 
 
 def table_joins(data_dir, initial_df):
+    """
+    Joins all wrangled tables together. 
+    Inputs: 
+        - data_dir: string path to data directory
+        - initial_df: string path to initial data frame (for skip command)
+    """
     """ Joins feature engineered data frame to additional data sets for new features """
     df_acres = pd.read_csv(join(data_dir,"acres.csv"))
     df_fire_station = pd.read_csv(join(data_dir,"centroid_nearest_firestation_censusblockgroup.csv"))
@@ -148,14 +154,18 @@ def table_joins(data_dir, initial_df):
 
 
 def remove_nulls(df):
-    """ Replaces all non-existing values in data frame with its columns median value """
+    """ 
+    Replaces all non-existing values in data frame with its columns median value 
+    """
     for col in df.columns:
         df[col].fillna((df[col].median()), inplace=True)
     return df
 
 
 def create_targets_df(df, intial_df):
-    """ Creates target data frame converting counts of call categories per block group to percents per block group """
+    """ 
+    Creates target data frame converting counts of call categories per block group to percents per block group 
+    """
     target_df = intial_df[
         [
             "Block_Group",
@@ -207,8 +217,9 @@ def create_targets_df(df, intial_df):
 
 
 def model_prep(data_dir, initial_df):
-    """ Combines all functions necessary to prepare data from modeling going but before test train split """
-    #df = table_joins(data_dir, initial_df)
+    """ 
+    Combines all functions necessary to prepare data from modeling going but before test train split 
+    """
     df = combine_demographic_features(initial_df)
     df = remove_nulls(df)
     target_df = create_targets_df(df, initial_df)

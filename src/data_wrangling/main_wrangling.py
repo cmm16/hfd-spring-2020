@@ -17,6 +17,9 @@ from src.data_wrangling.imagetrend_wrangling import wrangle_image_trend
 
 
 def main(data_dir, args):
+    """
+    Main function that handles entire wrangling (general and covid). 
+    """
     # set data directory to base plus /data
     image_trend_data_path = join(data_dir, "Final Datasets")
     image_trend_wrangled_path = join(data_dir, "imagetrend.csv")

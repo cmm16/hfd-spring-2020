@@ -8,6 +8,7 @@ def merge_by_bg(
     """
     Merges two data frames with common bg key column
 
+    Inputs: 
     path_to_data1 (str): String path data to be merged
     path_to_data2 (str): String path to block group data
     merge_column_name (str): String name of column to merge on in merge data
