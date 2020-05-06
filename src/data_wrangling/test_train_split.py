@@ -2,14 +2,17 @@ from sklearn.model_selection import train_test_split
 import pandas as pd
 
 
-def test_train_split(x_df, y_df, test_percent=.2):
+def test_train_split(x_df, y_df, test_percent=0.2):
     """
     Splits input data into a train and test set and saves each separately
 
     Arguments:
-         input_data_path (str): String path to input data
-         save_path (str): String path to desired save location
+         x_df (DataFrame): predictor variables data frame
+         y_df (DataFrame): target variables data frame
          test_percent (float): float between 0.0 and 1.0, naturally .2
+
+    Returns:
+        Train and test data frames for both predictor and target variables
     """
 
     train_x, test_x = train_test_split(x_df, test_size=test_percent, random_state=17)
