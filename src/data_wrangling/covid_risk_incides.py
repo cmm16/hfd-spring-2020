@@ -20,10 +20,10 @@ class CovidRiskCalculator:
                 "% FINANCIAL SERVICES | HEALTH/LIFE INSURANCE | HEALTH/HOSPITAL/LIFE INSR-CURRENTLY HAVE | NO, 2019": "insurance",
             }
         )
-
         dat = dat.merge(insurance, on="Block_Group")
         dat = dat.fillna(dat.median())
-        dat["Call Percent"] = call_counts.sum(1) / sum(call_counts.sum(1))
+        call_counts = call_counts.loc[dat.set_index("Block_Group").index, :]
+        dat["Call Percent"] = (call_counts.sum(1) / sum(call_counts.sum(1))).values
         for col in [
             "fire",
             "health",
@@ -32,8 +32,8 @@ class CovidRiskCalculator:
             "motor",
             "other",
         ]:
-            dat["percent " + col] = call_counts[col] / sum(call_counts.sum(1))
-
+            percents = call_counts[col] / sum(call_counts.sum(1))
+            dat["percent " + col] = percents.values
         self.dat = dat
         self.save_path = save_path
 
@@ -62,7 +62,6 @@ class CovidRiskCalculator:
         ) / (self.dat["Diversity_Index"].max() - self.dat["Diversity_Index"].min())
 
         self.dat["Risk_Index"] = self.dat.apply(self.calculateRiskIndex, axis=1)
-
         indexDF = self.dat[
             [
                 "Block_Group",
