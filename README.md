@@ -13,7 +13,7 @@ Follow the bellow instructions or copy and paste the commandline prompts under i
 #### Download Data
 Got to project box and download Data folder move to top level of this project
 
-Unzip folder and make sure all contents go into folder called data
+Unzip folder and make sure all contents go into folder called Data
 (on linux `unzip Data.zip`)
 #### Run
 To run whole project (will take a lot of time)
