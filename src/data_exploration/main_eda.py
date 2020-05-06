@@ -8,14 +8,14 @@ from age_eda import run_age_eda
 from income_eda import run_income_eda
 from language_eda import run_language_eda
 
-incidents_df = pd.read_csv("test/imagetrend_incidents.csv")
-train_df = pd.read_csv("test/final_train_categories.csv")
+# incidents_df = pd.read_csv("test/imagetrend_incidents.csv")
+# train_df = pd.read_csv("test/final_train_categories.csv")
 
-bg_filepath = "test/Census_FIP12_within_Fire_Dis.geojson"
-fd_filepath = "test/fire_districts.geojson"
+# bg_filepath = "test/Census_FIP12_within_Fire_Dis.geojson"
+# fd_filepath = "test/fire_districts.geojson"
 
 def main(output_dir):
-    # mkdir(output_dir)
+    mkdir(output_dir)
 
     ##### GENERAL RISK ASSESSMENT EDA #####
     run_time_eda(output_dir, incidents_df) 
