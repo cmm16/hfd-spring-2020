@@ -31,5 +31,6 @@ def main(data_dir):
     all_labelled = call_prob.run(output_dir, clustered_df)
     final_labels.run(output_dir, all_labelled, bg_filepath)
 
+
 if __name__ == "__main__":
     main(join(dirname(dirname(getcwd())), "Data"))

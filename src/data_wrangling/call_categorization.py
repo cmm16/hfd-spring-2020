@@ -68,7 +68,7 @@ def getSubcall(df):
  	df['Subcall_Type'] = df['Call_Type'].str[:4]
  	return df 
 
-def getCallCategories(df, mapping=call_category_dmap):
+def getCallCategories(df, mapping=call_category_map):
 	"""
  	Categorizes each call entry in an inputted dataframe into a user defined 
  	category. If an unknown call code is encountered, will label the call 
