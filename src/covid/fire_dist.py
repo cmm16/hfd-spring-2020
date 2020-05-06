@@ -18,6 +18,7 @@ def run(output_dir, fd_data, fd_filepath):
 			district level 
 		- fd_filepath: String path to fire district geojson 
 	"""
+	fd_data = fd_data.rename({'Unnamed: 0':'index'}, axis=1)
 	covid_df = cluster(output_dir, fd_data)
 	all_labelled = call_prob.assignCallDemandLabel(covid_df)
 	final_df = final_labels.assign_labels(output_dir, all_labelled, filename="final_FD_category_counts.csv")

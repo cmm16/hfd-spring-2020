@@ -221,12 +221,12 @@ def aggregate_covid_to_fire_dist(df, covid_df, save_path):
         "motor",
         "other",
     ]
-    merged_df["call_prob"] = merged_df[call_types].sum(1) / sum(
+    merged_df["prob_call"] = merged_df[call_types].sum(1) / sum(
         merged_df[call_types].sum(1)
     )
 
     for col in indices_to_scale:
         merged_df[col] = merged_df[col] * merged_df["scaler"]
-    new_df = merged_df[call_types + ["scaler", "AdminDist", "call_prob"]]
+    new_df = merged_df[indices_to_scale + ["scaler", "AdminDist", "prob_call"]]
     # replace with save path
     new_df.groupby(["AdminDist"]).sum().reset_index().to_csv(save_path)

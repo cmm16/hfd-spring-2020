@@ -46,7 +46,7 @@ def assign_labels(output_dir, data, filename="final_category_counts.csv"):
 	data.loc[(data.final_category == "match-low"), 'final_cat_val'] = 2
 	data.loc[(data.final_category == "mismatch-high-low"), 'final_cat_val'] = 0
 	data.loc[(data.final_category == "mismatch-low-high"), 'final_cat_val'] = 3
-
+	
 	counts = pd.DataFrame(data.groupby(['cluster_name', 'prob_call_level']).Poverty_Index.count().reset_index())
 
 	counts.to_csv(join(output_dir, filename))
