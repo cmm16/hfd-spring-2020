@@ -12,8 +12,7 @@ Follow the bellow instructions or copy and paste the commandline prompts under i
    `$ cd hfd-spring-2020;`
 3. Prepare virtual environment\
   `$ pip install pipenv;`\
-   `$ pipenv shell;`\
-   `$ pipenv sync;`
+   `$ pipenv sync;`\
 #### Download Data
 Got to project box and download Data folder move to top level of this project\
 The path to the data folder should now be "hfd-spring-2020/Data"
