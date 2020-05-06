@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "8a477556795e3472da3859b709ecb6fe632bdf4eaeca2e144b92d61b4f80176f"
+            "sha256": "1286a58a9ab689596197d10a238be4e7b4c6aadb18f54ab4572397b93973b0d1"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -36,6 +36,13 @@
                 "sha256:3c4c520fdb9db59ef139915a5db79f8b51bc2a7257ea0389f30c846883430a4b"
             ],
             "version": "==3.1.5"
+        },
+        "branca": {
+            "hashes": [
+                "sha256:5053265c8092963767ecfabd48dc524b94f4d6847beabe11f0fcb9d068fe55ba",
+                "sha256:c1f8231b05e000d8e3e82ec0f2d0d3cde624ca3a42d41e89a3995d9dfa357b1e"
+            ],
+            "version": "==0.4.0"
         },
         "certifi": {
             "hashes": [
@@ -116,6 +123,14 @@
                 "sha256:c6e99bf596c2322e134833490611a612a8cce35a39c4c6499b7df919e24b482b"
             ],
             "version": "==1.8.13.post1"
+        },
+        "folium": {
+            "hashes": [
+                "sha256:a1ae5516752f775bf3442e50dc3575880945633a5ec5e0f3fcecb5c15b43d0fd",
+                "sha256:edbf79d04345a75f8503fe6d071179806ee7e3baf81ae4f329b9f3ce8f118c3d"
+            ],
+            "index": "pypi",
+            "version": "==0.10.1"
         },
         "geopandas": {
             "hashes": [
@@ -554,6 +569,13 @@
                 "sha256:28669905fe725965daa16184933676547c5bb40a5153055a8dee2a4bd7933ad3"
             ],
             "version": "==0.16.0"
+        },
+        "pyshp": {
+            "hashes": [
+                "sha256:e65c7f24d372b97d0920b864bbeb78322bb37b83f2606e2a2212631d5d51e5c0"
+            ],
+            "index": "pypi",
+            "version": "==2.1.0"
         },
         "pytest": {
             "hashes": [

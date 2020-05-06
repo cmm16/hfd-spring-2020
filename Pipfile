@@ -21,6 +21,8 @@ shap = "*"
 plotly = "*"
 psutil = "*"
 statsmodels = "*"
+folium = "*"
+pyshp = "*"
 
 [requires]
 python_version = "3.7"
