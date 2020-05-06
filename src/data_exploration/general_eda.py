@@ -129,7 +129,7 @@ def plot_volume_chart(output_dir, df, title, xaxis_label, xticks, xtick_labels):
     plt.savefig(join(output_dir, title + ".png"))
 
 def plot_donut_chart(output_dir, values, labels, description): 
-	"""
+    """
 	Creates donut chart.
 
 	Inputs:
@@ -137,7 +137,7 @@ def plot_donut_chart(output_dir, values, labels, description):
 		- values: array of numerical values to graph
 		- labels: array of string labels for each value
 		- description: String description of the chart
-	"""
+    """
     plt.figure(figsize=(10, 10))
 
     # Create a circle for the center of the plot

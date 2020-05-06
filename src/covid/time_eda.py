@@ -32,7 +32,7 @@ def dataWrangling(incidents_df):
 	return y20
 
 def plotTS(output_dir, data, start_date, end_date):
-	"""
+    """
 	Create single time series plot of daily calls.
 
 	Inputs:
@@ -61,7 +61,7 @@ def plotTS(output_dir, data, start_date, end_date):
     plt.close()
 
 def makeSingle(data): 
-	"""
+    """
 	Flattens an incident dataframe into a single column of daily counts.
 
 	Inputs:
@@ -76,7 +76,7 @@ def makeSingle(data):
     return flat_data
 
 def plotCategories(output_dir, data, start_date, end_date):
-	"""
+    """
 	Plots time series broken down into each call category.
 
 	Inputs:
@@ -87,71 +87,71 @@ def plotCategories(output_dir, data, start_date, end_date):
 
 	Returns: dataframe of daily call counts per call category
 	"""
-	data["Subcall_Code"] = data["Event_Type"].str[:4]
-	data["Call_Category"] = data["Subcall_Code"].apply(
+    data["Subcall_Code"] = data["Event_Type"].str[:4]
+    data["Call_Category"] = data["Subcall_Code"].apply(
 		lambda x: call_category_map[x])
-	motor = data[data['Call_Category']=='motor']
-	m1 = makeSingle(motor)
-	health = data[data['Call_Category']=='health']
-	h1 = makeSingle(health)
-	injuries = data[data['Call_Category']=='injuries_external']
-	ie1 = makeSingle(injuries)
-	other = data[data['Call_Category']=='other']
-	o1 = makeSingle(other)
-	mental_illness = data[data['Call_Category']=='mental_illness']
-	mi1 = makeSingle(mental_illness)
-	fire = data[data['Call_Category']=='fire']
-	f1 = makeSingle(mental_illness)
+    motor = data[data['Call_Category']=='motor']
+    m1 = makeSingle(motor)
+    health = data[data['Call_Category']=='health']
+    h1 = makeSingle(health)
+    injuries = data[data['Call_Category']=='injuries_external']
+    ie1 = makeSingle(injuries)
+    other = data[data['Call_Category']=='other']
+    o1 = makeSingle(other)
+    mental_illness = data[data['Call_Category']=='mental_illness']
+    mi1 = makeSingle(mental_illness)
+    fire = data[data['Call_Category']=='fire']
+    f1 = makeSingle(mental_illness)
 
-	drange = pd.date_range(start=start_date, end=end_date)
-	df = pd.DataFrame({'motor':m1, 'health': h1, 'injuries_external':ie1, 
-	                   'other': o1, 'mental_illness': mi1, 'fire': f1}, index=drange)
+    drange = pd.date_range(start=start_date, end=end_date)
+    df = pd.DataFrame({'motor':m1, 'health': h1, 'injuries_external':ie1,
+                       'other': o1, 'mental_illness': mi1, 'fire': f1}, index=drange)
 
-	df.plot();
-	plt.title("Daily Calls", fontsize=20)
-	plt.xlabel('Date', fontsize=18)
-	plt.xticks(fontsize=16)
-	plt.ylabel("Number of Calls", fontsize=18)
-	plt.yticks(fontsize=16)
-	plt.savefig(join(output_dir, "daily_call_categories_during_covid.png"))
-	plt.close()
-	return df
+    df.plot();
+    plt.title("Daily Calls", fontsize=20)
+    plt.xlabel('Date', fontsize=18)
+    plt.xticks(fontsize=16)
+    plt.ylabel("Number of Calls", fontsize=18)
+    plt.yticks(fontsize=16)
+    plt.savefig(join(output_dir, "daily_call_categories_during_covid.png"))
+    plt.close()
+    return df
 
 def trendTest(output_dir, data): 
-	"""
-	Tests each of the call categories during a given time period for
-	a monotonic trend by using the mann-kendall test. Results of this
-	test are saved to a csv file.
+    """
+    Tests each of the call categories during a given time period for
+    a monotonic trend by using the mann-kendall test. Results of this
+    test are saved to a csv file.
 
-	Inputs:
-		- output_dir: String path to output directory
-		- data: incident data of time period you want to graph
-	"""
-	call_categories = ['injuries_external', 'motor', 'health', 'fire', 'mental_illness', 'other']
-	trend = []
-	h = []
-	p = []
-	z =[]
-	Tau = []
-	s = []
-	var_s = []
-	slope = []
+    Inputs:
+        - output_dir: String path to output directory
+        - data: incident data of time period you want to graph
+    """
+    call_categories = ['injuries_external', 'motor', 'health', 'fire', 'mental_illness', 'other']
+    trend = []
+    h = []
+    p = []
+    z =[]
+    Tau = []
+    s = []
+    var_s = []
+    slope = []
 
-	for category in call_categories: 
-	    category_data = data[[category]]
-	    to, ho, po, zo, Tauo, so, var_so, slopeo = mk.original_test(category_data)
-	    trend.append(to)
-	    h.append(ho)
-	    p.append(po)
-	    z.append(zo)
-	    Tau.append(Tauo)
-	    s.append(so)
-	    var_s.append(var_so)
-	    slope.append(slopeo)
-	    
-	results = pd.DataFrame({'Call_Category':call_categories, 'Trend':trend, 'h':h, 'p':p,
-	                       'z':z, 'Tau':Tau, 's':s, 'var_s':var_s, 'slope':slope})
-	results.to_csv(join(output_dir, "trend_test_results.csv"), index=False)
+    for category in call_categories:
+        category_data = data[[category]]
+        to, ho, po, zo, Tauo, so, var_so, slopeo = mk.original_test(category_data)
+        trend.append(to)
+        h.append(ho)
+        p.append(po)
+        z.append(zo)
+        Tau.append(Tauo)
+        s.append(so)
+        var_s.append(var_so)
+        slope.append(slopeo)
+
+    results = pd.DataFrame({'Call_Category':call_categories, 'Trend':trend, 'h':h, 'p':p,
+                           'z':z, 'Tau':Tau, 's':s, 'var_s':var_s, 'slope':slope})
+    results.to_csv(join(output_dir, "trend_test_results.csv"), index=False)
 
 call_category_map = {
     "FEAB": "health",

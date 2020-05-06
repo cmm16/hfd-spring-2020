@@ -49,7 +49,7 @@ def run_race_eda(output_dir, train_df):
 
 
 def data_wrangling(train): 
-	"""
+    """
 	This function prepares data for race analysis by finding homogeneous
 	block groups and calculating averages for each race.
 
@@ -60,13 +60,13 @@ def data_wrangling(train):
 		- array of numbers of homogeneous block group sizes
 		- dataframe of average call counts per call category per race
 		- modified input dataframe with total calls and total calls per cap columns
-	"""
-	train = general_eda.calculate_total_calls(train)
-	# Split data into majority race dataframes 
-	white_blocks = train[train['pctNHwht'] >= 50]
-	hisp_blocks = train[train['pctHisp'] >= 50]
-	blk_blocks = train[train['pctNHblk'] >= 50]
-	asian_blocks = train[train['pctNHasi'] >= 50]
+    """
+    train = general_eda.calculate_total_calls(train)
+    # Split data into majority race dataframes
+    white_blocks = train[train['pctNHwht'] >= 50]
+    hisp_blocks = train[train['pctHisp'] >= 50]
+    blk_blocks = train[train['pctNHblk'] >= 50]
+    asian_blocks = train[train['pctNHasi'] >= 50]
 
     # Tag original data with racial majority
     train["race_value"] = 0
