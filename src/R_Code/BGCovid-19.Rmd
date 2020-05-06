@@ -1,0 +1,80 @@
+---
+title: "BGCovid-19"
+author: "Melinda Ding (mjd4)"
+date: "4/11/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r cars}
+---
+title: "Call Clustering"
+author: "Melinda Ding"
+output: pdf_document
+---
+```
+
+```{r}
+library(factoextra)
+library(NbClust)
+```
+
+Code from: https://www.datanovia.com/en/lessons/determining-the-optimal-number-of-clusters-3-must-know-methods/
+
+
+```{r}
+df <- read.csv("data/risk_data.csv")
+print(dim(df))
+head(df)
+```
+
+```{r}
+library(tidyverse)
+library(magrittr)
+library(cluster)
+library(cowplot)
+library(NbClust)
+library(clValid)
+library(ggfortify)
+library(clustree)
+library(dendextend)
+library(factoextra)
+library(FactoMineR)
+library(corrplot)
+library(GGally)
+# library(ggiraphExtra)
+library(knitr)
+library(kableExtra)
+```
+
+```{r}
+# Uses 30 indices to determine relevant number of clusters 
+# 
+res.nbclust <- NbClust(df, distance = "euclidean",
+                  min.nc = 2, max.nc = 9, 
+                  method = "complete", index ="all")
+factoextra::fviz_nbclust(res.nbclust) + theme_minimal() + ggtitle("NbClust's optimal number of clusters")
+```
+
+
+```{r}
+tmp <- NULL
+for (k in 1:11){
+  tmp[k] <- kmeans(df, k, nstart = 30)
+}
+df <- data.frame(tmp)
+# add a prefix to the column names
+colnames(df) <- seq(1:11)
+colnames(df) <- paste0("k",colnames(df))
+# get individual PCA
+df.pca <- prcomp(df, center = TRUE, scale. = FALSE)
+ind.coord <- df.pca$x
+ind.coord <- ind.coord[,1:2]
+df <- bind_cols(as.data.frame(df), as.data.frame(ind.coord))
+clustree(df, prefix = "k")
+```
+
