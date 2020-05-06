@@ -1,7 +1,12 @@
 # HFD_Spring_2020
-DSCI 435 project repo for team Houston fire department Spring 2020
+Team Houston Fire Department 
+DSCI 435 Spring 2020 
+Rice University 
+
 ---
-### How to Run this Project
+## Getting Started 
+Before starting, make sure your python is at least version 3.7.5 and that you have pip installed. 
+
 #### Set up virtual Environment
 Follow the bellow instructions or copy and paste the commandline prompts under instructions
 1. clone repo\
@@ -27,3 +32,13 @@ To run whole project (will take a lot of time)\
 
 To run project but skip spatial join (saves time)\
 `$ pipenv run python $PWD --skip True;`
+
+After running the project, you can find general risk assessment outputs in "hfd-spring-2020/eda_output" and covid risk assessment outputs in "hfd-spring-20202/covid_output". 
+
+---
+## Documentation 
+
+#### D2K Showcase 2020: Covid-19 Risk Assessment 
+**People's Choice Winner**
+[1 Minute Presentation Video](https://www.youtube.com/watch?v=amsAb2AAe24) 
+[5 Minute Presentation Video](https://rice.app.box.com/s/qoxwjch1cir9ggsjkea5wj91gqmauir7)
