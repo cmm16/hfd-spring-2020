@@ -10,9 +10,7 @@ def run_time_eda(output_dir, incidents_df):
 
 	Input: 
 		- output_dir: String path to data directory 
-		- incidents_df: Dataframe of incidents that must include parsed time and call category
-	Output: 
-		- single column data frame of data  
+		- incidents_df: Dataframe of incidents that must include parsed time and call category 
 	"""
 	timedf = data_wrangle(incidents_df)
 	plot_raw_data(output_dir, timedf)
@@ -31,7 +29,6 @@ def data_wrangle(df, start_date="2013-01", level="Day"):
 		- start_date: String indicating first day of data in "YYYY-MM" format
 
 	Returns: 
-		- array of years the data covers 
 		- a single column data frame of the data 
 	"""
 	groupBy = df.groupby(['Year','Month','Date']).count()['Event_Number'].unstack(0)
@@ -77,6 +74,13 @@ def plot_decomposition(output_dir, timedf):
 	plt.savefig(join(output_dir, "timeseries_decomposition.png"))
 
 def plot_yearly_dist(output_dir, incidents_df): 
+	"""
+	Creates stacked bar chart of call distribution for each year. 
+
+	Input: 
+		- output_dir: String path to data directory 
+		- incidents_df: Dataframe of incidents that must include parsed time and call category 
+	"""
 	fig = plt.figure(figsize=(15,10))
 	ax = fig.add_subplot(111)
 	years = incidents_df.groupby(["Year", "Call_Category"]).Event_Number.count().unstack(1)

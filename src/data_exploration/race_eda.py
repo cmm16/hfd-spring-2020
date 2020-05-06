@@ -14,8 +14,6 @@ def run_race_eda(output_dir, train_df):
 	Input: 
 		- data_dir: String path to data directory 
 		- incidents_df: Dataframe of incidents that must include parsed time and call category
-	Output: 
-		- single column data frame of data  
 	"""
 	races = ['White', 'Hispanic', 'Black', 'Asian']
 	sizes, race_avgs, train = data_wrangling(train_df)
@@ -39,6 +37,18 @@ def run_race_eda(output_dir, train_df):
 
 
 def data_wrangling(train): 
+	"""
+	This function prepares data for race analysis by finding homogeneous 
+	block groups and calculating averages for each race. 
+
+	Input: 
+		- train: Dataframe of incidents that must include parsed time and call category
+
+	Returns: 
+		- array of numbers of homogeneous block group sizes 
+		- dataframe of average call counts per call category per race
+		- modified input dataframe with total calls and total calls per cap columns 
+	"""
 	train = general_eda.calculate_total_calls(train)
 	# Split data into majority race dataframes 
 	white_blocks = train[train['pctNHwht'] >= 50]

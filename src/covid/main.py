@@ -17,7 +17,7 @@ import fire_dist
 
 # def main(output_dir, incidents, bg_data, fd_data, bg_filepath, fd_filepath):
 def main(output_dir):
-	# mkdir(output_dir)
+	mkdir(output_dir)
 
 	### BLOCK GROUP FUNCTIONS ### 
 	time_eda.run(output_dir, incidents)

@@ -6,11 +6,9 @@ def run_age_eda(output_dir, train_df):
 	"""
 	This function runs the age portion of EDA. 
 
-	Input: 
+	Inputs: 
 		- output_dir: String path to output directory 
 		- incidents_df: Dataframe of incidents that must include parsed time and call category
-	Output: 
-		- single column data frame of data  
 	"""
 	avgs, portions_df, train_df = data_wrangling(output_dir, train_df)
 	general_eda.plot_quartiles(output_dir, train_df, 'avgAge', "Weighted Average Age")
@@ -23,11 +21,12 @@ def data_wrangling(output_dir, data):
 	which is the weighted average age for the block group, to the dataframe passed in. 
 	Then the function creates a table of proportions for each quartile. 
 
-	Input: 
+	Inputs: 
 		- output_dir: String path to output directory
 		- data: train_categories dataframe 
 
-	Output: 
+	Returns: 
+		- dataframe of average number of calls per call category per quartile 
 		- dataframe of call category proportion per quartile  
 		- modified input dataframe with 'avgAge' column
 	"""

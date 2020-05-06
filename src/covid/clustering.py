@@ -9,18 +9,33 @@ import matplotlib.lines as mlines
 
 indices = ['Health_Affliction_Index', 'Poverty_Index', 'Diversity_Index']
 
-def run(output_dir, incidents, bg_filepath):
+def run(output_dir, df, bg_filepath):
+	"""
+	Runs entire clustering portion including creating visualizations. 
+
+	Inputs: 
+		- output_dir: String path to output directory 
+		- df: Dataframe of base indices for every block group 
+		- bg_filepath: String file path to block group geojson 
+	
+	Returns: dataframe with cluster numeric and string label. 
+	"""
 
 	# k was found using the NBClust package in R 
 	# for our data, we found that the 2 clusters was the most optimal 
-	clustered_df = clustering(incidents, k=2)
+	clustered_df = clustering(df, k=2)
 	clustered_df = nameClusters(clustered_df)
+	# Create 3D Plots
 	plotPoints(output_dir, clustered_df, False)
 	plotPoints(output_dir, clustered_df, True)
+	# Save cluster centers to csv
 	getClusterCenters(output_dir, clustered_df)
+	# Create histograms of each index 
 	plotHistograms(output_dir, clustered_df)
-	plotCallDist(output_dir, clustered_df, [0,1], ['Low', 'High'])
+	# Plot call distribution per cluster 
+	plotCallDist(output_dir, clustered_df, ['Low', 'High'])
 
+	# Create map of clusters
 	map_df = clustered_df[['Block_Group', 'cluster']]
 	map_df['cluster_inv'] = abs(1 - map_df['cluster'])
 	mapping.makeSingleBGMap(output_dir, bg_filepath, 'feature.properties.Name', 'Risk-clusters', map_df, 
@@ -28,6 +43,16 @@ def run(output_dir, incidents, bg_filepath):
 	return clustered_df
 
 def clustering(df, k): 
+	"""
+	This function uses k-means clustering to cluster the data. 
+
+	Inputs: 
+		- df: Dataframe of base indices for every block group 
+		- k: number of clusters to make 
+
+	Returns: modified input dataframe with column called 'cluster' and 
+		numeric label of the cluster the observation is in 
+	"""
 	df = df.fillna(df.median(0))
 	X = df[indices]
 	kmeans = KMeans(init='k-means++', n_clusters=k, 
@@ -38,11 +63,30 @@ def clustering(df, k):
 	return df 
 
 def nameClusters(df): 
+	"""
+	This function assigns a string name to each cluster. 
+
+	Inputs: 
+		- df: Dataframe of base indices for every block group 
+		- k: number of clusters to make 
+
+	Returns: modified input dataframe with column called 'cluster_name' and 
+		string name of the associated cluster the observation is in 
+	"""
 	df.loc[df.cluster == 0, 'cluster_name'] = "low"
 	df.loc[df.cluster == 1, 'cluster_name'] = "high"
 	return df 
 
 def getClusterCenters(output_dir, df, bg=True): 
+	"""
+	This function gets the centers of each cluster and saves to a csv file. 
+
+	Inputs: 
+		- output_dir: String path to output directory 
+		- df: Dataframe of base indices for every block group 
+		- bg: True if analyzing at the block group level, otherwise false
+			(e.g. analyzing at fire district level)
+	"""
 	# Create subset of each cluster 
 	c0 = df[df['cluster'] == 0]
 	c1 = df[df['cluster'] == 1]
@@ -50,13 +94,21 @@ def getClusterCenters(output_dir, df, bg=True):
 		indices = ['Health_Affliction_Index','Poverty_Index','Diversity_Index','Risk_Index']
 	else: 
 		indices = ['Health_Affliction_Index','Poverty_Index','Diversity_Index']	
+	# Create dataframe of averages
 	c0_stats = c0[indices].mean()
 	c1_stats = c1[indices].mean()
-
 	avg = pd.DataFrame([c0_stats,c1_stats])
 	avg.to_csv(join(output_dir, "cluster-averages.csv"))
 
-def plotPoints(output_dir, df, color_point=False): 
+def plotPoints(output_dir, df, color_point=False):
+	"""
+	This function plots the block groups along the 3 base indices dimensions. 
+
+	Inputs: 
+		- output_dir: String path to output directory 
+		- df: Dataframe of base indices for every block group 
+		- color_point: false unless specified that the plot should be in color 
+	""" 
 	fig = plt.figure(figsize=(10, 8))
 	ax = plt.axes(projection='3d')
 	zdata = df['Health_Affliction_Index']
@@ -83,6 +135,14 @@ def plotPoints(output_dir, df, color_point=False):
 	plt.close()
 
 def plotHistograms(output_dir, df):
+	"""
+	This function creates a layered histogram of each base index 
+	for each of the clusters. 
+
+	Inputs: 
+		- output_dir: String path to output directory 
+		- df: Dataframe of base indices for every block group with cluster label  
+	"""
 	for index in indices: 
 		df.groupby(['cluster'])[index].hist(alpha=0.55);
 		plt.legend(['Low','High'])
@@ -92,7 +152,15 @@ def plotHistograms(output_dir, df):
 		plt.savefig(join(output_dir, index+"_cluster_distribution.png"))
 		plt.close()
 
-def plotCallDist(output_dir, df, xticks, xlabels): 
+def plotCallDist(output_dir, df, xlabels): 
+	"""
+	Create stacked bar chart of average call distribution per cluster. 
+
+	Inputs: 
+		- output_dir: String path to output directory 
+		- df: Dataframe of base indices for every block group with cluster label 
+		- xlabels: array of strings to label the x-axis 
+	"""
 	call_cols = ['health','injuries_external','mental_illness', 'motor', 'fire', 'other']
 	c0 = df[df['cluster'] == 0]
 	c1 = df[df['cluster'] == 1]
@@ -108,7 +176,7 @@ def plotCallDist(output_dir, df, xticks, xlabels):
 	plt.ylabel("Portion of Calls", fontsize=18)
 	plt.yticks(fontsize=15)
 	plt.xlabel("Cluster Risk Type", fontsize=18)
-	plt.xticks(ticks=xticks,labels=xlabels, fontsize=15)
+	plt.xticks(ticks=[0,1],labels=xlabels, fontsize=15)
 	plt.savefig(join(output_dir, "cluster_call_distribution.png"))
 
 

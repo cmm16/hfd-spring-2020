@@ -19,6 +19,9 @@ def run_language_eda(output_dir, train_df):
 def data_wrangling(df):
 	"""
 	This function prepares the data for volume bar graph. 
+	
+	Input: 
+		- df: Dataframe of census and call counts per block group 
 	"""
 	df = general_eda.calculate_total_calls(df)
 	# Subset english and non-english speaking block groups
