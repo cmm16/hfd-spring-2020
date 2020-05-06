@@ -5,13 +5,11 @@ from os.path import join, dirname
 from os import getcwd
 
 
-def main(data_dir=join((dirname(getcwd())), "Data")):
-    main_wrangling.main(data_dir)
-    print("done wrangling")
+def main(args, data_dir=join((dirname(getcwd())), "Data")):
+    main_wrangling.main(data_dir, args)
+    print("done")
     main_eda.main(data_dir)
-    print("done with eda")
     main_modeling.main(data_dir)
-    print("done modeling")
 
 
 

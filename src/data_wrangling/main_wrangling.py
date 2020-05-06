@@ -12,13 +12,15 @@ from src.data_wrangling.imagetrend_wrangling import dropAirports
 from src.data_wrangling.merge_on_bg import merge_by_bg
 from src.data_wrangling.model_prep import model_prep
 from src.data_wrangling.test_train_split import test_train_split
+from src.data_wrangling.spatial_join import spatial_join
+from src.data_wrangling.imagetrend_wrangling import wrangle_image_trend
 
 
-def main(data_dir):
+def main(data_dir, args):
     # set data directory to base plus /data
     image_trend_data_path = join(data_dir, "Final Datasets")
     image_trend_wrangled_path = join(data_dir, "imagetrend.csv")
-    # wrangle_image_trend(image_trend_data_path, image_trend_wrangled_path)
+    wrangle_image_trend(image_trend_data_path, image_trend_wrangled_path, args)
 
     # performs spatial join on geojson data and points data saving to save path location
     geojson_data_path = join(
@@ -26,7 +28,14 @@ def main(data_dir):
         "Uploaded_Shapefiles/CensusBlock_2010/Census_FIP12_within_Fire_Dis.geojson",
     )
     geo_join_save_path = join(data_dir, "inc_cad_clean_with_loc.csv")
-    # spatial_join(geojson_data_path, image_trend_wrangled_path, geo_join_save_path)
+
+    if args["small"] is not None:
+        print("small")
+        geo_join_save_path = join(data_dir, "small_inc_cad_clean_with_loc.csv")
+
+    if args['skip'] is None:
+        print("skipping")
+        spatial_join(geojson_data_path, image_trend_wrangled_path, geo_join_save_path)
 
     # performs group by on specified columns
     group_columns = ["Block_Group", "Event_Type"]
