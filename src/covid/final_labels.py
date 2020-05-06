@@ -10,7 +10,7 @@ def run(output_dir, df, bg_filepath):
 	mapping.makeSingleBGMap(output_dir, bg_filepath, 'feature.properties.Name', 'final-covid-clusters', labelled, 
 		['Block_Group', 'final_cat_val'], 'Match Type', color="Spectral")
 
-def assign_labels(output_dir, data): 
+def assign_labels(output_dir, data, filename="final_category_counts.csv"): 
 	# match or mismatch?
 	data.loc[(data.cluster_name == "high") & (data.prob_call_level == "high"), 'final_category_type'] = "match"
 	data.loc[(data.cluster_name == "low") & (data.prob_call_level == "low"), 'final_category_type'] = "match"
@@ -29,7 +29,9 @@ def assign_labels(output_dir, data):
 	data.loc[(data.final_category == "mismatch-high-low"), 'final_cat_val'] = 0
 	data.loc[(data.final_category == "mismatch-low-high"), 'final_cat_val'] = 3
 
-	counts = data.groupby(['cluster_name', 'prob_call_level']).prob_call_level.count()
-	counts.to_csv(join(output_dir, "final_category_counts.csv"))
+	counts = pd.DataFrame(data.groupby(['cluster_name', 'prob_call_level']).Poverty_Index.count().reset_index())
+
+	print(data.groupby(['cluster_name', 'prob_call_level']).Poverty_Index.count())
+	counts.to_csv(join(output_dir, filename))
 
 	return data 

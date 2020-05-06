@@ -38,16 +38,21 @@ def clustering(df, k):
 	return df 
 
 def nameClusters(df): 
-	df.loc[df.cluster == 0, 'cluster_name'] = "high"
-	df.loc[df.cluster == 1, 'cluster_name'] = "low"
+	df.loc[df.cluster == 0, 'cluster_name'] = "low"
+	df.loc[df.cluster == 1, 'cluster_name'] = "high"
 	return df 
 
-def getClusterCenters(output_dir, df): 
+def getClusterCenters(output_dir, df, bg=True): 
 	# Create subset of each cluster 
 	c0 = df[df['cluster'] == 0]
 	c1 = df[df['cluster'] == 1]
-	c0_stats = c0[['Health_Affliction_Index','Poverty_Index','Diversity_Index','Risk_Index']].mean()
-	c1_stats = c1[['Health_Affliction_Index','Poverty_Index','Diversity_Index','Risk_Index']].mean()
+	if bg: 
+		indices = ['Health_Affliction_Index','Poverty_Index','Diversity_Index','Risk_Index']
+	else: 
+		indices = ['Health_Affliction_Index','Poverty_Index','Diversity_Index']	
+	c0_stats = c0[indices].mean()
+	c1_stats = c1[indices].mean()
+
 	avg = pd.DataFrame([c0_stats,c1_stats])
 	avg.to_csv(join(output_dir, "cluster-averages.csv"))
 
