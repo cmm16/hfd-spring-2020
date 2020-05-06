@@ -99,11 +99,11 @@ def combine_demographic_features(df):
     )
 
     # Added
-    new_df["Acres"] = df.Acres
-    new_df["Near_Station_Number"] = df.Near_Station_Number
-    new_df["Center_X"] = df.Center_X
-    new_df["Center_Y"] = df.Center_Y
-    new_df["Intersections"] = df.Intersections
+    #new_df["Acres"] = df.Acres
+    #new_df["Near_Station_Number"] = df.Near_Station_Number
+    #new_df["Center_X"] = df.Center_X
+    #new_df["Center_Y"] = df.Center_Y
+    #new_df["Intersections"] = df.Intersections
 
     new_df = new_df.set_index("Block_Group")
 
@@ -208,15 +208,12 @@ def create_targets_df(df, intial_df):
 
 def model_prep(data_dir, initial_df):
     """ Combines all functions necessary to prepare data from modeling going but before test train split """
-    df = table_joins(data_dir, initial_df)
-    df = combine_demographic_features(df)
+    #df = table_joins(data_dir, initial_df)
+    df = combine_demographic_features(initial_df)
     df = remove_nulls(df)
     target_df = create_targets_df(df, initial_df)
 
-    dem_only_preds = df.drop(
-        ["Acres", "Near_Station_Number", "Center_X", "Center_Y", "Intersections"],
-        axis=1,
-    )
+    dem_only_preds = df.copy()
 
     dem_only_preds.to_csv("dem_only_preds.csv")
     df.to_csv("all_preds.csv")
