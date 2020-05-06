@@ -22,7 +22,7 @@ def main(data_dir):
 
     incidents = pd.read_csv(join(data_dir, "inc_cad_clean_with_loc.csv"))
     data = pd.read_csv(join(data_dir, "covid_indices.csv"))
-    fd_data = pd.read_csv(join(data_dir, "firedist_covid.csv")
+    fd_data = pd.read_csv(join(data_dir, "firedist_covid.csv"))
     bg_filepath = join(
         join(join(data_dir, "Uploaded_Shapefiles"), "CensusBlock_2010"),
         "Census_FIP12_within_Fire_Dis.geojson",
