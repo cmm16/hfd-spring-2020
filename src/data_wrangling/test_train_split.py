@@ -1,5 +1,4 @@
 from sklearn.model_selection import train_test_split
-import pandas as pd
 
 
 def test_train_split(x_df, y_df, test_percent=0.2):
