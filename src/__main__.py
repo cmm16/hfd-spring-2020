@@ -8,11 +8,18 @@ from src.covid import covid_main
 
 
 def main(args, data_dir=join((dirname(getcwd())), "Data")):
-    main_wrangling.main(data_dir, args)
-    main_eda.main(data_dir)
-    main_modeling.main(data_dir)
-    covid_main.main(data_dir)
-
+	"""
+	Runs entire HFD Spring 2020 file. 
+	"""
+	print("---- Start Project ----")
+	main_wrangling.main(data_dir, args)
+	print("---- End Wrangling ----")
+	main_eda.main(data_dir)
+	print("---- End EDA ----")
+	main_modeling.main(data_dir)
+	print("---- End Modeling ----")
+	covid_main.main(data_dir)
+	print("---- Done ----")
 
 if __name__ == "__main__":
     main()
