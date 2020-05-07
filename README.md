@@ -6,7 +6,7 @@ Rice University
 
 ### Description 
 <p align="center">
-  <img src="images/health.gif" height="350">
+  <img src="images/healthmap.gif" height="350">
   Map of Block Group Health Call Proportions
 </p>
 
