@@ -7,7 +7,7 @@ Rice University
 ### Description 
 <p align="center">
   <img src="images/healthmap.gif" height="350">
-  Map of Block Group Health Call Proportions
+  <p align="center">Map of Block Group Health Call Proportions</p>
 </p>
 
 This is the repository for Team HFD's entire project. This set of scripts form a complete data science pipeline to create a general Risk Assessment and covid-19 risk assessment of Houston.
