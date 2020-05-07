@@ -52,8 +52,8 @@ Follow the bellow instructions or copy and paste the commandline prompts under i
 3. Prepare virtual environment\
 If using mac, we recommend using: 
   `$ conda env create --file environment-all.yml`\
-  `$ conda activate env`
-If using any other system, or if running into issues with command above, run: 
+  `$ conda activate env`\
+If using any other system, or if running into issues with command above, run:\
   `$ conda env create --file environment-light.yml`\
   `$ conda activate env`\
   `conda install -c conda-forge pymannkendall shap folium bayesian-optimization`
