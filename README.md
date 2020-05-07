@@ -6,8 +6,8 @@ Rice University
 
 ### Description 
 <p align="center">
-  <img src="images/fdmap.gif" height="350">
-  <p> Map of Block Group Health Call Proportions </p>
+  <img src="images/health.gif" height="350">
+  Map of Block Group Health Call Proportions
 </p>
 
 This is the repository for Team HFD's entire project. This set of scripts form a complete data science pipeline to create a general Risk Assessment and covid-19 risk assessment of Houston.
@@ -32,7 +32,7 @@ This is the repository for Team HFD's entire project. This set of scripts form a
 
 <p align="center">
   <img src="images/fdmap.gif" height="350">
-  <p> Toggleable Map of Call Proportions at Block Group and Fire District Level </p>
+  Toggleable Map of Call Proportions at Block Group and Fire District Level
 </p>
 
 ---
@@ -89,5 +89,5 @@ After running the project, you can find general risk assessment outputs in "hfd-
 
 <p align="center">
   <img src="images/team.jpg" width="500">
-  <p> Melinda Ding, Nick Falkenberg, Neyda Mami, Cole Morgan, Ohifeme Longe, Emre Yurtbay </p>
+  Melinda Ding, Nick Falkenberg, Neyda Mami, Cole Morgan, Ohifeme Longe, Emre Yurtbay
 </p>
