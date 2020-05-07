@@ -58,11 +58,11 @@ Unzip folder and make sure all contents go into folder called Data\
 ### Run
 To run whole project (will take a lot of time)\
 For mac use: `$ python $PWD;`\
-For windows use: `$ python %cd%;`\
+For windows use: `$ python %cd%;`
 
 To run project but skip spatial join (saves time)\
 For mac use: `$ python $PWD --skip True;;`\
-For windows use: `$ python %cd% --skip True;;`\
+For windows use: `$ python %cd% --skip True;`
 
 After running the project, you can find general risk assessment outputs in "hfd-spring-2020/eda_output" and covid risk assessment outputs in "hfd-spring-20202/covid_output". 
 
