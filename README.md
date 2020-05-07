@@ -3,13 +3,9 @@ Team Houston Fire Department \
 DSCI 435 Spring 2020 \
 Rice University 
 
-<img src="images/fdmap.gif" width="200">
-
-![](images/fdmap.gif)
-
-![](images/healthmap.gif)
 
 ### Description 
+<img src="images/fdmap.gif" width="400"> <img src="images/healthmap.gif" width="400">
 This is the repository for Team HFD's entire project. This set of scripts form a complete data science pipeline to create a general Risk Assessment and covid-19 risk assessment of Houston.
 
 #### Methods Used 
