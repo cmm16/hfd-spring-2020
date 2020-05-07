@@ -50,10 +50,15 @@ Follow the bellow instructions or copy and paste the commandline prompts under i
 2. cd into base of project directory\
    `$ cd hfd-spring-2020;`
 3. Prepare virtual environment\
-  `$ conda env create --file environment.yml`\
-  `$ source activate env`
+If using mac, we recommend using: 
+  `$ conda env create --file environment-all.yml`\
+  `$ conda activate env`
+If using any other system, or if running into issues with command above, run: 
+  `$ conda env create --file environment-light.yml`\
+  `$ conda activate env`\
+  `conda install -c conda-forge pymannkendall shap folium bayesian-optimization`
 
-To deactivate the environment, type `$ conda deactivate`
+After running our project, if you would like to deactivate the environment, type `$ conda deactivate`
    
 ### Download Data
 Got to project box and download Data folder move to top level of this project\
@@ -64,12 +69,10 @@ Unzip folder and make sure all contents go into folder called Data\
 
 ### Run
 To run whole project (will take a lot of time)\
-For mac use: `$ python $PWD;`\
-For windows use: `$ python %cd%;`
+   `$ python $PWD;`
 
 To run project but skip spatial join (saves time)\
-For mac use: `$ python $PWD --skip True;`\
-For windows use: `$ python %cd% --skip True;`
+   `$ python $PWD --skip True;`
 
 After running the project, you can find general risk assessment outputs in "hfd-spring-2020/eda_output" and covid risk assessment outputs in "hfd-spring-20202/covid_output". 
 
