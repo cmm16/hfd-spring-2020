@@ -46,7 +46,10 @@ Follow the bellow instructions or copy and paste the commandline prompts under i
 2. cd into base of project directory\
    `$ cd hfd-spring-2020;`
 3. Prepare virtual environment\
-  `$ conda activate env`
+  `$ conda env create --file environment.yml`
+  `$ source activate env`
+
+To deactivate the environment, type `$ conda deactivate`
    
 ### Download Data
 Got to project box and download Data folder move to top level of this project\
@@ -61,7 +64,7 @@ For mac use: `$ python $PWD;`\
 For windows use: `$ python %cd%;`
 
 To run project but skip spatial join (saves time)\
-For mac use: `$ python $PWD --skip True;;`\
+For mac use: `$ python $PWD --skip True;`\
 For windows use: `$ python %cd% --skip True;`
 
 After running the project, you can find general risk assessment outputs in "hfd-spring-2020/eda_output" and covid risk assessment outputs in "hfd-spring-20202/covid_output". 
