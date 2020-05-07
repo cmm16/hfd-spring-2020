@@ -1,0 +1,21 @@
+name: venv
+channels:
+  - defaults
+dependencies:
+  - python=3.7
+  - geopandas
+  - numpy
+  - matplotlib
+  - scipy
+  - seaborn
+  - statsmodels
+  - scikit-learn
+  - pyshp
+  - folium
+  - bayesian-optimization
+  - lightgbm
+  - shap
+  - pymannkendall
+  - plotly
+prefix: /Users/melindading/anaconda3/envs/venv
+
