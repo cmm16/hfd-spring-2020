@@ -32,7 +32,7 @@ This is the repository for Team HFD's entire project. This set of scripts form a
 
 <p align="center">
   <img src="images/fdmap.gif" height="350">
-  Toggleable Map of Call Proportions at Block Group and Fire District Level
+   <p align="center">Toggleable Map of Call Proportions at Block Group and Fire District Level</p>
 </p>
 
 ---
@@ -89,5 +89,5 @@ After running the project, you can find general risk assessment outputs in "hfd-
 
 <p align="center">
   <img src="images/team.jpg" width="500">
-  Melinda Ding, Nick Falkenberg, Neyda Mami, Cole Morgan, Ohifeme Longe, Emre Yurtbay
+   <p align="center">Melinda Ding, Nick Falkenberg, Neyda Mami, Cole Morgan, Ohifeme Longe, Emre Yurtbay</p>
 </p>
