@@ -36,7 +36,6 @@ This is the repository for Team HFD's entire project. This set of scripts form a
 
 ---
 ## Getting Started 
-Before starting, make sure your python is at least version 3.7.5 and that you have pip installed. 
 
 ### Set up virtual Environment
 Follow the bellow instructions or copy and paste the commandline prompts under instructions
@@ -47,8 +46,7 @@ Follow the bellow instructions or copy and paste the commandline prompts under i
 2. cd into base of project directory\
    `$ cd hfd-spring-2020;`
 3. Prepare virtual environment\
-  `$ pip install pipenv;`\
-   `$ pipenv sync;`
+  `$ conda activate env`
    
 ### Download Data
 Got to project box and download Data folder move to top level of this project\
@@ -59,10 +57,12 @@ Unzip folder and make sure all contents go into folder called Data\
 
 ### Run
 To run whole project (will take a lot of time)\
-`$ pipenv run python $PWD;`
+For mac use: `$ python $PWD;`\
+For windows use: `$ python %cd%;`\
 
 To run project but skip spatial join (saves time)\
-`$ pipenv run python $PWD --skip True;`
+For mac use: `$ python $PWD --skip True;;`\
+For windows use: `$ python %cd% --skip True;;`\
 
 After running the project, you can find general risk assessment outputs in "hfd-spring-2020/eda_output" and covid risk assessment outputs in "hfd-spring-20202/covid_output". 
 
