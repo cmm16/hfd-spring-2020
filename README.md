@@ -47,7 +47,7 @@ Follow the bellow instructions or copy and paste the commandline prompts under i
 2. cd into base of project directory\
    `$ cd hfd-spring-2020;`
 3. Prepare virtual environment\
-  `$ conda env create --file environment.yml`
+  `$ conda env create --file environment.yml`\
   `$ source activate env`
 
 To deactivate the environment, type `$ conda deactivate`
