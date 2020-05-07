@@ -3,6 +3,7 @@ from os.path import join
 import numpy as np
 import pandas as pd
 from scipy.stats.mstats import gmean
+import sys
 
 
 class CovidRiskCalculator:
@@ -220,7 +221,7 @@ class CovidRiskCalculator:
         return risk
 
 
-def aggregate_covid_to_fire_dist(df, covid_df, save_path):
+def aggregate_covid_to_fire_dist(df, covid_df_input, save_path):
     """
     Aggregates columns to fire district level. 
 
@@ -234,7 +235,10 @@ def aggregate_covid_to_fire_dist(df, covid_df, save_path):
     df3 = df1.merge(df2, how="left", left_on="AdminDist", right_on="AdminDist")
     df3["scaler"] = df3["Event_Number_x"] / df3["Event_Number_y"]
 
+    covid_df = covid_df_input.copy()
+
     merged_df = covid_df.merge(df3, how="inner", left_on="Block_Group", right_on="Name")
+
     indices_to_scale = ["Health_Affliction_Index", "Poverty_Index", "Diversity_Index"]
     call_types = [
         "fire",

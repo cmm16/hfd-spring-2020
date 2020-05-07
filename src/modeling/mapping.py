@@ -10,7 +10,7 @@ columns = ['Percent Fire Related Calls',
        'Percent Health Related Calls',
        'Percent Injuries External Related Calls',
        'Percent Mental Illness Related Calls',
-        'Predicted Percent Fire Related Calls',
+       'Predicted Percent Fire Related Calls',
        'Predicted Percent Health Related Calls',
        'Predicted Percent Injuries External Related Calls',
        'Predicted Percent Mental Illness Related Calls']
@@ -26,9 +26,6 @@ def run_map_maker(output_dir, data, bg_filepath, fd_filepath):
         - bg_filepath: String path to block group geojson 
         - fd_filepath: String path to fire district geojson 
     """
-    # Correct typo in data 
-    data = data.rename({'Percent Other Calls':'Percent Other Related Calls', 
-          'Pecent Motor Related Calls': 'Percent Motor Related Calls'}, axis=1)
 
     # Change block group to string type for mapping 
     data['Block_Group'] = data['Block_Group'].astype(str)

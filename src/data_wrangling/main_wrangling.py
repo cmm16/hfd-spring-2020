@@ -96,14 +96,17 @@ def main(data_dir, args):
         data_dir,
         covid_save_path,
     )
+
     covid_risk_calculator.create_covid_df()
+
     fire_dist_save_path = join(data_dir, "firedist_covid.csv")
+    block_group_covid = pd.read_csv(join(data_dir, "covid_indices.csv"))
+
     aggregate_covid_to_fire_dist(
         pd.read_csv(join(data_dir, "Image_Trend_Merged_SpatialJOIN.csv")),
-        pd.read_csv(covid_save_path),
+        block_group_covid,
         fire_dist_save_path,
     )
-
 
 if __name__ == "__main__":
     main(join(dirname((dirname(getcwd()))), "Data"))

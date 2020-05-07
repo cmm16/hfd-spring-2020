@@ -127,6 +127,7 @@ def plot_volume_chart(output_dir, df, title, xaxis_label, xticks, xtick_labels):
     plt.xlabel(xaxis_label, fontsize=18)
     plt.xticks(ticks=xticks, labels=xtick_labels, fontsize=15, rotation=0)
     plt.savefig(join(output_dir, title + ".png"))
+    plt.close()
 
 def plot_donut_chart(output_dir, values, labels, description): 
     """
@@ -153,6 +154,7 @@ def plot_donut_chart(output_dir, values, labels, description):
     p.gca().add_artist(my_circle)
 
     plt.savefig(join(output_dir, description + "_donut_chart.png"))
+    plt.close()
 
 
 def plot_quartiles(output_dir, data, column, column_name):
@@ -185,6 +187,7 @@ def plot_quartiles(output_dir, data, column, column_name):
     plt.xticks(fontsize=15)
     plt.legend(["25th Quartile", "50th Quartile", "75th Quartile"])
     plt.savefig(join(output_dir, column_name + "_quartiles.png"))
+    plt.close()
 
 
 def plot_call_dist(output_dir, portions_df, xlabel, labels, factor):
@@ -211,4 +214,5 @@ def plot_call_dist(output_dir, portions_df, xlabel, labels, factor):
     plt.legend(prop={'size': 20}, labels=callLabels)
     plt.xticks(ticks=list(range(0,len(labels))),labels=labels, fontsize=15)
     plt.savefig(join(output_dir, factor+"_call_dist.png"))
+    plt.close()
 
