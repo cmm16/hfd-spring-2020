@@ -36,6 +36,7 @@ This is the repository for Team HFD's entire project. This set of scripts form a
 
 ---
 ## Getting Started 
+Before getting started, make sure you are using at least conda version 3.8.2. 
 
 ### Set up virtual Environment
 Follow the bellow instructions or copy and paste the commandline prompts under instructions
