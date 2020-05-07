@@ -5,7 +5,7 @@ Rice University
 
 
 ### Description 
-<img src="images/fdmap.gif" height="300"> <img src="images/healthmap.gif" height="300">
+<img src="images/fdmap.gif" height="250"> <img src="images/healthmap.gif" height="250">
 
 This is the repository for Team HFD's entire project. This set of scripts form a complete data science pipeline to create a general Risk Assessment and covid-19 risk assessment of Houston.
 
