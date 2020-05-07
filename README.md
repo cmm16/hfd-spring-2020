@@ -5,7 +5,7 @@ Rice University
 
 
 ### Description 
-<img src="images/fdmap.gif" height="250"> <img src="images/healthmap.gif" height="250">
+<img src="images/fdmap.gif" height="350">
 
 This is the repository for Team HFD's entire project. This set of scripts form a complete data science pipeline to create a general Risk Assessment and covid-19 risk assessment of Houston.
 
@@ -26,6 +26,8 @@ This is the repository for Team HFD's entire project. This set of scripts form a
 - R 
    - NBClust 
    - Clustree
+
+<img src="images/healthmap.gif" height="350">
 
 ---
 ## Documentation 
@@ -52,10 +54,10 @@ Follow the bellow instructions or copy and paste the commandline prompts under i
 3. Prepare virtual environment\
 If using mac, we recommend using: 
   `$ conda env create --file environment-all.yml`\
-  `$ conda activate env`\
+  `$ conda activate env`  (make sure this is the same command conda says to run)\
 If using any other system, or if running into issues with command above, run:\
   `$ conda env create --file environment-light.yml`\
-  `$ conda activate env`\
+  `$ conda activate env` (make sure this is the same command conda says to run)\
   `conda install -c conda-forge pymannkendall shap folium bayesian-optimization`
 
 After running our project, if you would like to deactivate the environment, type `$ conda deactivate`
@@ -79,9 +81,6 @@ After running the project, you can find general risk assessment outputs in "hfd-
 ---
 ### Members
 
-- Melinda Ding 
-- Nick Falkenberg
-- Neyda Mami 
-- Cole Morgan
-- Ohifeme Longe
-- Emre Yurtbay
+<img src="images/team.jpg" height="250">
+
+Melinda Ding, Nick Falkenberg, Neyda Mami, Cole Morgan, Ohifeme Longe, Emre Yurtbay
